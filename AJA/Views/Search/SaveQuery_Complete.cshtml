@@ -1,0 +1,97 @@
+﻿@model DAL.SearchBL.ManageQuery
+@{
+    ViewBag.Title = "SaveQueryComplete";
+}
+@using (Html.BeginForm())
+{
+    <div align="center">
+
+        <div>
+            <div>
+                <table width="1170" style="margin:0 auto;" align="center">
+                    <tr>
+                        <td>
+                            <img src="~/Content/images/Subpage_bannerBig.jpg">
+                        </td>
+                    </tr>
+
+                </table>
+                <table width="705" border="0" cellspacing="0" cellpadding="0" class="AjaBoxColor">
+
+                    <tr>
+
+                        <td height="45" valign="top">
+
+                            <span class="AjaTitle"><a href="/Search/Search">Search MEDLINE</a><sup><small>®</small></sup>
+                                &nbsp;&gt;&nbsp;<a href="/Search/SearchResults">Search Results</a>
+                                &nbsp;&gt;&nbsp;Save Query
+                            </span>
+
+                        </td>
+
+                        <td valign="top" align="right">
+                            <span style="text-align: center;">
+                                <a href="/Search/save_query_help">Saved Query Help</a>
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td height="20" colspan="2" valign="top">
+
+                            <span class="AjaQueryDetails">QUERY DETAILS :  @Model.QueryDetails </span>
+
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="AjaBoxColor">
+                <table width="705" border="0" cellspacing="0" cellpadding="10" class="AjaBoxColor ajabgbx">
+                    <tr>
+                        <td colspan="2">Title (required): &nbsp; <strong>@Model.Name </strong>
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2">Description / notes: &nbsp; <strong>@Model.Description</strong>
+
+
+                        </td>
+
+                    </tr>
+                    @if (Model.Autosearch == true)
+                    {
+
+                        <tr>
+                            <td colspan="2">Destination Folder:<strong>  @Model.queryDestination.SpecialtyName / @Model.queryDestination.TopicName / @Model.queryDestination.SubTopicName </strong>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">Citations will be <strong>Deleted</strong> after <strong>@Html.DisplayFor(m => m.ShelfLife)</strong> days
+                            </td>
+                        </tr>
+                    }
+                    
+
+                    <tr>
+
+                        <td colspan="2"><span style="color:red">Your query has been saved.</span>  &nbsp; &nbsp; &nbsp; @Html.ActionLink("Go to results", "SearchResults", "Search", new { ddlValue = Model.SearchId }, null) &nbsp; &nbsp; &nbsp;  @Html.ActionLink("Go to My Queries", "MyQueries", "MyQueries", new { FID = Model.resultFolder2, searchid = Model.SearchId, SearchName = @Model.Name }, null)
+                        </td>
+
+                    </tr>
+
+                </table>
+               
+            </div>
+
+        </div>
+    </div>
+}

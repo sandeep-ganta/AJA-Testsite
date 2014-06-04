@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@using StackExchange.Profiling;
+
+<head>
+    <title>ACRJournal Advisor</title>
+    @*<title>@ViewBag.Title</title>*@
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+    @Styles.Render("~/Content/css")
+    @*@Styles.Render("~/Content/Chosen-css")*@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/themes/base/css")
+
+    <script type="text/javascript">
+
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+    </script>
+
+    <script type="text/javascript">
+
+        try {
+
+            var pageTracker = _gat._getTracker("UA-12697087-1");
+
+            pageTracker._trackPageview();
+
+        }
+
+        catch (err) { }
+
+    </script>
+    <script type="text/javascript">
+        //added to control .net,.org, and https without "www." 
+        //which is not possible with current rules defined in web.config.
+
+        var strServerURL = document.location.protocol + "//" + window.location.hostname;
+
+        if (strServerURL != '@System.Configuration.ConfigurationManager.AppSettings["ServerURL"]') {
+
+            //window.location = '@System.Configuration.ConfigurationManager.AppSettings["ServerURL"]';
+        }
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <div align="center">
+            <table width="100%">
+                <tr>
+                    <td class="headerContr">
+                        <table border="0" width="1170" align="center">
+                            <tr valign="top" height="85">
+                                <td>
+                                    <a href="/Home">
+                                        <img src="/Content/images/Logo.fw.png" border="0">
+                                    </a>
+                                </td>
+                                <td align="center" id="mvBanner">
+                                    @*<script type='text/javascript'>
+
+                                        var m3_u = (location.protocol == 'https:' ? 'https://content2.multiview.com/www/delivery/ajs.php' : 'http://content2.multiview.com/www/delivery/ajs.php');
+
+                                        var m3_r = Math.floor(Math.random() * 99999999999);
+
+                                        if (!document.MAX_used) document.MAX_used = ',';
+
+                                        document.write("<scr" + "ipt type='text/javascript' src='" + m3_u);
+
+                                        document.write("?zoneid=2552&amp;withtext=1&amp;block=1");
+
+                                        document.write('&amp;cb=' + m3_r);
+
+                                        if (document.MAX_used != ',') document.write("&amp;exclude=" + document.MAX_used);
+
+                                        document.write(document.charset ? '&amp;charset=' + document.charset : (document.characterSet ? '&amp;charset=' + document.characterSet : ''));
+
+                                        document.write("&amp;loc=" + escape(window.location));
+
+                                        if (document.referrer) document.write("&amp;referer=" + escape(document.referrer));
+
+                                        if (document.context) document.write("&context=" + escape(document.context));
+
+                                        if (document.mmm_fo) document.write("&amp;mmm_fo=1");
+
+                                        document.write("'><\/scr" + "ipt>");
+
+                                    </script>
+                                    <noscript>
+                                        <a href='http://content2.multiview.com/www/delivery/ck.php?n=a8274148&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'>
+                                            <img src='http://content2.multiview.com/www/delivery/avw.php?zoneid=2552&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a8274148' border='0' alt='' /></a>
+                                    </noscript>*@
+                                    <script type="text/javascript">var p = "http", d = "static"; if (document.location.protocol == "https:") { p += "s"; d = "engine"; } var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = p + "://" + d + ".multiview.com/ados.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);</script>
+                                    <script type="text/javascript">
+                                        var ados = ados || {};
+                                        ados.run = ados.run || [];
+                                        ados.run.push(function () {
+                                            /* load placement for account: Multiview, site: ACRweb - American College of Radiology - MultiWeb, size: 728x90 - Leaderboard, zone: ACRweb - Leaderboard*/
+                                            ados_add_placement(4466, 55943, "mvBanner", 4).setZone(59038);
+                                            ados_setDomain('engine.multiview.com');
+                                            ados_load();
+                                        });</script>
+                                </td>
+                                <td align="right" valign="middle">
+                                    <a target="_blank" href="http://www.acr.org/">
+                                        <img src="/Content/images/acr_logo.png" border="0"></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </header>
+
+    @if (TempData["Result"] != null)
+    {
+        <div>@Html.Partial("_MyResult", TempData["Result"] as DAL.Models.MyResult)</div>
+    }
+
+    <div>
+        @Html.Partial("_Menu")
+    </div>
+
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section>
+            @RenderBody()
+        </section>
+        <input type="hidden" id="hdn_ServerUrl" value='@AJA_Core.Util.GetAppConfigKeyValue("ServerURL")' />
+    </div>
+
+    @*Scrol page to Top*@
+    <p id="back-top" style="display: block;">
+        <a href="#top">
+            <span></span>
+            Go to Top
+        </a>
+    </p>
+    @if (AJA_Core.CurrentUser.IsAuthenticated)
+    {
+        if (CurrentUser.Roles.Contains("AJA User") || HttpContext.Current.Request.Url.ToString().Contains("ECRelatedEditions"))
+        {
+        <br />
+        <br />
+        <footer>
+            <div id="Div_Footer" class="footerbg">
+                <div class="commonContent margintopbtm" align="center">
+                </div>
+                <div class="commonContent margintopbtm" align="center">
+                    <div class="bottomNav"><a href="/personalizedmed/personalized_medicine">PERSONALIZED MEDICINE</a> |  <a href="/User/EditorsChoice">EDITORS CHOICE</a> |  <a href="/Search/Search">SEARCH MEDLINE</a> |  <a href="/mylibrary/index">MY LIBRARY</a> |  <a href="/MyQueries/myqueries">MY QUERIES</a> | <a href="/User/MyProfile">MY PROFILE</a> |  <a href="/User/LogOff">LOG OUT</a></div>
+                    <div class="bottomNav"><a href="/Home/About">Copyright</a> |  <a href="/Home/About">privacy</a></div>
+                    <p style="padding: 20px 0; color: #6A6A6A;">&copy;2000-2013, ACR Journal Advisor, All Rights Reserved <span style="float: right">@System.Configuration.ConfigurationManager.AppSettings["BuildVersion"]</span></p>
+
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="signupCntnt2"></div>
+        </footer>  
+        }
+        else
+        {
+        <div style="text-align: center; margin-top: 100px;" class="footerbg">
+            ©2000-2013, ACR Journal Advisor, All Rights Reserved   
+        <p>@System.Configuration.ConfigurationManager.AppSettings["BuildVersion"]</p>
+        </div>
+        }
+
+    }
+    else
+    {
+        <footer>
+            <br />
+            <br />
+            <div class="clear"></div>
+
+            <div class="signupCntnt">
+                <div class="commonContent">
+                    <table width="100%">
+                        <tr>
+                            <td align="left">
+                                <div class="Ipadpic">
+                                    <img src="/Content/images/Ipad_callout.png" />
+                                </div>
+                            </td>
+                            <td align="center" valign="center" style="text-align: left; font-size: 18px; text-transform: none; color: #fff;">Find hand-picked research and related interpretations from renowned radiation oncologists.<br />
+                                No more sorting through dozens of journals.
+                            </td>
+                            <td align="right"><a href="/User/Register" class="signup_btn">Sign Up Today</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="footerbg">
+                <div class="commonContent margintopbtm" align="center">
+                </div>
+                <div class="commonContent margintopbtm" align="center">
+                    <div class="bottomNav"><a href="/Home">home</a> |  <a href="/Home/About">about us</a> |  <a href="/Home/Contact">contact us</a> |  <a href="/Home/Preview">preview</a> |  <a href="/User/Register">register</a> |  <a href="/User/Login">log in</a></div>
+                    <div class="bottomNav"><a href="/Home/About">copyright</a> |  <a href="/Home/About">privacy</a></div>
+                    <p style="padding: 20px 0; color: #6A6A6A;">&copy;2000-2013, ACR Journal Advisor, All Rights Reserved  <span style="float: right">@System.Configuration.ConfigurationManager.AppSettings["BuildVersion"]</span></p>
+
+                </div>
+            </div>
+        </footer>
+    }
+    <script type="text/javascript">
+        $("td:not([align='right'], [align='center'])").css('text-align', 'left');
+    </script>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-36803104-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+</body>
+
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/Commonscript")
+@Scripts.Render("~/bundles/jqueryval")
+@RenderSection("scripts", required: false)
+</html>

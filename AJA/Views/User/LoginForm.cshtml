@@ -1,0 +1,66 @@
+﻿@model DAL.Models.LoginModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+     <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+    <title>LoginForm</title>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#btn_login').button({
+                icons: {
+                    primary: "ui-icon-person"
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h2>Log In</h2>
+    @using (Html.BeginForm("login", "user"))
+    {
+        
+       
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+    
+        <fieldset class="acloginform">
+
+            <ol>
+                <li>
+                    @Html.LabelFor(model => model.EmailID)
+                    @Html.TextBoxFor(model => model.EmailID, new {id = "txt_login_Emailid" })
+                    @Html.ValidationMessageFor(model => model.EmailID)
+                </li>
+
+                <li>
+                    @Html.LabelFor(model => model.Password)
+                    @Html.EditorFor(model => model.Password)
+                    @Html.ValidationMessageFor(model => model.Password)
+                </li>
+
+                <li>
+                     <button type="submit" value="Login" id="btn_login" class="btn_grid_create ac_btns_icons_text">Login</button>
+                    @Html.EditorFor(model => model.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+               
+                   
+                </li>
+            </ol>
+
+
+
+        </fieldset>
+    }
+
+</body>
+</html>

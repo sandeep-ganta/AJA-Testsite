@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@using StackExchange.Profiling;
+
+<head>
+    <title>ACRJournal Advisor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />    
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Gridviewcss")
+    @*@Styles.Render("~/Content/Chosen-css")*@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/themes/base/css")
+</head>
+<body>
+   <div class="adminmainwrapper">
+        <header>
+        <div align="center">
+            <table width="100%">
+                <tr>
+                    <td class="headerContr">
+                        <table border="0" width="1170" align="center">
+                            <tr align="left" valign="top" height="85">
+                                <td>
+                                    <a href="/Admin/AdminHome">
+                                        <img src="/Content/images/Logo.fw.png" border="0">
+                                    </a>
+                                </td>
+                               
+                                @if (TempData["Mailmenu"] != null)
+                                {
+                                    TempData.Keep("Mailmenu");
+                                    DAL.Models.Monthlyeditorsmail mproperty = (DAL.Models.Monthlyeditorsmail)Session["composetext"];
+                                    <td class="mailPageHeading" align="right" style="text-align: right">Create Editors Choice Announcement
+                                 <br />
+                                        @if (mproperty != null)
+                                        {
+                                            if (mproperty.sendername != null)
+                                            {
+                                            @Html.Label(mproperty.SpecialtyName)}
+                                            else
+                                            {@Html.Label("Specialty Not Selected")}
+                                        }
+                                        else
+                                        {@Html.Label("Specialty Not Selected")}
+                                    </td>
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </header>
+    <div class="LoaderIconBase"></div>
+    @if (TempData["Result"] != null)
+    {
+        <div>@Html.Partial("_MyResult", TempData["Result"] as DAL.Models.MyResult)</div>
+    }
+    <div>
+        @Html.Partial("_Menu")
+    </div>
+
+    <div id="body" class="bodyContainer" style="padding-bottom:15px;">
+        <div class="bread_crumb_admin">
+            @Html.MvcSiteMap().Menu(false, true, false)
+            @Html.MvcSiteMap().SiteMapPath()
+            <input type="hidden" id="hdn_ServerUrl" value='@AJA_Core.Util.GetAppConfigKeyValue("ServerURL")' />
+        </div>
+
+        @RenderSection("featured", required: false)
+        <section>
+            @RenderBody()
+        </section>
+    </div>
+
+   
+    @*@MiniProfiler.RenderIncludes()*@
+       <div class="push"></div>
+   
+   </div>
+<script type="text/javascript">
+    $(window).load(function () {
+        $(".LoaderIconBase").fadeOut("slow");
+    })
+</script>
+     @*Scrol page to Top*@
+    <p id="back-top" style="display: block;">
+        <a href="#top">
+            <span></span>
+            Go to Top
+        </a>
+    </p>
+    </div>
+     <div style="text-align: center;" class="footerbg footht">©2000-2013, ACR Journal Advisor, All Rights Reserved   
+        <div style="text-align:left; padding-left:6px;">@System.Configuration.ConfigurationManager.AppSettings["BuildVersion"]</div>
+    </div>
+</body>
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/Commonscript")
+@Scripts.Render("~/bundles/jqueryval")
+
+@RenderSection("scripts", required: false)
+    
+</html>

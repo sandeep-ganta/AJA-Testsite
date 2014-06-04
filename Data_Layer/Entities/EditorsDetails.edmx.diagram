@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="17200fe5d01646e0986538ab12c7a9c0" Name="Diagram1" ZoomLevel="76">
+        <EntityTypeShape EntityType="AJAEditorsModel.AtLargeEditor" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAEditorsModel.CommentAuthor" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAEditorsModel.EditorTopic" Width="1.5" PointX="0.5" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAEditorsModel.Specialty" Width="1.5" PointX="2.625" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAEditorsModel.Topic" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAEditorsModel.ArticleSelection" Width="1.5" PointX="10.75" PointY="0.875" />
+        <EntityTypeShape EntityType="AJAEditorsModel.Edition" Width="1.5" PointX="15.5" PointY="6.75" />
+        <EntityTypeShape EntityType="AJAEditorsModel.EditorialThread" Width="1.5" PointX="8.125" PointY="0.875" />
+        <EntityTypeShape EntityType="AJAEditorsModel.SubTopicEditorRef" Width="1.5" PointX="4.375" PointY="7.75" />
+        <EntityTypeShape EntityType="AJAEditorsModel.SubTopicReference" Width="1.5" PointX="6.625" PointY="6.5" />
+        <AssociationConnector Association="AJAEditorsModel.FK_ArticleSelections_EditorialThreads" />
+        <AssociationConnector Association="AJAEditorsModel.FK_SubTopicEditorRefs_Editions" />
+        <AssociationConnector Association="AJAEditorsModel.FK_SubTopicReference_Editions" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="AJAEditorsModel.FK_SubTopicEditorRefs_EditorialThreads" />
+        <AssociationConnector Association="AJAEditorsModel.FK_SubTopicReference_EditorialThreads" />
+        <AssociationConnector Association="AJAEditorsModel.FK_SubTopicEditorRef_EditorTopics" />
+        <EntityTypeShape EntityType="AJAEditorsModel.doc_in_subtopic" Width="1.5" PointX="12.625" PointY="3.25" />
+        <EntityTypeShape EntityType="AJAEditorsModel.doc" Width="1.5" PointX="8.25" PointY="20.125" />
+        <AssociationConnector Association="AJAEditorsModel.FK_doc_in_subtopic_doc" />
+        <EntityTypeShape EntityType="AJAEditorsModel.SubTopic" Width="1.5" PointX="6.3767909139286685" PointY="9.0371044618250362" />
+        <EntityTypeShape EntityType="AJAEditorsModel.Gene" Width="1.5" PointX="9" PointY="15.5" />
+        <EntityTypeShape EntityType="AJAEditorsModel.EditorialComment" Width="1.5" PointX="7.2279074505101466" PointY="5.8075078752858138" />
+        <AssociationConnector Association="AJAEditorsModel.FK_EditorialComments_EditorialThreads" />
+        <AssociationConnector Association="AJAEditorsModel.CommentAuthorReferences" />
+        <AssociationConnector Association="AJAEditorsModel.EditorialCommentsGenes" />
+        <EntityTypeShape EntityType="AJAEditorsModel.vwRecentEdition" Width="1.5" PointX="7.9928219411488728" PointY="9.52914965596476" />
+        <EntityTypeShape EntityType="AJAEditorsModel.CustomMailHeader" Width="1.5" PointX="3.6430965939737376" PointY="11.701467474783522" />
+        <EntityTypeShape EntityType="AJAEditorsModel.UserSpecialty" Width="1.5" PointX="3.2277702964971633" PointY="17.240063764732362" />
+        <EntityTypeShape EntityType="AJAEditorsModel.AJA_tbl_FieldOptions" Width="1.5" PointX="2.7032680673074294" PointY="6.2976148604869913" />
+        <EntityTypeShape EntityType="AJAEditorsModel.AJA_tbl_FieldTypes" Width="1.5" PointX="6.3149059034487731" PointY="17.0133985509227" />
+        <EntityTypeShape EntityType="AJAEditorsModel.AJA_tbl_FieldValues" Width="1.5" PointX="1.8424950697657163" PointY="30.90545999952846" />
+        <EntityTypeShape EntityType="AJAEditorsModel.AJA_tbl_Roles" Width="1.5" PointX="7.077748208808595" PointY="30.479898124225389" />
+        <EntityTypeShape EntityType="AJAEditorsModel.AJA_tbl_UserFields" Width="1.5" PointX="3.0360154747199344" PointY="12.732642611829864" />
+        <EntityTypeShape EntityType="AJAEditorsModel.AJA_tbl_Users" Width="1.5" PointX="5.1343872161276582" PointY="4.626625644334883" />
+        <AssociationConnector Association="AJAEditorsModel.FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields" />
+        <AssociationConnector Association="AJAEditorsModel.FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions" />
+        <AssociationConnector Association="AJAEditorsModel.FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes" />
+        <AssociationConnector Association="AJAEditorsModel.FK_AJA_tbl_FieldValues_AJA_tbl_Users" />
+        <AssociationConnector Association="AJAEditorsModel.FK_AJA_tbl_UserFields_AJA_tbl_Roles" />
+        <AssociationConnector Association="AJAEditorsModel.AJA_tbl_UserRoles" />
+        <EntityTypeShape EntityType="AJAEditorsModel.UserCitation" Width="1.5" PointX="8.625" PointY="22.875" />
+        <EntityTypeShape EntityType="AJAEditorsModel.UserHasSponsorFolder" Width="1.5" PointX="5.2928743647843941" PointY="28.387048093782294" />
+        <EntityTypeShape EntityType="AJAEditorsModel.HiddenTopic" Width="1.5" PointX="9.28231400311101" PointY="8.2388942578057272" />
+        <EntityTypeShape EntityType="AJAEditorsModel.HiddenSubTopic" Width="1.5" PointX="10.303227334424493" PointY="19.790284374631142" />
+        <EntityTypeShape EntityType="AJAEditorsModel.SponsorTopic" Width="1.5" PointX="2.7300733601348814" PointY="18.44701387847169" />
+        <EntityTypeShape EntityType="AJAEditorsModel.UserHasSponsorTopic" Width="1.5" PointX="5.156686492802895" PointY="8.3397463896962556" />
+        <EntityTypeShape EntityType="AJAEditorsModel.Test" Width="1.5" PointX="13.875" PointY="15.75" />
+        <EntityTypeShape EntityType="AJAEditorsModel.GeneAlias" Width="1.5" PointX="3.1899325527203883" PointY="30.88231350429464" />
+        <AssociationConnector Association="AJAEditorsModel.FK_GeneAliases_Genes" />
+        <EntityTypeShape EntityType="AJAEditorsModel.CitationsGene" Width="1.5" PointX="6.25" PointY="20.25" />
+        <AssociationConnector Association="AJAEditorsModel.FK_Genes_CitationsGenes" />
+        <EntityTypeShape EntityType="AJAEditorsModel.UserComment" Width="1.5" PointX="9.023417812317339" PointY="11.129617204484351" />
+        <EntityTypeShape EntityType="AJAEditorsModel.GenesLink" Width="1.5" PointX="4.6434973853842809" PointY="11.281712924727104" />
+        <AssociationConnector Association="AJAEditorsModel.FK_Genes_GenesLinks" />
+        <EntityTypeShape EntityType="AJAEditorsModel.GeneCommentCombo" Width="1.5" PointX="6.5" PointY="33" />
+        <EntityTypeShape EntityType="AJAEditorsModel.GeneComment" Width="1.5" PointX="9.375" PointY="34.5" />
+        <AssociationConnector Association="AJAEditorsModel.FK_GeneComments_GeneCommentCombos" />
+        <AssociationConnector Association="AJAEditorsModel.FK_Genes_GeneComments" />
+        <EntityTypeShape EntityType="AJAEditorsModel.TestCommentCombo" Width="2.125" PointX="13.25" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAEditorsModel.TestComment" Width="1.5" PointX="16.375" PointY="21.125" />
+        <AssociationConnector Association="AJAEditorsModel.FK_TestComments_TestCommentCombos" />
+        <AssociationConnector Association="AJAEditorsModel.FK_Tests_TestComments" />
+        <EntityTypeShape EntityType="AJAEditorsModel.CitationsTest" Width="1.5" PointX="12.25" PointY="32.875" />
+        <AssociationConnector Association="AJAEditorsModel.FK_Tests_SeminalCitationsTests" />
+        <EntityTypeShape EntityType="AJAEditorsModel.SponsorFolder" Width="1.5" PointX="6.9541525481986586" PointY="0.53367595399435419" />
+        <EntityTypeShape EntityType="AJAEditorsModel.TestsLink" Width="1.5" PointX="3.3563719314319882" PointY="29.518105192816865" />
+        <AssociationConnector Association="AJAEditorsModel.FK_Tests_TestsLinks" />
+        <EntityTypeShape EntityType="AJAEditorsModel.ArticlesAuthor" Width="1.5" PointX="11.292583420543272" PointY="17.11149167321226" />
+        <EntityTypeShape EntityType="AJAEditorsModel.GenesArticle" Width="1.5" PointX="0.62799415207840226" PointY="19.8840254637804" />
+        <AssociationConnector Association="AJAEditorsModel.FK_GenesArticles_ArticlesAuthors" />
+        <AssociationConnector Association="AJAEditorsModel.FK_Genes_GenesArticles" />
+        <EntityTypeShape EntityType="AJAEditorsModel.NonMedlineCitation" Width="1.5" PointX="2.8291705729575689" PointY="20.358505705538441" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

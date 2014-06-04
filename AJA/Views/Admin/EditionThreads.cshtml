@@ -1,0 +1,128 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{
+    ViewBag.Title = "Edition Content (Threads)";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@*<input type="button" id="back_data" value="Back to Editions" class=""/>*@
+@*<a href="~/Admin/Editionschoice" class="">Back to Editions</a>*@
+
+<h2 style="text-align: center">Edition Content (Threads)</h2>
+ 
+<table class="citationtable">
+    <tr class="ui-widget-header ui-state-default"><th></th><th>Edition Details</th></tr>
+    <tr>
+        <td>Specialty:</td>
+        <td> 
+            @ViewBag.Specialty
+        </td>
+    </tr>
+    <tr>
+        <td>Published:</td>
+        <td>@ViewBag.Pubdate</td>
+    </tr>
+</table>
+<br />
+<p>
+    Editions are composed of <em>Threads</em>.&nbsp; A Thread is a combination of one
+        or more citation selections, editorial commentaries, and references to topics and
+        sub-topics in the standard library for the edition specialty.&nbsp; Traditionally,
+        threads are composed of a single citation (a PMID reference) and a single comment
+        filed under a single sub-topic.&nbsp; The new Editors Choice 2.0 system allows as
+        many citations, comments, and sub-topics as are appropriate, all grouped into the
+        single display area defined by the thread.
+</p>
+<p>
+    The list below shows all current threads that are defined for this edition.&nbsp;
+        You can add a new thread by clicking the <strong>Create new editorial thread</strong>
+    link.&nbsp; In order to &nbsp;see details on each thread that you've created, click
+        the <strong>Content</strong> link, which will take you to the <em>Thread Contents</em>
+    screen, where Editor and Citation selections can be made.
+</p>
+
+
+<div id="div_Threads">
+    @{MVC4Grid.Grid modelgrid = @ViewBag.Grid;}
+    @Html.GridFor(modelgrid)
+   
+</div>
+
+<div id="Editions_Thread_dialog">
+</div>
+@*<script type="text/javascript" src="~/Scripts/GridView.js"></script>*@
+<script src="~/Scripts/GridView_New.js"></script>
+<script type="text/javascript">
+    var CreateEditorialThread = function CreateEditorialThread(Eid) { 
+        var url = ServerURL + '/Admin/CreateEditorialThreadID/' + "?Editionid=" + Eid + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Editions_Thread_dialog').html(html);
+            $.validator.unobtrusive.parse($("#form_Edit_Threads"));
+            $('#Editions_Thread_dialog').dialog({
+                modal: true,
+                title: "Create a New Editorial Thread",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_Edition_Thread_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    var DeleteditorialThread = function DeleteditorialThread(ctrl) {
+         
+        var uid = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="DeleteThreadDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Editorial Thread",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: ServerURL + '/Admin/DeleteEditorialThreadEID/?id=' + uid,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data) {
+                                        alert("Deleted Successfully"); 
+                                        $("#tbl_Edition_Thread .bt_grid_refresh").click();
+                                    }
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting Editorial Thread");
+                                }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+    
+    var ContentThread = function ContentThread(ctrl, id) {
+     
+        var uid = $(ctrl).attr('keyid');
+        window.location.href = ServerURL + '/Admin/ThreadContents/' + "?Cid=" + uid + "&Eid=" + id + '&rand=' + randGenerator();
+    }
+     
+    $('#back_data').click(function () {
+        window.location.href = ServerURL + '/Admin/Editionschoice/';
+     });
+</script>
+
+<link href="~/Content/GridView.css" rel="stylesheet" />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/Commonscript") 
+}

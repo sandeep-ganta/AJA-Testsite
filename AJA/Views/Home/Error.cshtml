@@ -1,0 +1,36 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+
+@{
+    ViewBag.Title = "Error From Config";
+}
+
+<table width="1170" align="Center">
+    <tr>
+        <td>
+            @Html.ActionLink("Back to Home Page", "Index", new { Controller = "Home" }, new { @class = "regislnk" })
+
+            <hgroup class="title">
+
+                <h1 class="error">Error.</h1>
+                <h2 class="error">An error occurred while processing your request.</h2>
+
+
+                @if (Model != null)
+                {
+                    <p>
+                        <h4 class="error">Exception : @Model.Exception.Message<br />
+                        </h4>
+                    </p>
+        
+                    <pre>
+                @Model.Exception.StackTrace.ToString()
+            </pre>
+       
+                }
+
+            </hgroup>
+
+        </td>
+    </tr>
+</table>

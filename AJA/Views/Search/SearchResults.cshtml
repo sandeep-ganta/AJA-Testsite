@@ -1,0 +1,632 @@
+﻿@model DAL.SearchBL.SearchForm
+@{
+    ViewBag.Title = "Search Results";
+    int start = 1, range = 20;
+    var blnGoodRecord = false;
+}
+
+@{
+    if (Request.QueryString["start"] != null)
+    {
+        start = int.Parse(Request.QueryString["start"].ToString());
+    }
+    else
+    {
+        start = 1;
+    }
+    if (Request.QueryString["range"] != null)
+    {
+        range = int.Parse(Request.QueryString["range"].ToString());
+    }
+    else
+    {
+        range = 20;
+    }
+
+    var DisplayItems = start + (range - 1);
+    var MaxResults = 1000;
+    
+}
+
+@{
+    //Created by Prashanth kuamr Garlapally 11 Oct 2013
+    //Change this according to your requirement
+
+
+    var rows = 5; // Total rows to display per grid
+    rows = range;
+    var columns = 1; // this is used to distribute records into number of columns by default is always 1
+    columns = 1;
+    var pagination = 5; //To show page numbers, better to keep odd number like 3,5,7,9 etc
+    pagination = 5;
+    var totalContent = 142;   //keyWords.length; //total number of content
+    totalContent = MaxResults;  // this should be  @Model.CitationCount but for the moment its MaxResults
+    if (totalContent > Model.CitationCount)
+    {
+        totalContent = Model.CitationCount;
+    }
+
+
+    int noPerPage = rows * columns; //Number of content in one page
+
+    int noOfPage = 0; //Holds total number of pages possible
+
+
+
+    if (totalContent % noPerPage == 0)
+    {
+
+        noOfPage = (int)(totalContent / noPerPage);
+    }
+    else
+    {
+        noOfPage = (int)((totalContent / noPerPage) + 1);
+    }
+
+    //if total content is less than number of content in one page
+    if (totalContent < noPerPage)
+    {
+        if (totalContent % columns == 0)
+        {
+            rows = (int)(totalContent / columns);
+        }
+        else
+        {
+            rows = (int)((totalContent / columns) + 1);
+        }
+        noOfPage = 1;
+    }
+
+    int whichPage = (start / noPerPage) + 1; //Current page number
+
+
+    int midPagination = (int)(pagination / 2);
+    String html = "";
+    String html1 = "";
+    html += "<table border='0' width='100%' align='left'>";
+
+
+    //to generate pageination
+    html += "<tr><td style=\"width:40px\">Page:<td>";
+    html += "<td colspan='" + columns + "' align='left'>";
+    if (Model.CitationCount > 10)
+    {
+        if (whichPage > pagination)
+        {
+
+            html += " <a  href='/Search/SearchResults?start=1&range=" + rows + "'> First </a>&nbsp; ";
+
+            html += " <a  href='/Search/SearchResults?start=" + ((noPerPage * (whichPage - 1 - pagination)) + 1) + "&range=" + rows + "'> &lt;&lt; </a>&nbsp; ";
+        }
+        if (whichPage > 1)
+        {
+
+            html += "<a href='/Search/SearchResults?start=" + ((noPerPage * (whichPage - 1 - 1)) + 1) + "&range=" + rows + "'  > Previous </a>&nbsp; ";
+        }
+
+        //generate page numbers
+        int fno = whichPage - midPagination;
+        int lno = whichPage + midPagination;
+
+        if (fno < 1 && noOfPage > pagination)
+        {
+            fno = 1;
+            lno = pagination;
+        }
+        else if (fno < 1 && noOfPage <= pagination)
+        {
+            fno = 1;
+            lno = noOfPage;
+        }
+        else if (lno > noOfPage && noOfPage <= pagination)
+        {
+            fno = 1;
+            lno = noOfPage;
+        }
+        else if (lno > noOfPage && noOfPage > pagination)
+        {
+            lno = noOfPage;
+            fno = (lno - pagination) + 1;
+        }
+
+        //loop pages numbers
+        for (int k = fno; k <= lno; k++)
+        {
+            if (whichPage == k)
+            {
+                html += "<span class='PaginnatorSpan'><b>" + k + "</b></span> ";
+            }
+            else
+            {
+
+                html += "<a class='page-number' href='/Search/SearchResults?start=" + ((noPerPage * (k - 1)) + 1) + "&range=" + rows + "' >" + k + "</a> ";
+            }
+        }
+
+        if (whichPage < noOfPage)
+        {
+
+            html += "&nbsp; <a  href='/Search/SearchResults?start=" + ((noPerPage * (whichPage - 1 + 1)) + 1) + "&range=" + rows + "' > Next </a> ";
+        }
+
+        if (whichPage <= (noOfPage - pagination))
+        {
+            html += "&nbsp;<a href='/Search/SearchResults?start=" + ((noPerPage * (whichPage - 1 + pagination)) + 1) + "&range=" + rows + "' >&gt;&gt; </a>";
+
+
+            html += "&nbsp; <a href='/Search/SearchResults?start=" + ((noPerPage * ((totalContent / (rows * columns)) - 1)) + 1) + "&range=" + rows + "' > Last </a>";
+
+        }
+
+        html += "</td>";
+        if ((whichPage == noOfPage) && (noOfPage == 1))
+        {
+            html = "";
+        }
+        //html1 = "<td colspan='1' align='left'>Page: <b>" + whichPage + "</b> of <b>" + noOfPage + "</b></td>";
+        html1 += html = html1 + html;
+        if (totalContent < DisplayItems)
+        {
+            html = "";
+            html += "<table border='0' width='100%' align='left'>";
+            html += "<tr>";
+            html += "<td align='left' style='width:40px;'>";
+            html += "Page: Previous |<a  href='/Search/SearchResults?start=1&range =" + totalContent + "'> 1 </a>&nbsp;| Next";
+            html += "</td>";
+        }
+        html += "</tr>";
+
+        html += "</table>";
+    }
+    else
+    {
+        html += "Previous |  <a  href='/Search/SearchResults?start=1&range=20'> 1 </a>&nbsp;| Next";
+        html += "</tr>";
+
+        html += "</table>";
+    }
+
+    //check for good records
+
+    if (Model.AllCitationDetails != null)
+    {
+        foreach (var item in Model.AllCitationDetails)
+        {
+
+            if (item.pmid != 0)
+            {
+                // there is a good Record with pmid so hopefully other values wont throw errors. - prashanth
+                blnGoodRecord = true;
+            }
+        }
+    }        
+}
+
+@using (Html.BeginForm())
+{
+   
+    <div align="Center">
+
+        <table width="1170" align="center" style="margin: 0 auto;">
+            <tr>
+                <td>
+                    <img src="~/Content/images/Subpage_bannerBig.jpg">
+                </td>
+            </tr>
+        </table>
+
+        <table width="1170" border="0" cellspacing="0" cellpadding="0">
+
+            <tbody>
+                <tr>
+                    <td colspan="2" height="35" valign="top">
+
+                        <span class="AjaTitle">
+                            @Html.ActionLink("Search MEDLINE", "Search", "Search", new { ddlValue = Model.SearchId }, null)
+
+                           <sup><small>®</small></sup> &gt; Search Results</span>
+
+                    </td>
+                    <td colspan="2" align="right" valign="top"></td>
+                </tr>
+
+                @* @if ((Model.CitationCount > 0) && (blnGoodRecord == true))
+                { 
+                    *@<tr>
+                        <td colspan="4" height="20" valign="top">
+
+                            <span class="AjaQueryDetails">QUERY DETAILS :  @Html.DisplayFor(m => m.QueryDetails)
+                            </span>
+
+                        </td>
+                    </tr>
+                @*}*@
+
+            </tbody>
+        </table>
+
+        <table width="1170" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td colspan="4" height="1">
+                    <img src="../Content/images/spacer.gif" height="1" border="0"></td>
+            </tr>
+            <tr>
+                <td rowspan="3" width="1">
+                    <img src="~/Content/images/spacer.gif" width="1" border="0"></td>
+                <td colspan="2" height="1" bgcolor="#f2f2f2">
+                    <img src="~/Content/images/spacer.gif" height="1" border="0"></td>
+                <td rowspan="3" width="1">
+                    <img src="~/Content/images/spacer.gif" width="1" border="0"></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" bgcolor="#f2f2f2">
+
+                    <table width="100%" cellpadding="3" cellspacing="0" border="0" class="anchorscls">
+
+                        <tr>
+                            @if (Model.CitationCount > 0)
+                            { 
+                                <td width="90%" align="right" style="text-align: right;">
+                                    @Html.ActionLink("Save Query", "SaveSearchQuery", "Search", new { @searchinfo = Model.QueryDetails, @Sid = Model.SearchId }, null)
+                                </td>
+                            }
+
+                            <td width="10%" align="right" style="text-align: right">
+                                @Html.ActionLink("Edit Query", "Search", "Search", new { ddlValue = Model.SearchId }, null)
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+
+
+                <td width="500" valign="top" bgcolor="#f2f2f2">
+                    <img src="~/Content/images/spacer.gif" height="5" width="1" border="0"><br>
+                    <span class="formTxt">&nbsp;&nbsp;Display:			       
+                         
+                         @Html.DropDownListFor(m => m.DisplayCount, new SelectList(new DAL.SearchBL.SearchForm().GetDispayCount(), "val", "Title"), new { @id = "DisplayDd" })
+
+                    </span>
+                    <br>
+                    @if (Model.CitationCount > 10)
+                    {
+                        if (Model.CitationCount < DisplayItems)
+                        { 
+                        <span class="formTxt">&nbsp;&nbsp;Items @start - @Model.CitationCount of @Model.CitationCount
+                            &nbsp;&nbsp;&nbsp; 
+                        
+                          @if ((Model.CitationCount > 0) && (blnGoodRecord == true))
+                          { 
+                              @Html.Raw(html)		
+                          }
+
+                        </span>
+                        }
+                        else
+                        {
+                        <span class="formTxt">&nbsp;&nbsp;Items @start - @DisplayItems of @Model.CitationCount
+                            &nbsp;&nbsp;&nbsp; 
+                        
+                          @if ((Model.CitationCount > 0) && (blnGoodRecord == true))
+                          { 
+                              @Html.Raw(html)		
+                          }
+
+                        </span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="formTxt">&nbsp;&nbsp;Items @start - @Model.CitationCount of @Model.CitationCount
+                            &nbsp;&nbsp;&nbsp; 
+                        
+                          @if ((Model.CitationCount > 0) && (blnGoodRecord == true))
+                          { 
+                              @Html.Raw(html)		
+                          }
+
+                        </span>
+                    }
+                </td>
+
+                <td width="600" valign="top" align="right" bgcolor="#f2f2f2">
+
+                    <table border="0">
+
+                        <tr>
+                            <td>
+
+                                <span class="formTxt">Keep checked citations in folder: </span>
+                                <br>
+                                @Html.DropDownListFor(c => c.FolderID, Model.TopicsList, "Select Topic", new { @id = "SelectedTopic", style = "width:220px" })
+
+                                <select id="funfolderid" name="ddlUserSubTopic" style="width: 220px">
+                                    <option value="">Select SubTopic</option>
+                                </select>
+
+                                <input type="button" id="keepCits" name="CopyAction" value="Keep" class="formObj">
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td valign="center" align="right" bgcolor="#f2f2f2">
+
+                                <span class="msgTxt"></span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: none;" id="validationterm">
+                                    Topic, SubTopic, and selected citation(s) are all required 
+                                </div>
+                                <div id="showGoToDestionation">
+                                    @if (@Model.showGoToDestionation)
+                                    {
+
+                                        <label>Selected citation(s) were copied </label>
+
+                                        @Html.ActionLink("go to destination folder", "index", "mylibrary", new { specid = @Model.SpecId, oid = @Model.TopicFolderID, fid = @Model.resultFolder2, selaction = "saved", start = 1 }, null)
+                                        {
+                                            Model.showGoToDestionation = false;
+                                        }
+
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td colspan="4" height="1">
+                    <img src="~/Content/images/spacer.gif" height="1" border="0"></td>
+            </tr>
+
+        </table>
+
+        <div id="pmidchklst">
+
+            <table width="1170" cellpadding="10" cellspacing="0" border="0">
+                @*@if ((Model.CitationCount > 0) && (blnGoodRecord == true))
+                { 
+                    *@
+                <tr>
+                    <td colspan="2" valign="top">
+
+                        <table border="0" width="100%">
+
+                            <tr>
+
+                                <td>
+                                    <span class="formTxt">
+                                        <i>Check to select</i>
+                                    </span>
+                                </td>
+
+                                <td align="right" style="text-align: right;">
+                                    <span class="formTxt">
+                                        <i>Click on author names to view abstract.</i>
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>&nbsp;</td>
+
+                                <td align="right" style="text-align: right;">
+                                    <span class="formTxt" style="color: blue">*</span>
+                                    <span class="formTxt"><i>Editor comments available</i></span>
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </td>
+
+                </tr>
+
+                @* }*@
+
+
+                @if (Model.AllCitationDetails != null)
+                {
+                    foreach (var item in Model.AllCitationDetails)
+                    {
+
+                        if (item.pmid != 0)
+                        {
+                            // there is a good Record with pmid so hopefully other values wont throw errors. - prashanth
+                            blnGoodRecord = true;
+                    <tr>
+                        @{
+                            var chk =
+                              @Model.AllCitationDetails.IndexOf(item) + start;
+                      
+                            <td valign="top" width="70">
+                                <span class="citTxt">
+                                    @Html.CheckBoxFor(m => m.CheckedCitation, new { value = item.pmid, @id = "cit_" + @chk })
+                                    @chk .
+                                </span>
+                            </td>
+                        
+                        }
+
+                        <td valign="top">
+                            @{
+                            int result = DAL.SearchBL.SearchResultHasAsterisk(Convert.ToInt32(item.pmid));
+
+                            if (result == 1)
+                            {
+                                <span style="color: blue">*</span> @Html.ActionLink(@item.AuthorList, "SearchDetails", "Search", new { @PMID = item.pmid }, null)
+                            }
+                            else
+                            {
+                                @Html.ActionLink(@item.AuthorList, "SearchDetails", "Search", new { @PMID = item.pmid }, null)
+                            }
+                            }
+                            <br />
+                            @item.ArticleTitle
+                            <br />
+                            @item.MedlineTA &nbsp; @item.DisplayDate &nbsp; @item.MedlinePgn
+                            <br />
+
+                            PMID : @item.pmid &nbsp; PubMed - indexed for MEDLINE
+                            @if (string.IsNullOrEmpty(@item.AbstractText) || @item.AbstractText == " ")
+                            {
+                                <br />
+                                @item.DisplayNotes
+                            }
+                        </td>
+                    </tr>
+                        }
+                    }
+
+                }
+                @if ((Model.CitationCount == 0) || (blnGoodRecord == false))
+                { 
+                    <tr>
+                        <td>@Model.ErrorDesc</td>
+                    </tr>
+                    <tr>
+                        <td valign="top" align="center" colspan="2">NO RECORDS FOUND</td>
+                    </tr>
+                }
+@* @if (Model.CitationCount > 1000)
+                {
+                    <tr>
+                        <td valign="top" align="left" colspan="2">YOUR RESULT SET WAS TRUNCATED TO 1000 CITATIONS (refine your query for better results)</td>
+                    </tr>
+                }*@
+
+            </table>
+
+        </div>
+        <table width="1170" height="25" border="0" cellpadding="0" cellspacing="0" style="border: 1px solid #ccc">
+
+
+            <tr>
+                <td rowspan="4" width="1" height="27">
+                    <img src="~/Content/images/spacer.gif" width="1" height="27" border="0"></td>
+                <td colspan="3" height="1"></td>
+                <td rowspan="4" width="1" height="27">
+                    <img src="~/Content/images/spacer.gif" width="1" height="27" border="0"></td>
+            </tr>
+            @if ((Model.CitationCount > 0) && (blnGoodRecord == true))
+            { 
+                <tr>
+                    @if (Model.CitationCount > 10)
+                    {
+                        if (Model.CitationCount < DisplayItems)
+                        {
+                        <td valign="center" height="25"><span class="formTxt">&nbsp;&nbsp;Items @start-@Model.CitationCount of @Model.CitationCount</span></td>
+                        }
+                        else
+                        {
+                        
+                        <td valign="center" height="25"><span class="formTxt">&nbsp;&nbsp;Items @start-@DisplayItems of @Model.CitationCount</span></td>
+                        }
+                    }
+                    else
+                    {
+                        <td valign="center" height="25"><span class="formTxt">&nbsp;&nbsp;Items @start-@Model.CitationCount of @Model.CitationCount</span></td>
+                    }
+                    <td valign="center" height="25">
+
+                        <span class="formTxt">
+
+                            @Html.Raw(html)
+
+                        </span>
+
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#SelectedTopic option:eq(0)").val(0).attr("selected", true);
+    });
+
+    $(function () {
+
+        $(document).on("click", "#keepCits", function () {
+            //  debugger;
+            var SubTopicID = $('#funfolderid').val();
+            var selected = new Array();
+            $('#pmidchklst input:checked').each(function () {
+                selected.push(this.value);
+            });
+            //debugger;
+            //$.ajax({
+            //    url: '/Search/Action',
+            //    type: 'POST',
+            //    data: { Parameters: selected.join(','), FolderID: $('#SelectedTopic').val(), resultFolder2: SubTopicID },
+            //    success: function (result) {
+            //        //window.location.href = "../Search/SearchResults";
+            //        alert("Copied Citation!");
+            //    },
+            //    error: function (result) {
+            //        alert("Check to Select Citation !");
+            //    }
+            //});
+            debugger;
+            if (selected.length <= 0 || $('#SelectedTopic').val() == "" || $('#SelectedTopic').val() == 0 || SubTopicID == "" || SubTopicID == null) {
+                $("#validationterm").show();
+                $("#showGoToDestionation").hide();
+            }
+            else
+                window.location.href = "../Search/Action?Parameters=" + selected.join(',') + "&FolderID=" + $('#SelectedTopic').val() + "&resultFolder2=" + SubTopicID;
+        });
+
+        $(document).on("change", "#SelectedTopic", function () {
+            //  debugger;
+            var sid = $(this).val();
+            $.ajax({
+                url: '/mylibrary/GetUserSubTopics?TopicId=' + sid,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                type: "GET",
+                error: function () {
+                    alert("An error occurred.");
+                },
+                success: function (data) {
+                    var items = "";
+                    if (data != null) {
+                        $.each(data, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#funfolderid").html(items);
+                    }
+                    else { $("#msg").html("No Related SubTopic exists") }
+                }
+            });
+        });
+
+        $(document).on("change", "#DisplayDd", function () { 
+            var DisplayDd = $('#DisplayDd').val();
+            var a = location.href.match(/[?&]start=(.*?)[$&]/);
+            if (a == null)
+                start = 1;
+            else
+                var start = location.href.match(/[?&]start=(.*?)[$&]/)[1];//for getting start value from query string. 
+            window.location.href = "../Search/SearchResults?start=" + start + "&range=" + DisplayDd;
+        });
+
+    });;
+
+</script>

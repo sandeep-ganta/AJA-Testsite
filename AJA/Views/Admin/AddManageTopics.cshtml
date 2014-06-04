@@ -1,0 +1,275 @@
+﻿@* This view is used to View all the Topics and respective Specialities in the Grid..  Created By-----RaviK-------- *@
+@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@model DAL.Models.ManageTopics
+@{
+    ViewBag.Title = "AddManageTopics";
+}
+<div class="editor-label">
+    Library Topics and Sub-topics
+</div>
+<br />
+<div class="editor-field">
+    @Html.Label("Specialty:")
+    @Html.DropDownListFor(model => model.SpecialityID, Model.SpecialityList, new { @id = "ddl_Speciality" })
+    @Html.ValidationMessageFor(model => model.TopicName)
+</div>
+<br />
+<div class="commonContent">
+</div>
+<table style="width: 100%;" cellpadding="10">
+    <tr>
+        <td style="width: 50%; vertical-align: top;">
+            <div style="width: 100%">
+                <div id="div_AllTopics" class="TopicsContent">
+
+                    @{ MVC4Grid.Grid modelgrid = @ViewBag.GridData;}
+                    @Html.GridFor(modelgrid)
+                </div>
+            </div>
+
+        </td>
+        <td style="vertical-align: top">
+            <div id="SubTopic_Grid">
+                @if (ViewBag.SubTopic != null)
+                {
+                    <div id="div_SubTopics">
+                        @{MVC4Grid.Grid modelSubgrid = @ViewBag.SubTopic;}
+                        @Html.GridFor(modelSubgrid)
+                    </div>
+                }
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+<div id="NewTopic_Dialog" title="Crete Topic">
+</div>
+<br />
+<div id="NewSubTopic_Dialog" title="Crate Sub-Topic">
+</div>
+<br />
+
+<link href="~/Content/GridView.css" rel="stylesheet" />
+
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#ddl_Speciality").change(function () {
+            window.location.href = '../Admin/AddManageTopics?SpecialityID=' + $(this).val();
+        });
+
+    });
+</script>
+
+<script>
+    var CreateNewTopic = function CreateNewTopic() {
+        var url = '../Admin/CreateTopic';
+        $.get(url, null, function (html) {
+            $('#NewTopic_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#NewTopic_Dialog"));
+            $('#NewTopic_Dialog').dialog({
+                modal: true,
+                title: "Create New Topic",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_AllTopics_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    //function ManageSubTopics(ctrl) {
+    //    var topicID = $(ctrl).attr('keyid');
+    //    var url = '../Admin/ManageSubTopics?ID=' + topicID;
+    //    window.location.href = url;
+    //};
+
+    function ViewSubTopics(ctrl) {
+        var topicID = $(ctrl).attr('keyid');
+        var url = '../Admin/ViewSubTopics?ID=' + topicID;
+
+        $.get(url, null, function (html) {
+            $('#SubTopic_Grid').html(html);
+            LoadAllJqueryStyles();
+        });
+    };
+
+    function EditTopic(ctrl) {
+        var topicID = $(ctrl).attr('keyid');
+        var url = '../Admin/GetTopictwithID?ID=' + topicID + '&FromGrid=' + true + '&rand=' + randGenerator();
+
+        $.get(url, null, function (html) {
+            $('#NewTopic_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#NewTopic_Dialog"));
+            $('#NewTopic_Dialog').dialog({
+                modal: true,
+                title: "Edit Topic",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_AllTopics_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    var DeleteTopic = function DeleteTopic(ctrl) {
+        var TopicID = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="DeleteTopicDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Topic",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: ServerURL + '/Admin/DeleteTopic/?TopicID=' + TopicID,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (DelTopic) {
+                                    if (DelTopic) {
+                                        //alert("Deleted Successfully"); 
+                                        //$("#tbl_AllTopics .bt_grid_refresh").click();
+                                        var NewDialog = $('<div id="topicalert"> \
+                            <p><span style="float: left; margin: 0 7px 20px 0;"></span>Deleted Successfully</p>\</div>');
+                                        NewDialog.dialog({
+                                            closeOnEscape: false, 
+                                            title: "Topic",
+                                            modal: true,
+                                            buttons: [
+                                                {
+                                                    text: "OK", click: function () {
+                                                        window.location.href = '../Admin/AddManageTopics?SpecialityID=' + $("#ddl_Speciality").val();
+                                                    }
+                                                }
+                                            ],
+                                            close: function (event, ui) { window.location.href = '../Admin/AddManageTopics?SpecialityID=' + $("#ddl_Speciality").val(); }
+                                        })
+                                    }
+                                    else {
+                                        alert("Unable to delete this topic since it has mapping with one or more related sub-topic.");
+                                        $("#tbl_AllTopics .bt_grid_refresh").click();
+                                    }
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting Editorial Thread");
+                                }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+
+    var DeleteSubTopic = function DeleteSubTopic(ctrl, topID) {
+        var SubTopicID = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="DeleteSubTopicDialog">\
+                            <p><span style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Sub-Topic",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: ServerURL + '/Admin/DeleteSubTopic/?SubTopicID=' + SubTopicID,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (DelSubTopic) {
+                                    if (DelSubTopic) {
+                                        //  alert("Deleted Successfully");
+                                        // $("#tbl_SubTopics .bt_grid_refresh").click(); 
+                                        var NewDialog = $('<div id="subtopicalert"> \
+                            <p><span style="float: left; margin: 0 7px 20px 0;"></span>Deleted Successfully</p>\</div>');
+                                        NewDialog.dialog({
+                                            closeOnEscape: false, 
+                                            title: "Subtopic",
+                                            modal: true,
+                                            buttons: [
+                                                {
+                                                    text: "OK", click: function () {
+                                                        window.location.href = '../Admin/AddManageTopics?SpecialityID=' + $("#ddl_Speciality").val() + '&topicid=' + topID;
+                                                    } 
+                                                }
+                                            ],
+                                            close: function (event, ui) { window.location.href = '../Admin/AddManageTopics?SpecialityID=' + $("#ddl_Speciality").val() + '&topicid=' + topID; }
+                                        })
+                                    }
+                                    else {
+                                        alert("unable to delete this Sub-topic.Since it has related Editions / Citations");
+                                        $("#tbl_SubTopics .bt_grid_refresh").click();
+                                    }
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting Editorial Thread");
+                                }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+
+    var CreateSubTopic = function CreateSubTopic(TopicID) {
+        var url = '../Admin/CreateNewSubTopicWithTopicID?ID=' + TopicID;
+        $.get(url, null, function (html) {
+            $('#NewSubTopic_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#NewSubTopic_Dialog"));
+            $('#NewSubTopic_Dialog').dialog({
+                modal: true,
+                title: "Create Sub-Topic",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_SubTopics_Noofrows').change();
+                }
+            });
+        });
+    }
+
+    function EditSubTopic(ctrl) {
+        var topicID = $(ctrl).attr('keyid');
+        var url = '../Admin/EditSubTopictwithSubTopicID?ID=' + topicID + '&FromGrid=' + true + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#NewSubTopic_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#NewSubTopic_Dialog"));
+            $('#NewSubTopic_Dialog').dialog({
+                modal: true,
+                title: "Edit Sub-Topic",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_SubTopics_Noofrows').change();
+                }
+            });
+        });
+    }
+</script>
+
+
+

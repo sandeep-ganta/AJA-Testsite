@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AJA", "AJA\AJA.csproj", "{76BA0932-C342-4465-A799-2615C1D1F202}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AJA_Core", "AJA_Core\AJA_Core.csproj", "{884A7CED-B4E1-402E-B34A-FA18A3F625E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data_Layer", "Data_Layer\Data_Layer.csproj", "{3C28CD55-9B20-497E-95B6-130E8EB2A18A}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://mweb-ab-tfs12:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AJA\\AJA.csproj
+		SccProjectName1 = AJA
+		SccLocalPath1 = AJA
+		SccProjectUniqueName2 = AJA_Core\\AJA_Core.csproj
+		SccProjectName2 = AJA_Core
+		SccLocalPath2 = AJA_Core
+		SccProjectUniqueName3 = Data_Layer\\Data_Layer.csproj
+		SccProjectName3 = Data_Layer
+		SccLocalPath3 = Data_Layer
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76BA0932-C342-4465-A799-2615C1D1F202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76BA0932-C342-4465-A799-2615C1D1F202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76BA0932-C342-4465-A799-2615C1D1F202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76BA0932-C342-4465-A799-2615C1D1F202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{884A7CED-B4E1-402E-B34A-FA18A3F625E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{884A7CED-B4E1-402E-B34A-FA18A3F625E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{884A7CED-B4E1-402E-B34A-FA18A3F625E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{884A7CED-B4E1-402E-B34A-FA18A3F625E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C28CD55-9B20-497E-95B6-130E8EB2A18A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C28CD55-9B20-497E-95B6-130E8EB2A18A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C28CD55-9B20-497E-95B6-130E8EB2A18A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C28CD55-9B20-497E-95B6-130E8EB2A18A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

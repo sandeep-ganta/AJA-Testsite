@@ -1,0 +1,196 @@
+﻿@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Save Query Help</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+    <table width="100%">
+        <tr>
+            <td>
+                <table width="1170" style="margin:0 auto;" align="center">
+                    <tr>
+                        <td>
+                            <img src="~/Content/images/Subpage_bannerBig.jpg">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr class="commonContent">
+            <td>
+                <table style="width: 1170px; margin: 0 auto">
+                    <tbody>
+                        <tr>
+                            <td height="45" valign="top">
+                                <span class="cogTitle"><b>Saved Query Help</b></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+
+                                <p></p>
+
+                                You can save particular sets of MEDLINE search parameters in ACR Journal Advisor as saved queries. There are two kinds of saved queries:<br>
+
+                                <table id="Table1" border="0" cellpadding="5" cellspacing="5" width="90%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="right" valign="top" width="10%">
+                                                <img src="~/Content/images/icon_savedsearch-alt.gif" border="0" height="32" width="32"></td>
+                                            <td valign="top" width="40%">
+                                                <b>AdHocQuery</b> - Search parameters are saved, but not run automatically; you can manually run the query against the entire MEDLINE database at any time.<br>
+                                            </td>
+
+                                            <td align="right" valign="top" width="10%">
+                                                <img src="~/Content/images/icon_savedsearch_active.gif" border="0" height="32" width="32"></td>
+                                            <td valign="top" width="40%">
+                                                <b>AutoQuery</b> - Search parameters are saved, and optionally run automatically against new MEDLINE data every week. You can also request that ACR Journal Advisor send you a weekly email updating you on the status of your active AutoQueries.<br>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <b>How to Save MEDLINE Queries</b><br>
+
+                                <p></p>
+
+                                In order to save a MEDLINE query, you first must create one:<br>
+
+                                <p></p>
+
+                                <blockquote>
+                                    1. Click <a href="search">Search MEDLINE</a> from the navigation bar at the top of the page.<br>
+                                    2. Set the parameters of your query with any combination of search terms and limits.<br>
+                                    3. Click the Search button at the bottom of the page, and review the resulting list of citations. If your query is too broadly or too narrowly defined, just click Edit Query, adjust the terms and limits accordingly, and click Search again.<br>
+                                    4. Once you're satisfied with the scope of your query, you can save it for future use by clicking the Save Query button.
+                                    <br>
+                                    5. Now specify a unique name for your query. Choose a name that concisely describes the nature or purpose of the query - a word or phrase that you'll recognize and remember easily. Don't worry about the precise wording, you can always come back and edit the name at any time.<br>
+                                    6. You may also add descriptive notes about your query. These notes are optional and can be added, updated, or deleted later.<br>
+                                    7. Now choose your saved query type:<br>
+                                </blockquote>
+
+                                <p></p>
+
+                                <b>AdHocQueries</b> &nbsp;
+                                <img src="~/Content/images/icon_savedsearch-alt.gif" align="absbottom" border="0" height="32" width="32"><br>
+
+                                <blockquote>
+                                    1. If you simply wish to save your query for easy recall and ad hoc use, leave the "Run this query..." box unchecked and do not choose a destination folder. If you'd like this query to automatically discover future MEDLINE citations and put these citations into your <a href="~/MyLibrary">ACR Journal Advisor library</a>, see AutoQueries below.
+                                    <br>
+                                    2. Click the Save button.<br>
+                                    3. Your saved AdHocQuery now appears on the My Queries page, where you can view its details, manage its properties, or delete it. Note that once you save a query, you cannot later change its parameters (i.e., search terms and limits). You can copy it and make changes to the copy, but the original's parameters are fixed. This restriction avoids confusion about which version of a saved query found which citation.<br>
+                                    4. Now you can easily select your saved AdHocQuery from a drop-down menu the next time you search MEDLINE.<br>
+                                </blockquote>
+
+                                <p></p>
+
+                                <b>AutoQueries</b> &nbsp;
+                                <img src="~/Content/images/icon_savedsearch_active.gif" align="absbottom" border="0" height="32" width="32">
+
+                                <p></p>
+
+                                <blockquote>
+                                    1. If you'd like your query to automatically discover future MEDLINE citations and put these citations into your <a href="~/MyLibrary">ACR Journal Advisor library</a>, check the "Run this query..." box and choose a destination folder. All AutoQueries must have both Topic and Subtopic destination folders.<br>
+                                    2. New citations discovered by AutoQueries, called pending citations, are shown in their destination folder until they are saved or deleted. You may save or delete pending citations manually, but any remaining pending citations will be automatically saved or deleted after a period of time. Choose your automatic save/delete preference and "shelf-life" (7 days, 14 days, 30 days, 60 days, or 90 days).<br>
+                                    3. Click the Save button.<br>
+                                    4. Your active AutoQuery now appears on the My Queries page, where you can view its parameters and pending citations, manage its properties, or delete it. Note that once you save an AutoQuery, you cannot later change its parameters (i.e., search terms and limits) or destination folder. You can copy it and make changes to the copy, but the original's parameters and destination folder are fixed. This restriction avoids confusion about which version of a saved query found which citation.
+                                    <br>
+                                    5. Like saved AdHocQueries, active AutoQueries may be selected from a drop-down menu of saved queries for manual MEDLINE search.<br>
+                                </blockquote>
+
+                                <p></p>
+
+                                <b>How to Inactivate and Reactivate an AutoQuery &nbsp;
+                                    <img src="~/Content/images/icon_savedsearch_active.gif" align="absbottom" border="0" height="32" width="32">
+                                    <code>&lt;-&gt;</code> &nbsp;
+                                    <img src="~/Content/images/icon_savedsearch_inactive.gif" align="absbottom" border="0" height="32" width="32"></b><br>
+
+                                <p></p>
+
+                                <blockquote>
+                                    1. To inactivate an AutoQuery (interrupt its discovery of new citations) without deleting it, click <a href="~/MyQueries/myqueries">My Queries</a> from the navigation bar at the top of the page.<br>
+                                    2. Select the query from your list of saved queries to display its parameters.<br>
+                                    3. Click Manage to view the Query Control page.<br>
+                                    4. Uncheck the "Run this query..." box and click the Save button.<br>
+                                    5. Your inactive AutoQuery now appears on the My Queries page, where you can view its parameters and pending citations, manage its properties, or delete it. Until re-activated, it will not discover new citations.<br>
+                                    6. Inactive AutoQueries are easily reactivated by repeating steps 1 through 3, checking the "Run this query..." box, and clicking the Save button.<br>
+                                </blockquote>
+
+                                <p></p>
+
+                                <b>How to Convert an AdHocQuery into an AutoQuery &nbsp;
+                                    <img src="~/Content/images/icon_savedsearch-alt.gif" align="absbottom" border="0" height="32" width="32"><code>-&gt;</code> &nbsp;
+                                    <img src="~/Content/images/icon_savedsearch_active.gif" align="absbottom" border="0" height="32" width="32"></b><br>
+
+                                <p></p>
+
+                                <blockquote>
+                                    1. Click <a href="~/MyQueries/myqueries">My Queries</a> from the navigation bar at the top of the page.<br>
+                                    2. Select the saved AdHocQuery from your list of saved queries to display its parameters.<br>
+                                    3. Click Manage to view the Query Control page.<br>
+                                    4. Click the Convert to AutoQuery button.<br>
+                                    5. Choose a destination folder.<br>
+                                    6. Choose your automatic save/delete preference and "shelf-life" (7 days, 14 days, 30 days, 60 days, or 90 days).<br>
+                                    7. Click the Save button.<br>
+                                    8. Your new active AutoQuery now appears on the My Queries page, where you can view its parameters and pending citations, manage its properties, or delete it. Note that once you convert a saved AdHocQuery into an active AutoQuery, you cannot later change its parameters (i.e., search terms and limits) or destination folder, nor can you convert it back into a saved AdHocQuery. You can copy it and make changes to the copy, but the original's parameters and destination folder are fixed. This restriction avoids confusion about which version of a query found which citation.<br>
+                                </blockquote>
+
+                                <p></p>
+
+                                <b>How to Copy and Modify the Parameters of a Saved Query</b><br>
+
+                                <p></p>
+
+                                <blockquote>
+                                    1. Click <a href="~/MyQueries/myqueries">My Queries</a> from the navigation bar at the top of the page.<br>
+                                    2. Select the query from your list of saved queries to display its parameters.<br>
+                                    3. Click Manage to view the Query Control page.<br>
+                                    4. Click the Make Copy button.<br>
+                                    5. A new MEDLINE Database Search form is automatically populated with the original's search terms and limits. You can modify any, all, or none of these parameters.<br>
+                                    6. Click the Search button at the bottom of the page, and review the resulting list of citations. If desired, you can click Edit Query, adjust the terms and limits, and click Search again.<br>
+                                    7. Once you're satisfied with the scope of your query, you can save it for future use by clicking the Save Query button.
+                                    <br>
+                                    8. Specify a unique name for your new query.
+                                    <br>
+                                    9. Proceed as described in AdHocQueries and AutoQueries above.<br>
+                                </blockquote>
+
+                                <p></p>
+
+                                <b>How to Delete a Saved Query</b><br>
+
+                                <p></p>
+
+                                <blockquote>
+                                    1. Click <a href="~/MyQueries/myqueries">My Queries</a> from the navigation bar at the top of the page.<br>
+                                    2. Select the query from your list of saved queries to display its parameters.<br>
+                                    3. Click Delete.<br>
+                                    4. If you are deleting an AutoQuery that has pending citations in its destination folder, you will be asked to save or delete all of these citations, or to cancel the query delete until no pending citations remain.<br>
+                                </blockquote>
+
+                                <p></p>
+                                Please E-mail <a href="mailto:ACRjournaladvisor@acr.org">Customer Support</a> if you have any questions about the ACR Journal Advisor system.
+							<p></p>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

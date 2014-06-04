@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "PreviewPlaintext";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@model DAL.Models.Monthlyeditorsmail
+
+@*<a href="~/Admin/Composeplaintext">Back</a>*@
+
+@using (Html.BeginForm("PreviewPlaintext", "Admin", FormMethod.Post, new { @id = "form_previewplaintxt" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="clear"></div>
+    <table border="0" width="100%" style="background-color: #f4f4f4; border: 1px solid #ccc; margin: 10px;" cellpadding="5">
+        <tr>
+            <td style="width: 10%"></td>
+            <td style="width: 80%" class="mailPageHeading">Plain-text Preview::</td>
+            <td style="width: 10%"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="border: solid 1px #ccc; font-family: Courier New; font-size: 10pt; line-height: 24px">
+                @Html.HiddenFor(model => model.editionid, new { @id = "hdeditionid" })
+                @*@Html.TextAreaFor(model => model._message, new { @readonly = true, @style = "max-width: 950px; width: 950px; margin: 0px 0px 5px; height: 305px" })*@
+                @Html.Raw(HttpUtility.HtmlDecode(Model._message.Replace(Environment.NewLine ,"<br/>") ))
+                
+              @* @Html.DisplayTextFor(model => model._message)*@
+
+                @Html.HiddenFor(model => model._message, new { @id = "hdmsg" })
+                @Html.HiddenFor(model => model._htmlmesage, new { @id = "hdhtmlmsg" })
+                @Html.HiddenFor(model => model.SpecialtyID, new { @id = "hdspecialtyid" })
+                @Html.HiddenFor(model => model.Ishtml, new { @id = "hdishtml" })
+                @Html.HiddenFor(model => model.senderaddres, new { @id = "hdsenderaddres" })
+                @Html.HiddenFor(model => model.sendername, new { @id = "hdsendername" })
+                @Html.HiddenFor(model => model.subject, new { @id = "hdsubject" })
+                @Html.HiddenFor(model => model.editionname, new { @id = "hdeditionname" })
+                @Html.HiddenFor(model => model.SpecialtyName)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td align="right">
+                <input type="submit" id="btnEdit" value="Edit" name="Command" />
+                <input type="submit" id="btnContinue" value="Continue" name="Command" />
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        //history.pushState(null, null, $(window).attr("href"));
+        //$(window).on("popstate", function (e) {
+        //    e.preventDefault();
+        //    alert("dashboard");
+        //    //load dashboard
+        //});
+        // To disable browser back button
+        //$(window).unload(function () {
+        //    alert('Handler for .unload() called.');
+        //});
+
+        //function stopError() {
+        //    return true;
+        //}
+
+        //window.onerror = stopError;
+
+        //window.history.forward(1);
+        //window.onunload = function () {
+        //    if (window.event.clientX < 0 || window.event.clientX > 10000) {
+        //        document.location.href = "/ep/WindowUnloadServlet";
+        //    }
+        //}
+
+        //function preventBack() { window.history.forward(); }
+        //setTimeout("preventBack()", 0);
+        //window.onunload = function () { null };
+
+    </script>
+}

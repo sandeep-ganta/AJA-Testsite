@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C28CD55-9B20-497E-95B6-130E8EB2A18A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>Data_Layer</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc">
+      <HintPath>..\packages\Elmah.MVC.2.0.2\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MVC4Grid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AJA\ThirdPartyDlls\MVC4Grid.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACRDocumentsBL.cs" />
+    <Compile Include="EditorsBL.cs" />
+    <Compile Include="Entities\adm_GetECMailingByEdition_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\adm_GetThreadComments_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\adm_GetThreads_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AJA_tbl_FieldOptions.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AJA_tbl_FieldTypes.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AJA_tbl_FieldValues.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AJA_tbl_Roles.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AJA_tbl_UserFields.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AJA_tbl_Users.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ap_SearchFetchRange_AJA_Result.cs">
+      <DependentUpon>Cogent3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ap_SearchQueryGet_AJA_Result.cs">
+      <DependentUpon>Cogent3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ArticlesAuthor.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ArticleSelection.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AtLargeEditor.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CitationsGene.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CitationsTest.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Cogent3.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cogent3.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Cogent3.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cogent3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Cogent3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cogent3.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CommentAuthor.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Country.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CustomMailHeader.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\doc.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\doc_in_subtopic.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\doc_in_subtopic_find_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Edition.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EditorialComment.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EditorialThread.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EditorsDetails.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditorsDetails.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EditorsDetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EditorsDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditorsDetails.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EditorTopic.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Extensions\AJAUserManagement_Ext.cs" />
+    <Compile Include="Entities\Extensions\AJA_tbl_FieldValues_Ext.cs" />
+    <Compile Include="Entities\Extensions\AJA_tbl_UserFields_Ext.cs" />
+    <Compile Include="Entities\Gene.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GeneAlias.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GeneComment.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GeneCommentCombo.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GenesArticle.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GenesLink.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\HiddenSubTopic.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\HiddenTopic.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\iCitation.cs">
+      <DependentUpon>Cogent3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\iWide.cs">
+      <DependentUpon>Cogent3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\iWideNew.cs">
+      <DependentUpon>Cogent3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetAbstractCommentsEC20_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetECEditorSort_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetECThreadComments_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetEditorsChoiceCommentsForGeneByGeneID_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetEditorsChoiceCommentsForTestByTestID_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetEditorsChoiceExtraInfo_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetGeneEditorCommentsByGeneID_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetGenesForCitation_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetGenesForEditorComments_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetGenesForEditorsChoice_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetGenesForTestByTestID_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetGenesForThread_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetRelatedEditions_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetSavedCitationList_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetSearchCitationList_Result.cs">
+      <DependentUpon>SearchInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetSemCitExtraInfo_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetSponCitExtraInfo_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetTestEditorCommentsByTestID_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetTestsForCitation_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetTestsForEditorComments_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetTestsForGeneByGeneID_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetTestsForThread_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetUnsubscribedSpecialties_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\lib_GetUserSubTopics_Result.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\NonMedlineCitation.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SearchDetail.cs">
+      <DependentUpon>SearchInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SearchInfo.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchInfo.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SearchInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SearchInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchInfo.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SearchQueryGet_Result.cs">
+      <DependentUpon>SearchInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SearchResult.cs">
+      <DependentUpon>SearchInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SearchSummary.cs">
+      <DependentUpon>SearchInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Specialty.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SponsorFolder.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SponsorTopic.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SubTopic.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SubTopicEditorRef.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SubTopicReference.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Test.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TestComment.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TestCommentCombo.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TestsLink.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Topic.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TypePractice.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserCitation.cs">
+      <DependentUpon>SearchInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserComment.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Userdetails.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Userdetails.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Userdetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Userdetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Userdetails.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserHasSponsorFolder.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserHasSponsorTopic.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\vwRecentEdition.cs">
+      <DependentUpon>EditorsDetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserSpecialty.cs">
+      <DependentUpon>Userdetails.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\ACRDocumentsModel.cs" />
+    <Compile Include="Models\Editors.cs" />
+    <Compile Include="Models\Grid.cs" />
+    <Compile Include="Models\MyLibrary.cs" />
+    <Compile Include="Models\Util.cs" />
+    <Compile Include="MyLibraryBL.cs" />
+    <Compile Include="PersonalizedMedicine.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchBL.cs" />
+    <Compile Include="UserBL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Entities\Userdetails.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Userdetails.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="Entities\EditorsDetails.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EditorsDetails.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="Entities\Cogent3.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Cogent3.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\Cogent3.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Cogent3.edmx</DependentUpon>
+      <LastGenOutput>Cogent3.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\Cogent3.edmx.diagram">
+      <DependentUpon>Cogent3.edmx</DependentUpon>
+    </None>
+    <None Include="Entities\Cogent3.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Cogent3.edmx</DependentUpon>
+      <LastGenOutput>Cogent3.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\EditorsDetails.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EditorsDetails.edmx</DependentUpon>
+      <LastGenOutput>EditorsDetails.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\EditorsDetails.edmx.diagram">
+      <DependentUpon>EditorsDetails.edmx</DependentUpon>
+    </None>
+    <None Include="Entities\EditorsDetails.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EditorsDetails.edmx</DependentUpon>
+      <LastGenOutput>EditorsDetails.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="Entities\SearchInfo.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SearchInfo.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\SearchInfo.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SearchInfo.edmx</DependentUpon>
+      <LastGenOutput>SearchInfo.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\SearchInfo.edmx.diagram">
+      <DependentUpon>SearchInfo.edmx</DependentUpon>
+    </None>
+    <None Include="Entities\SearchInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SearchInfo.edmx</DependentUpon>
+      <LastGenOutput>SearchInfo.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\Userdetails.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Userdetails.edmx</DependentUpon>
+      <LastGenOutput>Userdetails.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\Userdetails.edmx.diagram">
+      <DependentUpon>Userdetails.edmx</DependentUpon>
+    </None>
+    <None Include="Entities\Userdetails.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Userdetails.edmx</DependentUpon>
+      <LastGenOutput>Userdetails.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

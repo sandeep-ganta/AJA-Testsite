@@ -1,0 +1,288 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+
+@{
+    ViewBag.Title = "ThreadContents";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@*<input type="button" id="back_editions" value="Back to Threads" class=""/>*@
+<a href="~/Admin/EditionThreads/?id=@ViewBag.Eid">Back to Threads</a>
+@*@Html.ActionLink("Back to Threads","EditionThreads","Admin",new { id = ViewBag.Eid })*@
+
+<br />
+<h2 style="text-align: center">Thread Contents</h2>
+
+<table class="citationtable">
+    <tr class="ui-widget-header ui-state-default">
+        <th></th>
+        <th>Edition Details</th>
+    </tr>
+    <tr>
+        <td>Specialty:</td>
+        <td>
+            @ViewBag.Specialty
+        </td>
+    </tr>
+    <tr>
+        <td>Published:</td>
+        <td>@ViewBag.Pubdate</td>
+    </tr>
+</table>
+<br />
+<p>
+    Threads contain 3 content elements: article selections, comments, and sub-topic
+        references. Each of the 3 grids below shows a list of one of these element types.&nbsp;
+        The Editors Choice 2.0 system allows add as many of each type of content as necessary.&nbsp;
+        In order to accommodate this feature, full content details are not shown below.&nbsp;
+        To see full comment details, click on the Select link in the comment grid.
+</p>
+
+
+<div id="div_Articles" class="actnbtnstyls">
+    @{MVC4Grid.Grid articlegrid = @ViewBag.ArticleGrid;}
+    @Html.GridFor(articlegrid)
+</div>
+<br />
+<div id="div_EditorialComment">
+    @{MVC4Grid.Grid commentgrid = @ViewBag.CommentGrid;}
+    @Html.GridFor(commentgrid)
+</div>
+<br />
+<div id="div_ThreadContent">
+    @{MVC4Grid.Grid modelgrid = @ViewBag.Grid;}
+    @Html.GridFor(modelgrid)
+</div>
+<br />
+<div id="Editions_Thread_Subtopic">
+</div>
+
+<div id="Editions_Article">
+</div>
+
+<div id="Editions_Comments">
+</div>
+
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+@*<script src= "@Url.Content("~/Scripts/ckeditor/ckeditor.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/ckeditor/ckcontents.css")" rel="stylesheet" type="text/css" />*@
+@*<link href="@Url.Content("~/Content/jquery.cleditor.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jquery.cleditor.js")" type="text/javascript"></script>*@
+
+<script type="text/javascript">
+    var CreateThreadSubTopic = function CreateThreadSubTopic(Cid, Eid) {
+        var url = ServerURL + '/Admin/CreateThreadSubTopicId?Threadid=' + Cid + "&Editionid=" + Eid + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Editions_Thread_Subtopic').html(html);
+            $.validator.unobtrusive.parse($("#form_Edit_Threads"));
+            $('#Editions_Thread_Subtopic').dialog({
+                modal: true,
+                title: "Add a new sub-topic reference to an existing thread:",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_Edition_Content_Noofrows').change();
+                }
+            });
+        });
+    }
+
+    var CreateArticleSelection = function CreateArticleSelection(Cid) {
+
+        var url = ServerURL + '/Admin/CreateArticleSelectionId?Threadid=' + Cid + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Editions_Article').html(html);
+            $.validator.unobtrusive.parse($("#form_Edit_Articles"));
+            $('#Editions_Article').dialog({
+                modal: true,
+                title: "Add Article Selection",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_Articles_Noofrows').change();
+                }
+            });
+        });
+    }
+
+    var CreateEditorialComment = function CreateEditorialComment(Cid) {
+
+        var url = ServerURL + '/Admin/CreateEditorialCommentID?Threadid=' + Cid + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Editions_Comments').html(html);
+            $("#txt_comment").cleditor();
+            $.validator.unobtrusive.parse($("#form_Edit_Comments"));
+            $('#Editions_Comments').dialog({
+                modal: true,
+                title: "Add Editorial Comment",
+                show: { effect: 'drop', direction: 'up' },
+                width: 850,
+                open: function (event, ui) {
+                },
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_Comments_Noofrows').change();
+                    $('#Editions_Comments').empty();
+                   // window.location.reload();
+                }
+            });
+        });
+    }
+
+    var DeleteThreadSubTopic = function DeleteThreadSubTopic(Eid, Cid, ctrl) {
+
+        var uid = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="DeleteSubTopic">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete SubTopic",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: ServerURL + "/Admin/DeleteSubTopicContent/?Editionid=" + Eid + "&Threadid=" + Cid + "&SubTopicid=" + uid + "",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data == true) {
+                                        alert("Deleted Successfully");
+                                        $("#tbl_Edition_Content .bt_grid_refresh").click();
+                                    }
+                                    if (data == false) {
+                                        alert("Atleast one Subtopic should exist");
+                                    }
+
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting Editorial Thread");
+                                }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+    var DeleteArticleSelection = function DeleteArticleSelection(ctrl) {
+        var tid = $(ctrl).attr('keyid');
+        var cid = [];
+        cid = tid.split("_");
+        // var uid = $(ctrl).attr('keysecond');
+
+        var NewDialog = $('<div id="DeleteArticle">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete ArticleSelection",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: ServerURL + "/Admin/DeleteArticleSelection/?Threadid=" + cid[0] + "&Pmid=" + cid[1],
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data) {
+                                        alert("Deleted Successfully");
+                                        $("#tbl_Articles .bt_grid_refresh").click();
+                                    }
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting Editorial Thread");
+                                }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+
+    var DeleteEditorialComment = function DeleteEditorialComment(ctrl) {
+
+        var tid = $(ctrl).attr('keyid');
+        var uid = $(ctrl).attr('keysecond');
+
+        var NewDialog = $('<div id="DeleteComment">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete EditorialComment",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: ServerURL + "/Admin/DeleteEditorialComment/?commentid=" + tid,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data) {
+                                        alert("Deleted Successfully");
+                                        $("#tbl_Comments .bt_grid_refresh").click();
+                                    }
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting EditorialComments");
+                                }
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+    function EditEditorialComment(ctrl) {
+        var Eid = $(ctrl).attr('keyid');
+        var url = ServerURL + '/Admin/EditEditorialCommentId?Cmnt=' + Eid + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Editions_Comments').html(html);
+            $.validator.unobtrusive.parse($("#form_Edit_Comments"));
+            $('#Editions_Comments').dialog({
+                modal: true,
+                title: "Edit EditorialComments",
+                show: { effect: 'drop', direction: 'up' },
+                width: 850,
+                open: function (event, ui) {
+                },
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_Comments_Noofrows').change();
+                    $('#Editions_Comments').empty();
+                   // window.location.reload();
+                }
+            });
+        });
+    }
+
+    $('#back_editions').click(function () {
+        window.location.href = ServerURL + '/Admin/EditionThreads/' + "?id=" + @ViewBag.Eid + '&rand=' + randGenerator();
+    });
+
+</script>
+
+<link href="~/Content/GridView.css" rel="stylesheet" />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+}

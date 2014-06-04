@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="def79b2a40094ddcbbae94ec2cc70dfa" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="Cogent3Model.iCitation" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Cogent3Model.iWide" Width="1.5" PointX="4.1849014853057" PointY="3.3835942462941606" />
+        <EntityTypeShape EntityType="Cogent3Model.iWideNew" Width="1.5" PointX="10.166593673716577" PointY="19.26231757703345" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

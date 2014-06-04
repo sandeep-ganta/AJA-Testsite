@@ -1,0 +1,10 @@
+﻿@model DAL.Models.GetUserSpecialtyModel
+
+@using (Html.BeginForm())
+{
+    <div>
+        <span>Select a specialty: </span>
+        @Html.DropDownListFor(model => model.SelectedSpecialtyId, Model.UserSpecialtyListDropDwon, Model.SelectedSpecialtyId)
+        <input type="submit" value="Add" />
+    </div>
+}

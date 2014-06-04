@@ -1,0 +1,153 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+
+@{
+    ViewBag.Title = "Editors Choice Edition list";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+ <h2 style="text-align: center">
+        Editors Choice Edition list</h2>
+    <p style="text-align: left">
+        Each month, a group of Editors Choice citations and comments is selected for each
+        fully developed specialty in  ACR Journal Advisor (currently Radiation Oncology, Medical
+        Oncology, and Psychiatry). Each of these groupings of Editors Choice content is
+        called an Edition. By tradition, Editions are published on the first of the month.</p>
+    <p style="text-align: left">
+        The list below all Editors Choice Editions that have been created, with the most
+        recent Editions shown first.&nbsp; Use the links provided to take any of the following
+        actions:</p>
+    <ul>
+        <li style="text-align: left"><strong>Create a New Edition</strong>: this will add an
+            entry to the list, including the publish date and specialty of the Edition.&nbsp;
+            Note that an edition is not complete until content is added by clicking the <strong>
+                Content</strong> link.</li>
+        <li style="text-align: left"><strong>Edit </strong>an Edition: edits the publish date
+            and specialty only.&nbsp; To select or change the content of an Edition, use the
+            <strong>Content</strong> link.</li>
+        <li style="text-align: left"><strong>Delete</strong> an Edition: use this link to delete
+            an edition that was accidentally added to the list.&nbsp; Not to be used in cases
+            where content has already been added to the edition</li>
+        <li>Edit Edition <strong>Content</strong>: This will take you to the Threads screen
+            where Edition content can be created and edited.</li>
+    </ul>
+<div id="div_Editions">
+    @{MVC4Grid.Grid modelgrid = @ViewBag.Grid;}
+     @Html.GridFor(modelgrid)
+</div>
+
+<div id="Editions_Edit_dialog"> 
+</div>
+<div id="Editions_Update_dialog"> 
+</div>
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+
+<script type="text/javascript">
+
+    //To create Editions
+    var Createedition = function Createedition() { 
+        var url = ServerURL+'/Admin/CreateEditionwithID?&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Editions_Edit_dialog').html(html);
+            $.validator.unobtrusive.parse($("#form_Edit_Editions"));
+            $('#Editions_Edit_dialog').dialog({
+                modal: true,
+                title: "Create a New Edition",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                height:200,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_Editions_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    //To edit or Update Editions
+    function Editedition(ctrl) {
+        
+        var Eid = $(ctrl).attr('keyid');
+        var url = ServerURL+'/Admin/GetEditionwithEID?EId=' + Eid + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Editions_Update_dialog').html(html);
+            $.validator.unobtrusive.parse($("#form_Update_Editions"));
+            $('#Editions_Update_dialog').dialog({
+                modal: true,
+                title: "Update Edition",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_Editions_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+
+    //To Delete Editons
+
+    var Deletedition = function Deletedition(ctrl) {
+
+        var uid = $(ctrl).attr('keyid');
+
+        var NewDialog = $('<div id="DeleteDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Edition",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: ServerURL+"/Admin/DeleteEditionWithEID/?EId=" + uid,
+                                // data: JSON.stringify({ userid: uid }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data) {
+                                        alert("Deleted Successfully");
+                                        $(".bt_grid_refresh").click();
+                                        //$('#tbl_Editions_Noofrows').change();
+                                    }
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting Edition");
+                                }
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+    //On content click in EditionGrid redirected to EditonThreads
+     function Content(ctrl) {
+     
+        var Eid = $(ctrl).attr('keyid');
+        window.location.href = ServerURL+'/Admin/EditionThreads/' + "?id=" + Eid + '&rand=' + randGenerator();
+    }
+     
+</script>
+<style type="text/css">
+    .ui-dialog
+    {
+        z-index: 10000;
+    }
+</style>
+
+<link href="~/Content/GridView.css" rel="stylesheet" />
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/Commonscript") 
+}

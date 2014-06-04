@@ -1,0 +1,570 @@
+﻿@using DAL;
+@using DAL.Models;
+@model DAL.SearchBL.MyQueryForm
+
+@{
+    ViewBag.Title = "Abstract";
+    CitationDetailsModel AbstractCitation = new CitationDetailsModel();
+    AbstractCitation = Model.CitationDetails.FirstOrDefault();
+}
+
+
+<table width="100%">
+    <tr>
+        <td>
+            <table width="1170" align="center" style="margin:0 auto;">
+                <tr>
+                    <td>
+                        <img src="~/Content/images/Subpage_banner-1170.jpg">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+   
+
+    <tr>
+        <td>
+            <div class="commonContent">
+
+                <table width="1170">
+                    <tr>
+                        <td width="400" align="left" valign="top">
+                            @Html.Partial("_MyQueriesList", Model)
+                        </td>
+                        <td valign="top" align="left">
+                            <div align="center">
+
+                                <table width="100%" cellpadding="8" cellspacing="0" border="0">
+                                    <tr>
+                                        <td align="left" width="100%" valign="top">
+                                            <table border="0" cellpadding="4" cellspacing="0" width="100%" style="BACKGROUND-COLOR: whitesmoke">
+                                                <tr valign="top">
+                                                    <!---added this bit to accomodate 3 columns --->
+                                                    <td>
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="BACKGROUND-COLOR: whitesmoke">
+                                                            <tr>
+                                                                <!-- Printable version button -->
+                                                                <td align="left" valign="bottom">
+                                                                    @Html.ActionLink("Printable", "AbstractPrintable", new { oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], MID = Request.QueryString["MID"] }, new { target = "_blank", style = "background: url(/content/images/printable-grey.gif) no-repeat top left; display: block;width: 150px;text-indent: -9999px;" })
+                                                                </td>
+
+                                                                <!--- start Linkout --->
+                                                                <td valign="bottom" id="linkLauncherTop" width="132px">
+                                                                    @Html.ActionLink("Linkout", "LinkOut", new { PMID = Request.QueryString["MID"], SearchID =Request.QueryString["Search"], SpecialityID = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"] }, new { style = "background: url(/content/images/linkout-link.gif) no-repeat top left; display: block;width: 150px;text-indent: -9999px;" })
+
+                                                                </td>
+                                                                <!--- end Linkout --->
+
+
+
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    @using (Html.BeginForm("CopyCitation", "MyQueries", new { MID = Request.QueryString["MID"] }, FormMethod.Post))
+                                                    {
+                                                        <td colspan="2">
+                                                            <input type="hidden" name="medlineid" value="#url.mid#">
+
+                                                            <span class="formObj">To copy the citation within your library, choose the destination topic folder and subtopic folder.</span><br>
+
+                                                            @Html.DropDownListFor(c => c.FolderID, Model.TopicsList, "Copy Citation to:", new { @id = "SelectedTopic", style = "width:220px" })
+                                                            <input type="hidden" name="SearchId" value="@Model.queryDetails.SearchID" />
+
+                                                            <input type="hidden" name="KeepDelete" value="@Model.queryDetails.KeepDelete" />
+                                                            <input type="hidden" name="dateEnd" value="@Model.queryDetails.DateEnd" />
+
+                                                            <select id="ddlUserSubTopic" name="ddlUserSubTopic" style="width: 220px"></select>
+
+                                                            <input type="submit" name="actionFirst" id="actionFirst" value="Copy Citation" class="cit">
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                @* For Main Citation Dertails*@
+
+                                <table border="0" width="100%">
+
+                                    <!-- Citation header and abstract text. -->
+
+                                    @if (Model.UserComment != null)
+                                    {
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td valign="top" align="right"><strong>Nickname</strong></td>
+                                            <td valign="top"><i>@Model.UserComment.nickname</i></td>
+                                        </tr>                                        
+                                    }
+
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td valign="top" align="right"><strong>PMID</strong></td>
+                                        <td valign="top">
+                                            @if (int.Parse(Request.QueryString["MID"]) > 0)
+                                            {
+                                                @Request.QueryString["MID"] @:. 
+                                                @AbstractCitation.StatusDisplay
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td valign="top" align="right"><strong>Title</strong></td>
+                                        <td valign="top">@Html.Raw(HttpUtility.HtmlDecode(AbstractCitation.ArticleTitle))
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td valign="top" align="right"><strong>Author</strong></td>
+                                        <td>@AbstractCitation.AuthorFullList
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td valign="top" align="right"><strong>Source</strong></td>
+                                        <td valign="top">
+                                            @if (!string.IsNullOrEmpty(AbstractCitation.MedlineTA))
+                                            { @AbstractCitation.MedlineTA;
+                                            }
+                                            @if (!string.IsNullOrEmpty(AbstractCitation.DisplayDate))
+                                            { @AbstractCitation.DisplayDate;
+                                            }
+                                            @if (!string.IsNullOrEmpty(AbstractCitation.MedlinePgn))
+                                            { @AbstractCitation.MedlinePgn;
+                                            }
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td valign="top" align="right"><strong>Abstract</strong></td>
+                                        <td valign="top">@Html.Raw(HttpUtility.HtmlDecode(AbstractCitation.AbstractText))</td>
+                                    </tr>
+
+
+                                    <!-- Block for displaying Genes and Tests-->
+                                    <tr>
+                                        <td colspan="3" bgcolor="#ffffff" valign="top">
+                                            <table cellpadding="0" cellspacing="0" border="1" width="100%">
+                                                @{
+                                                    Model.GenesMylibrary = MyLibraryBL.GetGenesMyLibrary(int.Parse(Request.QueryString["MID"]));
+                                                    Model.GenesForThreadMylibrary = MyLibraryBL.GetGenesForThreadMyLibrary(int.Parse(Request.QueryString["MID"]));
+                                                    Model.TestsMylibrary = MyLibraryBL.GetTestsMyLibrary(int.Parse(Request.QueryString["MID"]));
+                                                    Model.TestsForThreadMylibrary = MyLibraryBL.GetTestsForThreadMyLibrary(int.Parse(Request.QueryString["MID"]));
+                                                }
+                                                @if (Model.GenesForThreadMylibrary.Count != 0)
+                                                {
+                                                    foreach (var item in Model.GenesForThreadMylibrary)
+                                                    {
+                                                        Model.GenesMylibrary.Add(item);
+                                                    }
+                                                }
+                                                @if (Model.TestsForThreadMylibrary.Count != 0)
+                                                {
+                                                    foreach (var item in Model.TestsForThreadMylibrary)
+                                                    {
+                                                        Model.TestsMylibrary.Add(item);
+                                                    }
+                                                }
+                                                @if (Model.GenesMylibrary.Count != 0 && Model.TestsMylibrary.Count != 0)
+                                                {
+                                                    <tr>
+                                                        <td bgcolor="#ffcab1" colspan="2">
+                                                            <span style="color: black; font-weight: bold">Genes*</span>&nbsp;&nbsp;<span style="color: #668EE0">
+                                                                @foreach (var item in Model.GenesMylibrary)
+                                                                {
+                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { geneid = item.GeneId })                                         
+                                                                }
+
+                                                            </span>
+                                                            <br />
+
+                                                            <span style="color: black; font-weight: bold">Tests*</span>&nbsp;&nbsp;<span style="color: #668EE0">
+                                                                @foreach (var item in Model.TestsMylibrary)
+                                                                {
+                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { testid = item.TestID })                                          
+                                                                }
+                                                            </span>
+                                                            <br />
+                                                            <i>*Gene(s)/Test(s) identified by ACR Journal Advisor as relevant to this citation</i>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else if (Model.GenesMylibrary.Count != 0)
+                                                {
+                                                    <tr>
+                                                        <td bgcolor="#ffcab1" colspan="2">
+                                                            <span style="color: black; font-weight: bold">Genes*</span>&nbsp;&nbsp;<span style="color: #668EE0">
+                                                                @foreach (var item in Model.GenesMylibrary)
+                                                                {
+                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { geneid = item.GeneId })                                         
+                                                                }
+
+                                                            </span>
+                                                            <br />
+                                                            <i>*Gene(s)/Test(s) identified by ACR Journal Advisor as relevant to this citation</i>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else if (Model.TestsMylibrary.Count != 0)
+                                                {
+                                                    <tr>
+                                                        <td bgcolor="#ffcab1" colspan="2">
+                                                            <span style="color: black; font-weight: bold">Genes*</span>&nbsp;&nbsp;<span style="color: #668EE0">
+                                                                @foreach (var item in Model.TestsMylibrary)
+                                                                {
+                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { geneid = item.TestID })                                         
+                                                                }
+
+                                                            </span>
+                                                            <br />
+                                                            <i>*Gene(s)/Test(s) identified by ACR Journal Advisor as relevant to this citation</i>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- /Block for displaying Genes -->
+
+
+
+
+                                    <!--- User comment, if any --->
+                                    @if (Model.UserComment != null)
+                                    {
+                                        if (!string.IsNullOrEmpty(Model.UserComment.comment))
+                                        {		
+                                        <tr>
+                                            <td valign="top" colspan="3">
+                                                <table border="1" cellpadding="8" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td valign="top" bgcolor="#f2f2f2">
+                                                            <img src="/content/images/button-paper-editor.gif" width="16" height="19" alt="" border="0">
+                                                            <strong style="font-size: 9pt">@CurrentUser.FirstName @CurrentUser.LastName's Comment</strong> - 
+									<em style="font-size: 9pt">
+                                        @if (Model.UserComment.updatedate != null)
+                                        { 
+                                            @Model.UserComment.updatedate.Value
+                                        }
+
+                                    </em>
+                                                            <br>
+                                                            @Model.UserComment.comment
+                                                            <br />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        }
+                                    }
+
+                                    <!--- Editors Choice 2.0 comment display --->
+
+                                    @foreach (var AbstractComment in Model.AbstractCommentsECList)
+                                    {
+                                        bool EditorShown = false;
+
+                                        Model.CommentContext = MyLibraryBL.GetCommentContext(int.Parse(Request.QueryString["oid"]), AbstractComment.ThreadId, int.Parse(Request.QueryString["MID"]), AbstractComment.CommentId);                                                              
+                                        
+                                        <tr>
+                                            <td colspan="3" bgcolor="#f4f4f4" valign="top">
+                                                <table border="1" cellpadding="8" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td>
+                                                            <table cellpadding="0" cellspacing="0" border="0" width="90%">
+                                                                <tr class="edComHeading" style="font-weight: bold">
+                                                                    <td align="center" colspan="2">Editor Comment</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left"></td>
+                                                                </tr>
+                                                                <tr class="edComHeading" style="font-weight: bold">
+                                                                    <td width="20%">Date:
+                                                                    </td>
+                                                                    <td width="80%">
+                                                                        @AbstractComment.OriginalPubDate.ToString("MM/dd/yyy")
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2">&nbsp;
+                                                                    </td>
+                                                                </tr>
+
+                                                                @if (!EditorShown)
+                                                                { 
+                                                                    <tr class="edComHeading">
+                                                                        @if (Model.CommentContext.EditorsDetails.MultipleEditors)
+                                                                        {
+                                                                            <td valign="top">Editors:</td>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <td>Editor:</td>
+                                                                        }
+                                                                        <td>@Model.CommentContext.EditorsDetails.Editors</td>
+                                                                    </tr>
+                                                                        bool firstRelated = true;
+                                                                        foreach (var RelatedCitation in Model.CommentContext.RelatedCitations)
+                                                                        {
+                                                                            if (firstRelated)
+                                                                            {
+                                                                    @: <tr>
+@:     <td class="edComHeading">Related Citations:
+                                                                            @:     </td>
+                                                                            @:    <td>
+                                                                                                                                          firstRelated = false;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                            @:,
+                                                                        }
+                                                                            @Html.ActionLink(RelatedCitation.PMID.ToString(), "abstract", new { specid = Request.QueryString["specid"], oid = RelatedCitation.TopicId, fid = RelatedCitation.SubTopicId, MID = RelatedCitation.PMID })
+                                                                        }
+
+                                                                        if (firstRelated == false)
+                                                                        {
+                                                                        @:</td>
+                                                                        @:</tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    EditorShown = true;
+                                                                        }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="2">&nbsp;</td>
+                                                                    </tr>
+                                                                    Model.CommentContext.EditorsDetails.EditorIsAuthor = false;
+                                                                }
+
+                                                                @if (!Model.CommentContext.EditorsDetails.EditorIsAuthor)
+                                                                {
+                                                                    <tr class="edComHeading">
+                                                                        <td>Comment By:</td>
+                                                                        <td>@Model.CommentContext.EditorsDetails.Authors</td>
+                                                                    </tr>
+                                                                }
+                                                                <tr>
+                                                                    <td colspan="2">&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2">@Html.Raw(HttpUtility.HtmlDecode(AbstractComment.Comment))</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <br />
+
+                                                                        @{ 
+                                                                Model.GenesEditorMylibrary = MyLibraryBL.GetGenesEditorMyLibrary(int.Parse(Request.QueryString["MID"]));
+                                                                Model.TestsEditorMylibrary = MyLibraryBL.GetTestsEditorMyLibrary(int.Parse(Request.QueryString["MID"]));
+
+                                                                        }
+
+                                                                        @if (Model.GenesEditorMylibrary.Count != 0 && Model.TestsEditorMylibrary.Count != 0)
+                                                                        {
+                                                    
+                                                                            <span style="color: black; font-weight: bold">Genes*</span>@:&nbsp; &nbsp;
+                                                                            <span style="color: #668EE0">
+                                                                                @foreach (var item in Model.GenesEditorMylibrary)
+                                                                                {
+                                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { geneid = item.GeneId })                                         
+                                                                                }
+
+                                                                            </span>
+                                                                            <br />
+
+                                                                            <span style="color: black; font-weight: bold">Tests*</span>@:&nbsp; &nbsp;
+                                                                            <span style="color: #668EE0">
+                                                                                @foreach (var item in Model.TestsEditorMylibrary)
+                                                                                {
+                                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { testid = item.TestID })                                          
+                                                                                }
+                                                                            </span>
+                                                                            <br />
+                                                                            <i>*Selected by Comment Author as relevant to this citation</i>
+                                                       
+                                                                        }
+                                                                        else if (Model.GenesEditorMylibrary.Count != 0)
+                                                                        {
+                                                    
+                                                                            <span style="color: black; font-weight: bold">Genes*</span>@:&nbsp; &nbsp;
+                                                                            <span style="color: #668EE0">
+                                                                                @foreach (var item in Model.GenesEditorMylibrary)
+                                                                                {
+                                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { geneid = item.GeneId })                                         
+                                                                                }
+
+                                                                            </span>
+                                                                            <br />
+                                                                            <i>*Selected by Comment Author as relevant to this citation</i>
+                                                     
+                                                                        }
+                                                                        else if (Model.TestsEditorMylibrary.Count != 0)
+                                                                        {
+                                                    
+                                                                            <span style="color: black; font-weight: bold">Genes*</span> @:&nbsp; &nbsp;
+                                                                            <span style="color: #668EE0">
+                                                                                @foreach (var item in Model.TestsEditorMylibrary)
+                                                                                {
+                                                                                    @Html.ActionLink(item.Name + ", ", "gene", new { geneid = item.TestID })                                         
+                                                                                }
+                                                                            </span>
+                                                                            <br />
+                                                                            <i>*Selected by Comment Author as relevant to this citation</i>
+                                                                        }
+
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+
+                                <br />
+
+                                <table border="0" cellpadding="4" cellspacing="0" width="100%" style="BACKGROUND-COLOR: whitesmoke">
+                                    <tr valign="top">
+                                        <!---added this bit to accomodate 3 columns --->
+                                        <td>
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="BACKGROUND-COLOR: whitesmoke">
+                                                <tr>
+                                                    <!-- Printable version button -->
+                                                    <td align="left" valign="bottom">
+                                                        @Html.ActionLink("Printable", "AbstractPrintable", new { oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], MID = Request.QueryString["MID"] }, new { target = "_blank", style = "background: url(/content/images/printable-grey.gif) no-repeat top left; display: block;width: 150px;text-indent: -9999px;" })
+                                                    </td>
+
+                                                    <!--- start Linkout --->
+                                                    <td valign="bottom" id="linkLauncherTop" width="132px">
+                                                        @Html.ActionLink("Linkout", "LinkOut", new { PMID = Request.QueryString["MID"], SearchID =Request.QueryString["Search"], SpecialityID = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"] }, new { style = "background: url(/content/images/linkout-link.gif) no-repeat top left; display: block;width: 150px;text-indent: -9999px;" })
+                                                    </td>
+                                                    <!--- end Linkout --->
+
+
+
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        @using (Html.BeginForm("CopyCitation", "MyQueries", new {MID = Request.QueryString["MID"] }, FormMethod.Post))
+                                        {
+                                            <td colspan="2">
+                                                <input type="hidden" name="medlineid" value="#url.mid#">
+
+                                                <span class="formObj">To copy the citation within your library, choose the destination topic folder and subtopic folder.</span><br>
+                                                @Html.DropDownListFor(c => c.FolderID, Model.TopicsList, "Copy Citation to:", new { @id = "SelectedTopicSecond", style = "width:220px" })
+                                                 <input type="hidden" name="SearchId" value="@Model.queryDetails.SearchID" />
+                                                <input type="hidden" name="KeepDelete" value="@Model.queryDetails.KeepDelete" />
+                                                            <input type="hidden" name="dateEnd" value="@Model.queryDetails.DateEnd" />
+                                                <select id="ddlUserSubTopicSecond" name="ddlUserSubTopicSecond" style="width: 220px"></select>
+                                                <input type="submit" name="actionSecond" id="actionSecond" value="Copy Citation" class="cit">
+                                            </td>
+                                        }
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+
+                        <td width="170" valign="top" align="right" style="text-align: right">
+                            <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                                <img src="~/Content/images/160x600-ad.jpg" /></a>
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+    $('#SelectedTopic').change(function () {
+        if ($('#SelectedTopic option:selected').text() != "Copy Citation to:") {
+            var sid = $(this).val();
+            $.ajax({
+                url: '/mylibrary/GetUserSubTopics?TopicId=' + sid,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                type: "GET",
+                error: function () {
+                    alert("An error occurred.");
+                },
+                success: function (data) {
+                    var items = "";
+                    if (data != null) {
+                        $.each(data, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddlUserSubTopic").html(items);
+                    }
+                    else { $("#msg").html("No Related SubTopic exists") }
+                }
+            });
+        }
+    });
+
+    $('#SelectedTopicSecond').change(function () {
+        if ($('#SelectedTopicSecond option:selected').text() != "Copy Citation to:") {
+            var sid = $(this).val();
+            $.ajax({
+                url: '/mylibrary/GetUserSubTopics?TopicId=' + sid,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                type: "GET",
+                error: function () {
+                    alert("An error occurred.");
+                },
+                success: function (data) {
+                    var items = "";
+                    if (data != null) {
+                        $.each(data, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddlUserSubTopicSecond").html(items);
+                    }
+                    else { $("#msg").html("No Related SubTopic exists") }
+                }
+            });
+        }
+    });
+
+
+    var AnnotateForm = function AnnotateForm() {
+        $.validator.unobtrusive.parse($(".dialogue_Annote"));
+        $('.dialogue_Annote').dialog({
+            modal: true,
+            title: "Annotate Form",
+            show: { effect: 'drop', direction: 'up' },
+            width: 600,
+            close: function (event, ui) {
+                $('#UserComment_nickname').val($('#hdnNickName').val());
+                $('#UserComment_comment').val($('#hdnComment').val());
+            }
+        });
+    }
+
+    var Cancel = function Cancel() {
+        $('#UserComment_nickname').val($('#hdnNickName').val());
+        $('#UserComment_comment').val($('#hdnComment').val());
+        $('.dialogue_Annote').dialog('close');
+    }
+</script>

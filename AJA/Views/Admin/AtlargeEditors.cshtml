@@ -1,0 +1,91 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{
+    ViewBag.Title = "AtlargeEditors";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<div id="div_AtLargeEditors" class="commonContent">
+    @{MVC4Grid.Grid modelgrid = @ViewBag.GridData;}
+    @Html.GridFor(modelgrid)
+</div>
+<div id="Edit_Editor_Dialog" title="Edit User">
+</div>
+
+<script type="text/javascript">
+    
+    var CreateEditor = function CreateEditor() {
+        var url = '../Admin/GetEditorwithID?Eid=0&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_Editor_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Editor_Dialog"));
+            $('#Edit_Editor_Dialog').dialog({
+                modal: true,
+                title: "Create Editor",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_AtLargeEditors_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    var DeleteAtLargeEditor = function DeleteAtLargeEditor(ctrl) {
+        var EditorId = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="MenuDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete At-Large Editor",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: '../Admin/DeleteAtLargeEditor?Eid=' + EditorId + '&rand=' + randGenerator(),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (msg) {
+                                    if (msg)
+                                        alert('At-Large Editor Deleted successfully');
+                                    else
+                                        alert('Unable to delete At-Large Editor since a comment exist in Editorial comments section.');
+
+                                    $("#tbl_AtLargeEditors .bt_grid_refresh").click();
+                                },
+                                error: function (msg) { alert('Error occured in deleting the At-Large Editor'); }
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+
+    function EditEditor(ctrl) {
+        var url = '../Admin/GetEditorwithID?Eid=' + $(ctrl).attr('keyid') + '&FromGrid=' + true + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_Editor_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Editor_Dialog"));
+            $('#Edit_Editor_Dialog').dialog({
+                modal: true,
+                title: "Edit Editor",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_AtLargeEditors_Noofrows').change();
+                }
+            });
+        });
+    }
+</script>
+<script type="text/javascript" src="~/Scripts/GridView.js"></script>
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+
+<link href="~/Content/GridView.css" rel="stylesheet" />

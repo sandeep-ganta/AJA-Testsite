@@ -1,0 +1,1384 @@
+﻿@{
+    ViewBag.Title = "PersonalizedMedicine"; 
+}
+
+@model DAL.Models.PersonalizedMedicine_User
+
+@if (Model != null)
+{ 
+    <table width="1170" style="margin: 0 auto;" align="center">
+        <tr>
+            <td>
+                <img src="~/Content/images/Subpage_bannerBig.jpg">
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 5px;"></td>
+        </tr>
+    </table>
+
+    <div align="center">
+        <table width="1170">
+            <tbody>
+                <tr>
+                    <td valign="top" align="left">
+                        <div id="base" style="padding-top: 0; width: 994px;" class="expandholdertext">
+                            <div class="titleBar">
+                                <div class="titleHolder">Gene Selector</div>
+                                <div class="expanderHolder"><span class="ex-col minusicon">Collapse</span></div>
+
+                            </div>
+                            <div class="contentcntnr">
+                                <p id="selector_section">To use the GeneTool, select an item from any of the three lists below. The other two lists will change to reflect your selection. You can repeat this process, selecting an item from a different list, or reset all the lists by clicking the Clear button. Once you have made a final selection, click the Find button and your choice will be displayed below.</p>
+                            </div>
+
+
+                            <div class="searchHolder">
+                                <div class="col1">
+                                    <div class="searchLabel">
+                                       <div class="lbltxts"> Official Symbol:</div>
+                                        <div class="slctmn">
+                                    @Html.DropDownListFor(model => model.GeneName, Model.Geneslist, "--Select--", new { @id = "ddl_genes", @style = "width: 100px" })
+                                        <br />
+                                        <label id="lblgenescnt" class="attantionNote"></label></div>
+                                    </div>
+                                </div>
+
+                                <div class="col2" style="padding-left:40px;">
+                                    <div class="searchLabel">
+                                        <div class="lbltxts">  Alias:</div>
+                                         <div class="slctmn">
+                                        @* @Html.DropDownListFor(model => model.GeneAlias, Model.GeneAliaslist, "--Select--", new { @id = "ddl_aliasgenes", @style = "width: 100px" })*@
+                                        @Html.DropDownListFor(model => Model.GetGenealiases, new MultiSelectList(Model.GetGenealiases, "aliasid", "GeneAlias"), "--Select--", new { @id = "ddl_aliasgenes", @style = "width: 100px" })
+                                        <br />
+                                        <label id="lblgenealiascnt" class="attantionNote"></label>
+                                    </div></div>
+                                </div>
+
+                                <div class="col3">
+                                    <div class="searchLabel">
+                                      <div class="lbltxts">  Test:</div>
+                                         <div class="slctmn">
+                                    @Html.DropDownListFor(model => model.GeneTest, Model.GeneTestlist, "--Select--", new { @id = "ddl_test", @style = "width: 160px" })
+                                        <br />
+                                        <label id="lbltestscnt" class="attantionNote"></label>
+                                    </div></div>
+                                </div>
+
+                                <div class="col4">
+                                    <input type="button" value="Find" onclick="find_gene();">&nbsp;&nbsp;<input value="Clear" type="button" onclick="    clear_selectors();">
+                                </div>
+                            </div>
+                            <div class="spacer">&nbsp;</div>
+                            <div id="detailssection">
+                                @if (Model.GeneId != 0 && Model.checkgene)
+                                {
+
+                                    <div class="titleBar">
+                                        <div class="titleHolder">Public Gene Database</div>
+                                        <div class="expanderHolder"><span class="ex-col minusicon">Collapse</span></div>
+                                    </div>
+                                    <div class="contentcntnr">
+                                        <table class="dataTable" cellspacing="0" border="0" id="gene_section" style="">
+                                            <tbody>
+                                                <tr valign="top">
+                                                    <td class="c1">Official Symbol:</td>
+                                                    <td class="c2">
+                                                        @Html.DisplayFor(model => model.Symbol)
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <td class="c1">Name:</td>
+                                                    <td class="c2">
+                                                        @Html.DisplayFor(model => model.FullName)
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <td class="c1">Aliases:</td>
+                                                    <td class="c2">
+                                                        @if (Model.Aliases != null)
+                                                        {
+                                                            string alias = string.Empty;
+                                                            foreach (var item in Model.Aliases)
+                                                            {
+                                                                alias += @item.Value + ", ";
+                                                            }
+                                                            if (!string.IsNullOrEmpty(alias))
+                                                            {
+                                                                alias = alias.Substring(0, alias.Length - 2);
+                                                            }
+                                                            @Html.DisplayFor(display => alias)
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif" alt="collapse_summary" class="Showhidesummary">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Summary: 
+                                                        </div>
+                                                    </td>
+
+                                                    @if (Model.Summary != null)
+                                                    {  
+                                                        <td id="summary_short" class="c2">
+                                                            @if (Model.Summary.Length >= 160)
+                                                            {
+                                                                string summarytext = Model.Summary.Substring(0, 160);
+                                                                string summary = summarytext + "..";
+@*@Html.DisplayFor(c => summary)*@
+                                                                @Html.Raw(HttpUtility.HtmlDecode(summary))
+                                                                <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('summary_long').style.display='';" class="moreLink">more</a></span>
+                                                            }
+                                                            else
+                                                            {   @Html.Raw(HttpUtility.HtmlDecode(Model.Summary))}
+                                                        </td>
+                                                        <td id="summary_no" class="c2" style="display: none;"></td>
+                                                        <td id="summary_long" class="c2" style="display: none;">
+                                                            @Html.Raw(HttpUtility.HtmlDecode(Model.Summary))
+                                                            <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('summary_short').style.display='';" class="moreLink">less</a></span>
+
+                                                        </td> 
+                                                    }
+
+                                                </tr>
+                                                <tr valign="top">
+
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/plus.gif" alt="collapse_clslnk" class="Showhideclinical" aria-labelledby="@Model.Getclinicalinks.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Clinical Science<br>
+                                                            Links :
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="c2">
+                                                        <span id="displaylinks">@Model.Getclinicalinks.Count() links</span>
+                                                        <div id="sclinks_long" style="display: none">
+                                                            @Html.HiddenFor(model => model.GeneId, new { @id = "hdgeneid" })
+                                                            @if (Model.Getclinicalinks != null && Model.Getclinicalinks.Count() != 0)
+                                                            {
+                                                                if (Model.Getclinicalinks.Count() >= 10)
+                                                                {
+                                                                    foreach (var item in Model.Getclinicalinks.Take(10))
+                                                                    {
+                                                                <div class="citation">
+                                                                    @if (@item.ArticleTitle != null)
+                                                                    {
+                                                                        if (@item.ArticleTitle.Length >= 40)
+                                                                        {
+                                                                        <a target="_blank" href="/Search/SearchDetails?PMID=@item.ArticleId&FromPMedline=true" >@item.ArticleTitle.Substring(0, 40)..</a>
+                                                                        }
+                                                                        else
+                                                                        {  <a target="_blank" href="/Search/SearchDetails?PMID=@item.ArticleId&FromPMedline=true" >@item.ArticleTitle</a>}
+                                                                    }
+                                                                </div>
+                                                                <div class="author">
+                                                                    <label>@item.AuthorList</label>
+                                                                </div>
+                                                                <div class="year">
+                                                                    <label>@item.Year</label>
+                                                                </div>
+                                                                <div class="cleaner"></div>  
+                                                                    } 
+                                                                <a href="javascript:void(0);" onclick="Editclinicallinks();">Show list in popup(@Model.Getclinicalinks.Count())
+                                                                </a> 
+                                                                }
+
+                                                                else if (Model.Getclinicalinks.Count() <= 10)
+                                                                {
+                                                                    foreach (var item in Model.Getclinicalinks)
+                                                                    {
+                                                                <div class="citation">
+                                                                    @if (@item.ArticleTitle != null)
+                                                                    {
+                                                                        if (@item.ArticleTitle.Length >= 40)
+                                                                        {
+                                                                        <a target="_blank" href="/Search/SearchDetails?PMID=@item.ArticleId&FromPMedline=true" >@item.ArticleTitle.Substring(0, 40)..</a>
+                                                                        }
+                                                                        else
+                                                                        {<a target="_blank" href="/Search/SearchDetails?PMID=@item.ArticleId&FromPMedline=true" >@item.ArticleTitle</a>}
+                                                                    }
+                                                                </div>
+                                                                <div class="author">
+                                                                    <label>@item.AuthorList</label>
+                                                                </div>
+                                                                <div class="year">
+                                                                    <label>@item.Year</label>
+                                                                </div>
+                                                                <div class="cleaner"></div>  
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {   <span>Not Available</span>}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="spacer">&nbsp;</div>
+                                    <div class="titleBar">
+                                        <div class="titleHolder">Cogent Medicine Database</div>
+                                        <div class="expanderHolder"><span class="ex-col minusicon">Collapse</span></div>
+                                    </div>
+                                    <div class="contentcntnr">
+                                        <table class="dataTable" cellspacing="0" border="0" id="cogent_section">
+                                            <tbody>
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif" alt="collapse_genecomnt" class="Showhidegenecomnt" aria-labelledby="@Model.GetGeneComments.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Gene Comments:
+                                                        </div>
+                                                    </td>
+
+
+                                                    <td class="c2">
+                                                        <span id="showgenecomments"></span>
+                                                        <div id="comments_long">
+                                                            @if (Model.GetGeneComments != null && Model.GetGeneComments.Count() != 0)
+                                                            {
+                                                                int genecmnt = 1;
+                                                                foreach (var item in Model.GetGeneComments)
+                                                                {
+                                                                <p>@item.Author<br>
+                                                                    @if (@item.CommnetDate != null)
+                                                                    {
+                                                                        @item.CommnetDate.ToString("MMMM yyyy")
+                                                                    }
+                                                                </p> 
+                                                                <table class="commentAttachmentsSmall" border="0" cellspacing="1">
+                                                                    <tbody>
+                                                                        <tr valign="top">
+                                                                            <th>Specialties / Topics / Subtopics</th>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table> 
+                                                                    if (item.Getspecialties != null)
+                                                                    {
+                                                                        foreach (var data in item.Getspecialties)
+                                                                        {
+                                                                            if (data != null)
+                                                                            {
+                                                                <label>@data.SpecialtyName-->@data.Topicname-->@data.Subtopicname</label> <br />}
+                                                                        }
+                                                                    }
+                                                    
+                                                                <br />
+                                                                    if (@item.Commnet != null)
+                                                                    {
+                                                                        if (@item.Commnet.Length < 160)
+                                                                        {
+                                                                <span>@item.Commnet</span>
+                                                                        }
+
+                                                                        if (@item.Commnet.Length >= 160)
+                                                                        {
+                                                                            string commenttext = item.Commnet.Substring(0, 160);
+                                                                            string comment = commenttext + "..";
+                                                                @Html.Raw(HttpUtility.HtmlDecode(comment))
+@*  @Html.DisplayFor(c => comment)*@
+                                                                <span class="moreLink" id="short_comment_@genecmnt">
+                                                                    <a href="javascript:void(0);" onclick="document.getElementById('short_comment_@genecmnt').style.display='none'; document.getElementById('long_comment_@genecmnt').style.display='';">more</a>
+                                                                </span>
+                                                                <br />
+ 
+                                                                <span style="display: none" id="long_comment_@genecmnt">
+                                                                    @*<span>@item.Commnet</span>*@
+                                                                    @Html.Raw(HttpUtility.HtmlDecode(@item.Commnet))
+                                                                    <span class="moreLink">
+                                                                        <a href="javascript:void(0);"
+                                                                            onclick="document.getElementById('short_comment_@genecmnt').style.display=''; document.getElementById('long_comment_@genecmnt').style.display='none';">less</a>
+                                                                    </span>
+                                                                    <br />
+                                                                </span>
+                                                                        }
+                                                                        genecmnt++;
+                                                                    }
+                                                            
+@*  <label for="lbl_@item.CommentID">@item.Commnet</label>*@
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Not Available</span>
+                                                            }
+
+                                                            <div class="spacer5">&nbsp;</div>
+                                                            <div class="hr">&nbsp;</div>
+                                                            <br>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif" alt="collapse_geneeditorcomnt" class="Showhidegeneeditorcomnt" aria-labelledby="@Model.GetRelatededitorscomments.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Related Editors Choice Comments:
+                                                        </div>
+                                                    </td>
+                                                    <td class="c2">
+                                                        <span id="showrelatededitorcoments"></span>
+                                                        <div id="editor_comments_long">
+                                                            @if (Model.GetRelatededitorscomments != null && Model.GetRelatededitorscomments.Count() != 0)
+                                                            {
+                                                                int gnrltdcmnts = 1;
+                                                                foreach (var item in Model.GetRelatededitorscomments)
+                                                                {
+                                                                    if (item != null)
+                                                                    {
+                                                                <label class="normalfont">@item.EditorCommentAuthor &nbsp; @item.EditorCommentMonth &nbsp; @item.EditorCommentDate</label>
+                                                              
+                                                                    }
+                                                
+                                                                <table class="commentAttachmentsSmall" border="0" cellspacing="1">
+                                                                    <tbody>
+                                                                        <tr valign="top">
+                                                                            <th>Specialties / Topics / Subtopics</th>
+                                                                        </tr>
+                                                                        <tr valign="top">
+                                                                            <td class="borderless">
+                                                                                @if (item.Getspecialties != null)
+                                                                                {
+                                                                                    foreach (var data in item.Getspecialties)
+                                                                                    {
+                                                                                        if (data != null)
+                                                                                        {
+                                                                                    <label>@data.SpecialtyName-->@data.Topicname-->@data.Subtopicname</label> <br />}
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            @if (@item.EditorCommnet != null)
+                                                                            {
+                                                                                <td id="editorcomment_short_@gnrltdcmnts">
+                                                                                    @if (@item.EditorCommnet.Length >= 160)
+                                                                                    {
+                                                                                        string EditorCommnetext = item.EditorCommnet.Substring(0, 160);
+                                                                                        string EditorCommnets = EditorCommnetext + "..";
+@*@Html.DisplayFor(c => EditorCommnets)*@
+                                                                                        @Html.Raw(HttpUtility.HtmlDecode(EditorCommnets))
+                                                                                        <span class="morelink"><a href="javascript:void(0);" onclick="document.getElementById('editorcomment_short_@gnrltdcmnts').style.display='none'; document.getElementById('editorcomment_long_@gnrltdcmnts').style.display='';" class="moreLink">more</a></span>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+@*<span>  @item.EditorCommnet</span>*@ @Html.Raw(HttpUtility.HtmlDecode(@item.EditorCommnet))
+                                                                                    }
+                                                                                </td>
+                                                                                <td id="editorcomment_no" class="c2" style="display: none;"></td>
+                                                                                <td id="editorcomment_long_@gnrltdcmnts" class="c2" style="display: none;">
+                                                                                    @*  <span>@item.EditorCommnet</span>*@
+                                                                                    @Html.Raw(HttpUtility.HtmlDecode(@item.EditorCommnet))
+                                                                                    <span class="morelink"><a href="javascript:void(0);" onclick="document.getElementById('editorcomment_long_@gnrltdcmnts').style.display='none'; document.getElementById('editorcomment_short_@gnrltdcmnts').style.display='';" class="moreLink">less</a></span>
+
+                                                                                </td>
+                                                                                    gnrltdcmnts++;
+                                                                            }
+@*   @item.EditorCommnet*@
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                            
+                                                                <br>
+                                                                <div class="cleaner"></div>
+                                                                <div class="spacer2">&nbsp;</div>
+
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (@item.ArticleTitle != null)
+                                                                            {
+
+                                                                                if (@item.ArticleTitle.Length >= 40)
+                                                                                {
+                                                                                <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle.Substring(0, 40)..</a>
+                                                                                }
+                                                                                else
+                                                                                {<a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle</a>}
+                                                                            }
+                                                                        </td>
+                                                                        <td class="author">
+                                                                            @if (@item.AuthorList != null)
+                                                                            {
+                                                                                string author = @item.AuthorList; string[] splitauthor = author.Split(','); string auhtorlist = splitauthor[0];
+                                                                                if (!string.IsNullOrEmpty(auhtorlist))
+                                                                                <label for="lblnewauthor_@item.Pmid" aria-labelledby="@item.Pmid">@Html.Encode(auhtorlist), et al.</label>
+                                                                            }
+                                                                        </td>
+                                                                        <td class="year">
+                                                                            @if (@item.Displaydate != null)
+                                                                            {
+                                                                                if (@item.Displaydate.Length >= 4)
+                                                                                {
+                                                                                @item.Displaydate.Substring(0, 4)}
+                                                                                else
+                                                                                { @item.Displaydate}
+                                                                            }
+                                                                        </td>
+
+                                                                    </tr>
+                                                                </table>
+                                                                <div class="cleaner"></div>
+                                                                <div class="spacer5">&nbsp;</div>
+
+                                                                <div class="hr">&nbsp;</div>
+                                                                <br>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                 <span>Not Available</span>
+                                                            }
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif"  alt="collapse_genecits" class="Showhidegenecitations" aria-labelledby="@Model.Gene_citationslist.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Gene Citations:
+                                                        </div>
+                                                    </td>
+                                                    <td class="c2">
+                                                        <span id="showgenecits"></span>
+                                                        <div id="citations_long">
+                                                            <table>
+
+                                                                @if (Model.Gene_citationslist != null && Model.Gene_citationslist.Count() != 0)
+                                                                {
+                                                                    foreach (var item in Model.Gene_citationslist)
+                                                                    {
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (@item.ArticleTitle != null)
+                                                                            {
+                                                                                if (@item.ArticleTitle.Length >= 40)
+                                                                                { 
+                                                                                <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle.Substring(0, 40)..</a>
+                                                                                }
+                                                                                else
+                                                                                { <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle</a>}
+                                                                            }
+                                                                        </td>
+
+
+                                                                        <td class="author">
+                                                                            @if (@item.AuthorList != null)
+                                                                            {
+                                                                                <label for="lblnewauthor_@item.Pmid" aria-labelledby="@item.Pmid">@item.AuthorList</label>}
+                                                                        </td>
+
+
+                                                                        <td class="year">
+                                                                            @if (@item.Displaydate != null)
+                                                                            {
+                                                                                if (@item.Displaydate.Length >= 4)
+                                                                                {
+                                                                                @item.Displaydate.Substring(0, 4)}
+                                                                                else
+                                                                                { @item.Displaydate}
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>Not Available</span>
+                                                                }
+                                                            </table>
+
+                                                        </div>
+                                                        <div class="cleaner"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif"  alt="collapse_genelinks" class="Showhidegenelinks" aria-labelledby="@Model.GetGeneslinks.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Screening Resources<br>
+                                                            Links
+        :
+                                                        </div>
+                                                    </td>
+                                                    <td class="c2">
+                                                        <span id="showgenelinks"></span>
+                                                        <div id="srlinks_long">
+                                                            @if (Model.GetGeneslinks != null && Model.GetGeneslinks.Count() != 0)
+                                                            {
+                                                                <div class="popupLink" title="Popup Link">
+                                                                    <table>
+                                                                        @foreach (var item in Model.GetGeneslinks)
+                                                                        {
+                                                                            if (item != null)
+                                                                            { 
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <a target="_blank" href="@item.sclink">@item.sclink</a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            }
+                                                                        }
+                                                                    </table>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Not Available</span>
+                                                            }
+                                                            <br>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                }
+
+                                @if (Model.TestId != 0 && Model.checktest)
+                                {
+                                    <div class="titleBar">
+                                        <div class="titleHolder">Gene Test Display</div>
+                                        <div class="expanderHolder "><span class="ex-col minusicon">Collapse</span></div>
+                                    </div>
+                                 
+                                    <div class="contentcntnr">
+                                        <table class="dataTable" cellspacing="0" border="0" id="test_section">
+                                            <tbody>
+                                                <tr valign="top">
+                                                    <td class="c1">Test Name:</td>
+                                                    <td class="c2">
+                                                        @Html.DisplayFor(model => model.Name)
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif" alt="collapse_summary" class="Showhidetestsummary">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Summary: 
+                                                        </div>
+
+                                                    </td>
+                                                    @if (Model.Summary != null)
+                                                    {
+                                                        <td id="summary_short_test" class="c2">
+                                                            @if (Model.Summary.Length >= 160)
+                                                            {
+                                                                string summarytext = Model.Summary.Substring(0, 160);
+                                                                string summary = summarytext + "..";
+@* @Html.DisplayFor(c => summary)*@
+                                                                @Html.Raw(HttpUtility.HtmlDecode(summary))
+                                                                <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('summary_long_test').style.display='';" class="moreLink">more</a></span>
+                                                            }
+                                                            else
+                                                            {
+@* @Html.DisplayFor(model => model.Summary)*@
+                                                                @Html.Raw(HttpUtility.HtmlDecode(Model.Summary))
+                                                            }
+                                                        </td>
+                                                        <td id="summary_no" class="c2" style="display: none;"></td>
+                                                        <td id="summary_long_test" class="c2" style="display: none;">
+                                                            @Html.Raw(HttpUtility.HtmlDecode(Model.Summary))
+                                                            <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('summary_short_test').style.display='';" class="moreLink">less</a></span></td>
+
+                                                    }
+                                                </tr>
+
+                                                <tr valign="top">
+                                                    <td class="c1">List of Related Genes:</td>
+                                                    <td class="c2">
+                                                        @if (Model.GetGenesrelatedtoTest != null && Model.GetGenesrelatedtoTest.Count() != 0)
+                                                        {
+                                                            foreach (var item in Model.GetGenesrelatedtoTest)
+                                                            {
+                                                                if (@item.Text != null)
+                                                                {
+                                                            <a href="/personalizedmed/personalized_medicine/?geneid=@item.Value">@item.Text</a>
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Available</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif" alt="collapse_testcomnt" class="Showhidetestcomnt" aria-labelledby="@Model.GetTestComments.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Gene Test Comments:
+                                                        </div>
+                                                    </td>
+                                                    <td class="c2">
+                                                        <span id="showtestcomments"></span>
+                                                        <div id="comments_long_test">
+                                                            @if (Model.GetTestComments != null && Model.GetTestComments.Count() != 0)
+                                                            {
+                                                                int testinc = 1;
+                                                                foreach (var item in Model.GetTestComments)
+                                                                {
+                                                                <p>@item.Author<br>
+                                                                    @if (@item.CommnetDate != null)
+                                                                    {
+                                                                        @item.CommnetDate.ToString("MMMM yyyy")
+                                                                    }
+                                                                </p> 
+                                                                <table class="commentAttachmentsSmall" border="0" cellspacing="1">
+                                                                    <tbody>
+                                                                        <tr valign="top">
+                                                                            <th>Specialties / Topics / Subtopics</th>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                    if (item.GetTestspecialties != null)
+                                                                    {
+                                                                        foreach (var data in item.GetTestspecialties)
+                                                                        {
+                                                                            if (data != null)
+                                                                            {
+                                                                <label>@data.SpecialtyName-->@data.Topicname-->@data.Subtopicname</label> <br />}
+                                                                        }
+                                                                    }
+                                                                <br />
+@* <label for="lbl_@item.CommentID">@item.Commnet</label>*@
+                                                        
+                                                                    if (@item.Commnet != null)
+                                                                    {
+                                                                        if (@item.Commnet.Length < 160)
+                                                                        {
+                                                                <span>@item.Commnet</span>
+                                                                        }
+
+                                                                        if (@item.Commnet.Length >= 160)
+                                                                        {
+                                                                            string commenttext = item.Commnet.Substring(0, 160);
+                                                                            string comment = commenttext + "..";
+@*@Html.DisplayFor(c => comment)*@
+                                                                @Html.Raw(HttpUtility.HtmlDecode(comment))
+                                                                <span class="moreLink" id="Editorcoment_short_@testinc">
+                                                                    <a href="javascript:void(0);" onclick="document.getElementById('Editorcoment_short_@testinc').style.display='none'; document.getElementById('Editorcoment_long_@testinc').style.display='';">more</a>
+                                                                </span>
+                                                                <br />
+ 
+                                                                <span style="display: none" id="Editorcoment_long_@testinc">
+                                                                    @* <span>@item.Commnet</span>*@
+                                                                    @Html.Raw(HttpUtility.HtmlDecode(@item.Commnet))
+                                                                    <span class="moreLink">
+                                                                        <a href="javascript:void(0);"
+                                                                            onclick="document.getElementById('Editorcoment_short_@testinc').style.display=''; document.getElementById('Editorcoment_long_@testinc').style.display='none';">less</a>
+                                                                    </span>
+                                                                    <br />
+                                                                </span>
+                                                                        }
+                                                                        testinc++;
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Not Available</span>
+                                                            }
+                                                            <div class="spacer5">&nbsp;</div>
+                                                            <div class="hr">&nbsp;</div>
+                                                            <br>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif"  alt="collapse_testcits" class="Showhidetestcitations" aria-labelledby="@Model.Test_citationslist.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Gene Test Citations:
+                                                        </div>
+                                                    </td>
+                                                    <td class="c2">
+                                                        <span id="showtestcits"></span>
+                                                        <div class="citation" id="citations_long_test" style="width:100% !important;">
+                                                            <table>
+
+                                                                @if (Model.Test_citationslist != null && Model.Test_citationslist.Count() != 0)
+                                                                {
+                                                                    foreach (var item in Model.Test_citationslist)
+                                                                    {
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (@item.ArticleTitle != null)
+                                                                            {
+                                                                                if (@item.ArticleTitle.Length >= 40)
+                                                                                { 
+                                                                                <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle.Substring(0, 40)..</a>
+                                                                                }
+                                                                                else
+                                                                                { <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle</a>}
+                                                                            }
+                                                                        </td>
+
+
+                                                                        <td class="author">
+                                                                            @if (@item.AuthorList != null)
+                                                                            {
+                                                                                <label for="lblnewauthor_@item.Pmid" aria-labelledby="@item.Pmid">@item.AuthorList</label>}
+                                                                        </td>
+
+
+                                                                        <td class="year">
+                                                                            @if (@item.Displaydate != null)
+                                                                            {
+                                                                                if (@item.Displaydate.Length >= 4)
+                                                                                {
+                                                                                @item.Displaydate.Substring(0, 4)}
+                                                                                else
+                                                                                { @item.Displaydate}
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>Not Available</span>
+                                                                }
+                                                            </table>
+                                                        </div>
+                                                        <div class="cleaner"></div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif" alt="collapse_testeditorcomnt" class="Showhidetesteditorcomnt" aria-labelledby="@Model.GetRelatededitorsTestcomments.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Related Editors Choice Comments:
+                                                        </div>
+                                                    </td>
+                                                    <td class="c2">
+                                                        <span id="showrelatededitortest"></span>
+                                                        <div id="editor_comments_long_test">
+                                                            @if (Model.GetRelatededitorsTestcomments != null && Model.GetRelatededitorsTestcomments.Count() != 0)
+                                                            {
+                                                                int inc = 1;
+                                                                foreach (var item in Model.GetRelatededitorsTestcomments)
+                                                                {
+                                                                    if (item != null)
+                                                                    {
+                                                                <label>@item.EditorCommentAuthor &nbsp; @item.EditorCommentMonth &nbsp; @item.EditorCommentDate</label>
+                                                                
+                                                                    }
+                                                
+                                                                <table class="commentAttachmentsSmall" border="0" cellspacing="1">
+                                                                    <tbody>
+                                                                        <tr valign="top">
+                                                                            <th>Specialties / Topics / Subtopics</th>
+                                                                        </tr>
+                                                                        <tr valign="top">
+                                                                            <td class="borderless">
+                                                                                @if (item.GetTestspecialties != null)
+                                                                                {
+                                                                                    foreach (var data in item.GetTestspecialties)
+                                                                                    {
+                                                                                        if (data != null)
+                                                                                        {
+                                                                                    <label>@data.SpecialtyName-->@data.Topicname-->@data.Subtopicname</label> <br /> }
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            @if (@item.EditorCommnet != null)
+                                                                            { 
+                                                                                <td id="editorcomment_short_test_@inc" class="c2">
+                                                                                    @if (@item.EditorCommnet.Length >= 160)
+                                                                                    {
+                                                                                        string EditorCommnetext = item.EditorCommnet.Substring(0, 160);
+                                                                                        string EditorCommnets = EditorCommnetext + "..";
+@* @Html.DisplayFor(c => EditorCommnets)*@
+                                                                                        @Html.Raw(HttpUtility.HtmlDecode(EditorCommnets))
+                                                                                        <span class="morelink"><a href="javascript:void(0);" onclick="document.getElementById('editorcomment_short_test_@inc').style.display='none'; document.getElementById('editorcomment_long_test_@inc').style.display='block';" class="moreLink">more</a></span>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+@*<span> @item.EditorCommnet</span>*@  @Html.Raw(HttpUtility.HtmlDecode(@item.EditorCommnet))
+                                                                                    }
+                                                                                </td> 
+                                                                                <td id="editorcomment_long_test_@inc" class="c2" style="display: none;">
+                                                                                    @*  <span>@item.EditorCommnet</span>*@
+                                                                                    @Html.Raw(HttpUtility.HtmlDecode(@item.EditorCommnet))
+                                                                                    <span class="morelink"><a href="javascript:void(0);" onclick="document.getElementById('editorcomment_long_test_@inc').style.display='none'; document.getElementById('editorcomment_short_test_@inc').style.display='block';" class="moreLink">less</a></span>
+
+                                                                                </td>
+                                                                                    inc++;
+                                                                            }
+@*   @item.EditorCommnet*@
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                            
+                                                                <br>
+                                                                <div class="cleaner"></div>
+                                                                <div class="spacer2">&nbsp;</div>
+
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (@item.ArticleTitle != null)
+                                                                            {
+                                                                                if (@item.ArticleTitle.Length >= 40)
+                                                                                { 
+                                                                                <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle.Substring(0, 40)..</a>
+                                                                                }
+                                                                                else
+                                                                                { <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid&FromPMedline=true">@item.ArticleTitle</a>}
+                                                                            }
+                                                                        </td>
+                                                                        <td class="author">
+                                                                            @if (@item.AuthorList != null)
+                                                                            {
+                                                                                string author = @item.AuthorList; string[] splitauthor = author.Split(','); string auhtorlist = splitauthor[0];
+                                                                                if (!string.IsNullOrEmpty(auhtorlist))
+                                                                                <label for="lblnewauthor_@item.Pmid" aria-labelledby="@item.Pmid">@Html.Encode(auhtorlist), et al.</label>
+                                                                            }
+                                                                        </td>
+                                                                        <td class="year">
+                                                                            @if (@item.Displaydate != null)
+                                                                            {
+                                                                                if (@item.Displaydate.Length >= 4)
+                                                                                {
+                                                                                @item.Displaydate.Substring(0, 4)}
+                                                                                else
+                                                                                { @item.Displaydate}
+                                                                            }
+                                                                        </td>
+
+                                                                    </tr>
+                                                                </table>
+                                                                
+                                                                
+                                                                <div class="cleaner"></div>
+                                                                <div class="spacer5">&nbsp;</div>
+
+                                                                <div class="hr">&nbsp;</div>
+                                                                <br>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Not Available</span>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
+                                                    <td class="c1" valign="top">
+                                                        <div class="expander">
+                                                            <img width="11" height="11" border="0" src="~/Content/images/minus.gif"  alt="collapse_testlinks" class="Showhidetestlinks" aria-labelledby="@Model.GetTestslinks.Count()">
+                                                        </div>
+                                                        <div class="expanderLabel">
+                                                            Screening Resources<br>
+                                                            Links :
+                                                        </div>
+                                                    </td>
+                                                    <td class="c2">
+                                                        <span id="showtestlinks"></span>
+                                                        <div id="srlinks_long_test">
+                                                            @if (Model.GetTestslinks != null && Model.GetTestslinks.Count() != 0)
+                                                            {
+                                                                <div class="popupLink" title="Popup Link">
+                                                                    <table>
+                                                                        @foreach (var item in Model.GetTestslinks)
+                                                                        {
+                                                                            if (item != null)
+                                                                            { 
+                                                                            <tr>
+                                                                                <td>
+                                                                                    @if (@item.sclink.Contains("http") || @item.sclink.Contains("https"))
+                                                                                    {
+                                                                                        <a href="@item.sclink" target="_blank">@item.sclink</a>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <a href="http://@item.sclink" target="_blank">http://@item.sclink</a>
+                                                                                    }
+                                                                                </td>
+                                                                            </tr>
+                                                                            }
+                                                                        }
+                                                                    </table>
+                                                                </div> 
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Not Available</span>
+                                                            }
+                                                            <br>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+
+
+
+                        </div>
+                    </td>
+                    <td valign="top" align="right"><a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                        <img src="~/Content/images/160x600-ad.jpg" /></a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="Gene_links">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+
+        $('.ex-col').on('click', function () {
+            $(this).parent().parent('div').next('div.contentcntnr').slideToggle('');
+
+            $(this).toggleClass('plusicon');
+            if ($(this).text() == 'Expand') {
+                $(this).text('Collapse');
+
+            } else {
+                $(this).text('Expand');
+
+            }
+
+        });
+
+        function Editclinicallinks() {
+            var Eid = $('#hdgeneid').val();
+            var url = ServerURL + '/personalizedmed/Editclinicallinks/';
+            $.get(url, { GeneId: Eid }, function (html) {
+                $('#Gene_links').html(html);
+                $('#Gene_links').dialog({
+                    modal: true,
+                    title: "Clinical Science Links",
+                    show: { effect: 'drop', direction: 'up' },
+                    width: 600,
+                    height: 630,
+                    close: function (event, ui) {
+                        $(this).html("");
+                    }
+                });
+            });
+        }
+
+
+        function find_gene() {
+
+            if ($.trim($('#ddl_genes').val()) != "") {
+                window.location.href = ServerURL + '/personalizedmed/personalized_medicine/?geneid=' + $('#ddl_genes').val()
+                return true;
+            }
+            if ($.trim($('#ddl_test').val()) != "") {
+                window.location.href = ServerURL + '/personalizedmed/personalized_medicine/?testid=' + $('#ddl_test').val() + ''
+                return true;
+            }
+            if ($.trim($('#ddl_aliasgenes').val()) != "") {
+                var uid = $('#ddl_aliasgenes').val();
+                var id = []; id = uid.split('_');
+                if (id.length > 0)
+                    window.location.href = ServerURL + '/personalizedmed/personalized_medicine/?geneid=' + id[1] + '&aliasid=' + id[0]
+            }
+        }
+
+        $('#ddl_genes').change(function () {
+
+            if ($('#ddl_genes option:selected').text() != "--Select--") {
+                var e;
+                e = {
+                    GeneId: $('#ddl_genes').val(),
+                };
+                var val = JSON.stringify(e);
+                $.ajax({
+                    url: ServerURL + '/personalizedmed/GetGenealiasbyGeneId/', dataType: "json", data: val, contentType: "application/json; charset=utf-8", type: "POST",
+                    success: function (res) {
+
+                        var items, list, a, b; a = res.pmusermodel.length; b = res.genetests.length;
+                        $('#ddl_aliasgenes').empty(); items = "<option value=''>" + '--Select--' + "</option>"
+                        $.each(res.pmusermodel, function (i, item) {
+                            items += "<option value=\"" + item.aliasid + "\">" + item.Attachedgene + "</option>";
+                            // $('#ddl_aliasgenes').empty().append($("<option/>", { text: item.Text, value: item.Value })); 
+                        });
+                        $("#ddl_aliasgenes").append($("<option>", { text: "--Select--", value: "" })).html(items);
+                        $('#lblgenealiascnt').text(a + " aliases found");
+                        $('#lblgenescnt').text('');
+
+                        list = "<option value=''>" + '--Select--' + "</option>"
+                        $('#ddl_test').empty();
+                        $.each(res.genetests, function (i, item) {
+                            list += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+
+                        });
+                        $("#ddl_test").html(list);
+                        $('#lbltestscnt').text(b + " tests found"); $('#lblgenescnt').text('');
+                    }
+                });
+            }
+            else {
+                var e;
+                e = {
+                    GeneId: $('#ddl_genes').val(),
+                };
+                var val = JSON.stringify(e);
+                $.ajax({
+                    url: ServerURL + '/personalizedmed/GetGenealiasbyGeneId/', dataType: "json", data: val, contentType: "application/json; charset=utf-8", type: "POST",
+                    success: function (res) {
+
+                        var items, list, a, b; a = res.GetGenealiases.length; b = res.GeneTestlist.length;
+                        $('#ddl_aliasgenes').empty(); items = "<option value=''>" + '--Select--' + "</option>",
+                        $.each(res.GetGenealiases, function (i, item) {
+                            items += "<option value=\"" + item.aliasid + "\">" + item.GeneAlias + "</option>";
+                        });
+                        $("#ddl_aliasgenes").html(items);
+                        $('#lblgenealiascnt').text(a + " aliases found"); $('#lblgenescnt').text('');
+
+                        list = "<option value=''>" + '--Select--' + "</option>"
+                        $.each(res.GeneTestlist, function (i, item) {
+                            list += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddl_test").html(list);
+                        $('#lbltestscnt').text(b + " tests found"); $('#lblgenescnt').text('');
+                    }
+                });
+            }
+        });
+
+        $('#ddl_test').change(function () {
+
+            if ($('#ddl_test option:selected').text() != "--Select--") {
+                var e;
+                e = {
+                    TestId: $('#ddl_test').val(),
+                }; var val = JSON.stringify(e);
+                $.ajax({
+                    url: ServerURL + '/personalizedmed/GetGenealiasbyTestid/', dataType: "json", data: val, contentType: "application/json; charset=utf-8", type: "POST",
+                    success: function (res) {
+
+                        var items, list, a, b; a = res.genestest.length; b = res.GetAttachedGenealias.length;
+                        $('#ddl_genes').empty();
+                        items = "<option value=''>" + '--Select--' + "</option>"
+                        $.each(res.genestest, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddl_genes").html(items);
+                        $('#lblgenescnt').text(a + " genes found");
+                        $('#lbltestscnt').text('');
+
+                        list = "<option value=''>" + '--Select--' + "</option>"
+                        $('#ddl_aliasgenes').empty();
+                        $.each(res.GetAttachedGenealias, function (i, item) {
+                            list += "<option value=\"" + item.aliasid + "\">" + item.Attachedgene + "</option>";
+                        });
+                        $("#ddl_aliasgenes").html(list);
+                        $('#lblgenealiascnt').text(b + " aliases found"); $('#lbltestscnt').text('');
+                    }
+                });
+            }
+            else {
+
+                var e;
+                e = {
+                    TestId: $('#ddl_test').val(),
+                }; var val = JSON.stringify(e);
+                $.ajax({
+                    url: ServerURL + '/personalizedmed/GetGenealiasbyTestid/', dataType: "json", data: val, contentType: "application/json; charset=utf-8", type: "POST",
+                    success: function (res) {
+
+                        var items, list, a, b; a = res.Geneslist.length; b = res.GetGenealiases.length;
+                        $('#ddl_genes').empty();
+                        items = "<option value=''>" + '--Select--' + "</option>"
+                        $.each(res.Geneslist, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddl_genes").html(items);
+                        $('#lblgenescnt').text(a + " genes found"); $('#lbltestscnt').text('');
+
+                        list = "<option value=''>" + '--Select--' + "</option>"
+                        $('#ddl_aliasgenes').empty();
+                        $.each(res.GetGenealiases, function (i, item) {
+                            list += "<option value=\"" + item.aliasid + "\">" + item.GeneAlias + "</option>";
+                        });
+                        $("#ddl_aliasgenes").html(list);
+                        $('#lblgenealiascnt').text(b + " aliases found"); $('#lbltestscnt').text('');
+                    }
+                });
+            }
+        });
+
+        $('#ddl_aliasgenes').change(function () {
+            if ($('#ddl_aliasgenes option:selected').text() != "--Select--") {
+
+                var e, uid; uid = $('#ddl_aliasgenes').val();
+                var id = []; id = uid.split('_');
+                e = {
+                    GeneId: id[1], aliasid: id[0]
+                }; var val = JSON.stringify(e);
+                $.ajax({
+                    url: ServerURL + '/personalizedmed/GetGeneandTestsbyaliasID/', dataType: "json", data: val, contentType: "application/json; charset=utf-8", type: "POST",
+                    success: function (res) {
+
+                        var items, list, a, b; a = res.getgenesbyaliasid.length; b = res.genestest.length;
+                        $('#ddl_genes').empty();
+                        items = "<option value=''>" + '--Select--' + "</option>"
+                        $.each(res.getgenesbyaliasid, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddl_genes").html(items);
+                        $('#lblgenescnt').text(a + " genes found"); $('#lblgenealiascnt').text('');
+
+                        list = "<option value=''>" + '--Select--' + "</option>"
+                        $('#ddl_test').empty();
+                        $.each(res.genestest, function (i, item) {
+                            list += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddl_test").html(list);
+                        $('#lbltestscnt').text(b + " tests found"); $('#lblgenealiascnt').text('');
+                    }
+                });
+            }
+            else {
+
+                var e, uid; uid = $('#ddl_aliasgenes').val();
+                var id = []; id = uid.split('_');
+                e = {
+                    GeneId: id[1], aliasid: id[0]
+                }; var val = JSON.stringify(e);
+                $.ajax({
+                    url: ServerURL + '/personalizedmed/GetGeneandTestsbyaliasID/', dataType: "json", data: val, contentType: "application/json; charset=utf-8", type: "POST",
+                    success: function (res) {
+
+                        var items, list, a, b; a = res.Geneslist.length; b = res.GeneTestlist.length;
+                        $('#ddl_genes').empty();
+                        items = "<option value=''>" + '--Select--' + "</option>"
+                        $.each(res.Geneslist, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddl_genes").html(items);
+                        $('#lblgenescnt').text(a + " genes found"); $('#lblgenealiascnt').text('');
+
+                        list = "<option value=''>" + '--Select--' + "</option>"
+                        $('#ddl_test').empty();
+                        $.each(res.GeneTestlist, function (i, item) {
+                            list += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+                        $("#ddl_test").html(list);
+                        $('#lbltestscnt').text(b + " tests found"); $('#lblgenealiascnt').text('');
+                    }
+                });
+            }
+        });
+
+
+        function clear_selectors() {
+            window.location.href = ServerURL + '/personalizedmed/personalized_medicine/'
+            //$('#detailssection').hide().empty();
+            //$("#ddl_genes option:eq(0)").val(0).attr("selected", true);
+            //$("#ddl_test option:eq(0)").val(0).attr("selected", true);
+            //$("#ddl_aliasgenes option:eq(0)").val(0).attr("selected", true);
+        }
+    </script>
+    
+    <script type="text/javascript">
+        $('.Showhideclinical').on('click', function () {
+
+            var getattr = $(this).attr('alt');
+            var getlinks = $(this).attr('aria-labelledby') + " links";
+            if (getattr == "collapse_clslnk") {
+                $('#displaylinks').hide();
+                $('#sclinks_long').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'expand_clslnk')
+            }
+            else {
+                if ($(this).attr('aria-labelledby') == 0 || $(this).attr('aria-labelledby') == null) {
+                    $('#displaylinks').text('Not Available');
+                }
+                else { $('#displaylinks').show().text(getlinks); }
+                if ($(this).attr('aria-labelledby') == 0 && $('#displaylinks').text() == "Not Available") {
+                    $('#displaylinks').show().text(getlinks);
+                }
+                $('#sclinks_long').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'collapse_clslnk')
+            }
+        });
+
+        $('.Showhidesummary').on('click', function () {
+            var getattr = $(this).attr('alt');
+            if (getattr == "collapse_summary") {
+                $('#summary_short').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_summary')
+            }
+            else { $('#summary_short').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_summary') }
+        });
+
+        $('.Showhidegenecomnt').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " comment";
+            if (getattr == "collapse_genecomnt") {
+                $('#showgenecomments').text(getcomments); $('#comments_long').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_genecomnt')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showgenecomments').text('Not Available');
+                }
+                else { $('#showgenecomments').text(''); }
+                $('#comments_long').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_genecomnt')
+            }
+        });
+
+        $('.Showhidegeneeditorcomnt').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " comment";
+            if (getattr == "collapse_geneeditorcomnt") {
+                $('#showrelatededitorcoments').text(getcomments); $('#editor_comments_long').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_geneeditorcomnt')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showrelatededitorcoments').text('Not Available');
+                }
+                else { $('#showrelatededitorcoments').text(''); }
+                $('#editor_comments_long').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_geneeditorcomnt')
+            }
+        });
+
+        $('.Showhidegenecitations').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " citations";
+            if (getattr == "collapse_genecits") {
+                $('#showgenecits').text(getcomments); $('#citations_long').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_genecits')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showgenecits').text('Not Available');
+                }
+                else { $('#showgenecits').text(''); }
+                $('#citations_long').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_genecits')
+            }
+        });
+
+        $('.Showhidegenelinks').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " links";
+            if (getattr == "collapse_genelinks") {
+                $('#showgenelinks').text(getcomments); $('#srlinks_long').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_genelinks')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showgenelinks').text('Not Available');
+                }
+                else { $('#showgenelinks').text(''); }
+                $('#srlinks_long').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_genelinks')
+            }
+        });
+
+
+        $('.Showhidetestsummary').on('click', function () {
+            var getattr = $(this).attr('alt');
+            if (getattr == "collapse_summary") {
+                $('#summary_short_test').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_summary')
+            }
+            else { $('#summary_short_test').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_summary') }
+        });
+
+
+        $('.Showhidetestcomnt').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " comment";
+            if (getattr == "collapse_testcomnt") {
+                $('#showtestcomments').text(getcomments); $('#comments_long_test').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_testcomnt')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showtestcomments').text('Not Available');
+                }
+                else { $('#showtestcomments').text(''); }
+                $('#comments_long_test').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_testcomnt')
+            }
+        });
+
+
+        $('.Showhidetesteditorcomnt').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " comment";
+            if (getattr == "collapse_testeditorcomnt") {
+                $('#showrelatededitortest').text(getcomments); $('#editor_comments_long_test').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_testeditorcomnt')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showrelatededitortest').text('Not Available');
+                }
+                else { $('#showrelatededitortest').text(''); }
+                $('#editor_comments_long_test').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_testeditorcomnt')
+            }
+        });
+
+
+        $('.Showhidetestcitations').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " citations";
+            if (getattr == "collapse_testcits") {
+                $('#showtestcits').text(getcomments); $('#citations_long_test').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_testcits')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showtestcits').text('Not Available');
+                }
+                else { $('#showtestcits').text(''); }
+                $('#citations_long_test').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_testcits')
+            }
+        });
+
+        $('.Showhidetestlinks').on('click', function () {
+            var getattr = $(this).attr('alt');
+            var getcomments = $(this).attr('aria-labelledby') + " links";
+            if (getattr == "collapse_testlinks") {
+                $('#showtestlinks').text(getcomments); $('#srlinks_long_test').hide(); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand_testlinks')
+            }
+            else {
+                if (getcomments == 0 || getcomments == null) {
+                    $('#showtestlinks').text('Not Available');
+                }
+                else { $('#showtestlinks').text(''); }
+                $('#srlinks_long_test').show(); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse_testlinks')
+            }
+        });
+        $('.dataTable>tbody>tr:nth-child(even)').css('background-color', 'white');
+    </script>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+}

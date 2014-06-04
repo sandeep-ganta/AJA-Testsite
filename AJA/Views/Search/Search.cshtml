@@ -1,0 +1,685 @@
+﻿@*Added for Search using Search lines and limits by -Ravi M *@
+
+@model DAL.SearchBL.SearchForm
+@{
+    ViewBag.Title = "Search MEDLINE ®";
+           
+}
+
+<div class="commonContent">
+
+    <div id="load" style="display: none;" align="center">
+
+        <img id="loading" src="/Content/images/loading.gif" alt="Updating ..." />
+
+    </div>
+
+    <div id="unload">
+
+        <div class="floatleft" style="width: 85%">
+            @using (Html.BeginForm("Search", "Search", new { @id = "Search_Resultsform" }))
+            {
+                @Html.HiddenFor(model => model.MyQueryValue, new { @id = "SearchID" })
+                @Html.HiddenFor(model => model.SearchName, new { @id = "SearchName" })
+                <div>
+                    <div class="udctnt">
+                        <h1>SEARCH MEDLINE<sup><small>®</small></sup></h1>
+                        <p><i>Optionally start with a saved query:</i></p>
+
+                        @Html.DropDownListFor(c => c.MyQueryValue, Model.MyQueries, "---Saved Queries---", new { @id = "ddl_MyQueries" }) &nbsp; &nbsp;
+                    @if (Model.MyQueryValue != 0)
+                    {
+                        <div style="word-break:break-all">
+                        @Html.DisplayFor(m => m.ResultQuery.Description)
+                            </div>
+                    }
+                        <br />
+                    </div>
+                    <br />
+                    <div>
+
+                        <table class="Maintbl" name="Main Search Table" width="1000" cellspacing="0" cellpadding="10" style="border: 1px solid #ccc; background-color: #f5f5f5;">
+                            <tr>
+                                <div style="display: none; color: red;" id="validationterm">
+                                    You must Specify a valid Search term
+                                </div>
+                                <td colspan="2">
+                                    <span class="SearchHeading">Search for:</span>
+
+                                </td>
+                            </tr>
+                            @if (Model.ResultQuery != null)
+                            {
+                                if (Model.ResultQuery.Op1 == null)
+                                { 
+                                <tr>
+                                    <td>
+                                        <label>No Results Existed</label>
+                                    </td>
+                                </tr>
+                                }
+
+                                if (Model.ResultQuery.Op1 != null && Model.MyQueryValue != 0)
+                                {
+                                
+                                <tr id="searchTr_1" class="SearchForTR">
+
+                                    <td style="vertical-align: top; text-align: Left; width: 45%">
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Op1, new SelectList(new DAL.SearchBL.SearchForm().GetSearchFor(), "val", "Title"), new { @id = "_op1", @class = "srfrddl" })
+                                        @Html.TextBoxFor(m => m.ResultQuery.Terms1, new { @style = "width:132px", @id = "_term1", @class = "searchtxt" })
+                                        <span class="formTxt">&nbsp; in &nbsp;<span>
+                                        </span></span>
+
+                                    </td>
+
+                                    <td>
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Tab1, new SelectList(new DAL.SearchBL.SearchForm().GetSearchIn(), "val", "Title"), new { @id = "_tab1", @class = "srchinddl" })
+
+                                        <input type="button" class="clearsearchln" name="clear1" value="Clear Search Line" style="font-size: 11px">
+                                        <input type="button" class="addsearchln" name="addline" value="Add Search Line" style="font-size: 11px; display: none">
+                                        <br />
+
+                                    </td>
+
+                                </tr>
+                                
+                                }
+
+                                if (Model.ResultQuery.Op2 != null && Model.MyQueryValue != 0)
+                                {
+                                
+                                <tr id="searchTr_2" class="SearchForTR">
+
+                                    <td valign="top" align="Left" width="45%">
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Op2, new SelectList(new DAL.SearchBL.SearchForm().GetSearchFor(), "val", "Title"), new { @id = "_op2", @class = "srfrddl" })
+
+                                        @Html.TextBoxFor(m => m.ResultQuery.Terms2, new { @style = "width:132px", @id = "_term2", @class = "searchtxt" })
+                                        <span class="formTxt">&nbsp; in &nbsp;<span>
+                                        </span></span>
+
+                                    </td>
+
+                                    <td>
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Tab2, new SelectList(new DAL.SearchBL.SearchForm().GetSearchIn(), "val", "Title"), new { @id = "_tab2", @class = "srchinddl" })
+
+                                        <input type="button" class="clearsearchln" name="clear2" value="Clear Search Line" style="font-size: 11px">
+
+                                        <input type="button" class="addsearchln" name="addline" value="Add Search Line" style="font-size: 11px; display: none">
+
+                                        <br />
+
+
+                                    </td>
+
+                                </tr>
+                            
+                                }
+
+                                if (Model.ResultQuery.Op3 != null && Model.MyQueryValue != 0)
+                                {
+                                
+                                <tr id="searchTr_3" class="SearchForTR" width="45%">
+
+                                    <td valign="top" align="Left">
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Op3, new SelectList(new DAL.SearchBL.SearchForm().GetSearchFor(), "val", "Title"), new { @id = "_op3", @class = "srfrddl" })
+
+                                        @Html.TextBoxFor(m => m.ResultQuery.Terms3, new { @style = "width:132px", @id = "_term3", @class = "searchtxt" })
+                                        <span class="formTxt">&nbsp; in &nbsp;<span>
+                                        </span></span>
+                                    </td>
+                                    <td>
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Tab3, new SelectList(new DAL.SearchBL.SearchForm().GetSearchIn(), "val", "Title"), new { @id = "_tab3", @class = "srchinddl" })
+
+                                        <input type="button" class="clearsearchln" name="clear3" value="Clear Search Line" style="font-size: 11px">
+
+                                        <input type="button" class="addsearchln" name="addline" value="Add Search Line" style="font-size: 11px; display: none">
+                                    </td>
+
+                                </tr>
+
+                                }
+
+                                if (Model.ResultQuery.Op4 != null && Model.MyQueryValue != 0)
+                                {
+                                
+                                <tr id="searchTr_4" class="SearchForTR" width="45%">
+
+                                    <td valign="top" align="Left">
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Op4, new SelectList(new DAL.SearchBL.SearchForm().GetSearchFor(), "val", "Title"), new { @id = "_op4", @class = "srfrddl" })
+
+                                        @Html.TextBoxFor(m => m.ResultQuery.Terms4, new { @style = "width:132px", @id = "_term4", @class = "searchtxt" })
+                                        <span class="formTxt">&nbsp; in &nbsp;<span>
+                                        </span></span>
+
+                                    </td>
+
+                                    <td>
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Tab4, new SelectList(new DAL.SearchBL.SearchForm().GetSearchIn(), "val", "Title"), new { @id = "_tab4", @class = "srchinddl" })
+
+                                        <input type="button" class="clearsearchln" name="clear4" value="Clear Search Line" style="font-size: 11px">
+
+                                        <input type="button" class="addsearchln" name="addline" value="Add Search Line" style="font-size: 11px; display: none">
+                                    </td>
+
+                                </tr>
+                            
+                                }
+
+                                if (Model.ResultQuery.Op5 != null && Model.MyQueryValue != 0)
+                                {
+                                
+                                <tr id="searchTr_5" class="SearchForTR" width="45%">
+
+                                    <td valign="top" align="Left">
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Op5, new SelectList(new DAL.SearchBL.SearchForm().GetSearchFor(), "val", "Title"), new { @id = "_op5", @class = "srfrddl" })
+
+                                        @Html.TextBoxFor(m => m.ResultQuery.Terms5, new { @style = "width:132px", @id = "_term5", @class = "searchtxt" })
+                                        <span class="formTxt">&nbsp; in &nbsp;<span>
+                                        </span></span>
+
+                                    </td>
+
+                                    <td>
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Tab5, new SelectList(new DAL.SearchBL.SearchForm().GetSearchIn(), "val", "Title"), new { @id = "_tab5", @class = "srchinddl" })
+
+                                        <input type="button" class="clearsearchln" name="clear5" value="Clear Search Line" style="font-size: 11px">
+
+                                        <input type="button" class="addsearchln" name="addline" value="Add Search Line" style="font-size: 11px; display: none">
+                                    </td>
+
+                                </tr>
+                            
+                                }
+
+                                if (Model.ResultQuery.Op6 != null && Model.MyQueryValue != 0)
+                                {
+                                
+                                <tr id="searchTr_6" class="SearchForTR" width="45%">
+
+                                    <td valign="top" align="Left">
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Op6, new SelectList(new DAL.SearchBL.SearchForm().GetSearchFor(), "val", "Title"), new { @id = "_op6" })
+
+                                        @Html.TextBoxFor(m => m.ResultQuery.Terms6, new { @style = "width:132px", @id = "_term6" })
+                                        <span class="formTxt">&nbsp; in &nbsp;<span>
+                                        </span></span>
+
+                                    </td>
+                                    <td>
+
+                                        @Html.DropDownListFor(m => m.ResultQuery.Tab6, new SelectList(new DAL.SearchBL.SearchForm().GetSearchIn(), "val", "Title"), new { @id = "_tab6" })
+
+                                        <input type="button" class="clearsearchln" name="clear6" value="Clear Search Line" style="font-size: 11px">
+
+                                        <input type="button" class="addsearchln" name="addline" value="Add Search Line" style="font-size: 11px; display: none">
+                                    </td>
+
+                                </tr>
+                            
+                                }
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <span id="_disc" class="cogNote" style="font-size: 8pt;">Note: Searches against Title or Abstract are presently limited to citations from 2001/01/01 or more recent; this limitation will be removed in an upcoming improvement to our site. We apologize for the inconvenience.</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                            
+                                <tr id="searchTr_1" class="SearchForTR">
+
+                                    <td width="45%" align="Left">
+
+                                        @Html.DropDownListFor(m => m.op1, new SelectList(new DAL.SearchBL.SearchForm().GetSearchFor(), "val", "Title"), new { @id = "_op1", @class = "srfrddl" })
+                                        @Html.TextBoxFor(m => m.term1, new { @style = "width:132px", @id = "_term1", @class = "searchtxt" })
+                                        <span class="formTxt">&nbsp; in &nbsp;<span>
+                                        </span></span>
+                                    </td>
+
+                                    <td>
+                                        @Html.DropDownListFor(m => m.tab1, new SelectList(new DAL.SearchBL.SearchForm().GetSearchIn(), "val", "Title"), new { @id = "_tab1", @class = "srchinddl" })
+
+                                        <input type="button" class="clearsearchln" name="clear1" value="Clear Search Line" style="font-size: 11px">
+                                        <input type="button" class="addsearchln" name="addline" value="Add Search Line" style="font-size: 11px">
+                                        <br />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <span id="_disc" class="cogNote" style="font-size: 8pt;">Note: Searches against Title or Abstract are presently limited to citations from 2001/01/01 or more recent; this limitation will be removed in an upcoming improvement to our site. We apologize for the inconvenience.</span>
+                                    </td>
+                                </tr>
+                                                       
+                            }
+                            <tr>
+                                <td align="left">
+                                    <div id="limitsMsghide" style="display: none"><i>(Limits in Effect)</i></div>
+                                    <div id="limitshow"><i>Optionally limit your query:(Limits in Effect)</i></div>
+                                    <input type="button" name="showlimits" value="Show Search Limits" class="register_btn" id="Showsrch">
+                                    <input type="button" name="showlimits" value="Hide Search Limits" class="register_btn" id="Hidesrch" style="display: none">
+                                </td>
+
+                                <td align="right" valign="bottom" style="text-align: right">
+                                    <input type="button" name="resetlines" value="Reset Search Lines" class="register_btn" id="Resetbtn">
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <div id="Limits" style="display: none">
+
+                        <table name="Search Limits Table" width="1000" cellspacing="0" cellpadding="10" style="border: 1px solid #ccc; background-color: #f2f2f2; margin-top: 10px">
+
+                            <tr>
+                                <td colspan="3"><span style="font-family: Arial,Helvetica,Sans-Serif; font-size: 12pt; font-style: italic; font-weight: bold;">Limit your search to the items that match the following criteria:</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>@Html.DropDownListFor(m => m.ResultQuery.PublicationTypeMask, new SelectList(new DAL.SearchBL.SearchForm().GetPublicationTypes(), "val", "Title"), new { @id = "PublicationType" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.PublicationType)</td>
+                                <td>@Html.DropDownListFor(m => m.ResultQuery.SubjectAgeMask, new SelectList(new DAL.SearchBL.SearchForm().GetSubjectAges(), "val", "Title"), new { @id = "SubjectAge" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.SubjectAge)</td>
+                                <td>
+                                    @Html.DropDownListFor(m => m.ResultQuery.SpeciesMask, new SelectList(new DAL.SearchBL.SearchForm().GetSpecies(), "val", "Title"), new { @id = "Species" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Species)</td>
+                            </tr>
+
+                            <tr>
+                                <td>@Html.DropDownListFor(m => m.ResultQuery.LanguageMask, new SelectList(new DAL.SearchBL.SearchForm().GetLanguage(), "val", "Title"), new { @id = "Language" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Language)</td>
+                                <td>@Html.DropDownListFor(m => m.ResultQuery.GenderMask, new SelectList(new DAL.SearchBL.SearchForm().GetGender(), "val", "Title"), new { @id = "Gender" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Gender)</td>
+                                <td>
+                                    @Html.CheckBoxFor(m => m.AbstractMask, new { id = "AbstractMask" }) only items with abstracts</td>
+                            </tr>
+
+                            <tr>
+                                <td>Published in the last:<br />
+                                    @Html.DropDownListFor(m => m.ResultQuery.PaperAge, new SelectList(new DAL.SearchBL.SearchForm().GetPaperAge(), "val", "Title"), new { @id = "PaperAge" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.PaperAge)
+                                    <br />
+                                </td>
+
+                                <td align="left">Published between the years:<br />
+
+                                    <select class="formObj" name="DateStart" id="DateStart" size="1" onchange="resetAges(this)" style="width: 70px">
+
+
+                                        <option value="1960" selected="">----</option>
+
+                                        @for (int i = 2001; i <= DateTime.Now.Year; i++)
+                                        {
+                                            if (@Model.ResultQuery != null && @Model.ResultQuery.DateStart != null)
+                                            {
+                                                if (@Model.ResultQuery.DateStart == i)
+                                                {
+                                            <option value="@i" selected="selected" >@i</option>
+                                           
+                                                }
+                                                else
+                                                {   <option value="@i" >@i</option> }
+                                            }
+                                            else
+                                            {<option value="@i" >@i</option> }
+                                        }
+
+                                    </select>
+
+                                    and 
+
+
+						<!-- Publish date end of range. -->
+
+                                    <select class="formObj" name="DateEnd" id="DateEnd" size="1" onchange="resetAges(this)" style="width: 70px">
+
+                                        <option value="2013">----</option>
+                                        @{ var dateEnd = false;}
+                                        @for (int i = 2001; i <= DateTime.Now.Year; i++)
+                                        {
+                                            if (@Model.ResultQuery != null && @Model.ResultQuery.DateEnd != null)
+                                            {
+                                                if (@Model.ResultQuery.DateEnd == i)
+                                                {
+                                            <option value="@i" selected="selected" >@i</option>
+                                           
+                                                }
+                                                else
+                                                {   <option value="@i" >@i</option> }
+                                            }
+                                            else
+                                            {<option value="@i" >@i</option> }
+                                        }
+                                        @if (!dateEnd)
+                                        {<option value="2013" selected="">Now</option>}
+                                        else
+                                        {<option value="2013">Now</option>}
+
+                                    </select>
+
+                                </td>
+                                <td align="right" style="text-align: right">
+                                    @Html.ActionLink("Reset Search Limits", "Search", "Search", null, new { @class = "register_btn", @id = Model.MyQueryValue })
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <table width="582" border="0" cellpadding="0" cellspacing="0">
+
+                        <tbody>
+                            <tr>
+                                <td height="40" align="center" valign="bottom" style="text-align: right">
+
+                                    <input type="button" value="Search" id="btnSearchMedline" class="register_btn">
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+        <div class="floatright">
+            <div>
+                <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                    <img src="~/Content/images/160x600-ad.jpg" /></a>
+            </div>
+        </div>
+
+    </div>
+    <div class="clear"></div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var i = 2;
+        var gtr = $(document).find(".SearchForTR").first();
+        if ($("#ddl_MyQueries option:selected").val() != 0) {
+            $("#Showsrch,#limitshow").hide();
+            $("#Hidesrch,#limitsMsghide").show();
+            $("#Limits").show('blind');
+
+        }
+
+        $(document).on("click", ".addsearchln", function () {
+
+            var rowno = $("[id*=searchTr_]").length;
+            var clone = gtr.clone();
+            var tr = $(document).find("#searchTr_" + rowno);
+            $(".Maintbl").find(".addsearchln").hide()
+            rowno++;
+            if (rowno < 7) {
+                clone.find(".addsearchln").show();
+                clone.attr("id", "searchTr_" + rowno);
+                clone.find("select.srfrddl").attr("id", "_op" + rowno);
+                clone.find("select.srchinddl").attr("id", "_tab" + rowno);
+                clone.find("input.searchtxt").attr("id", "_term" + rowno);
+                clone.find("input.searchtxt").val('');
+
+                // To reset op_ DB values
+                clone.find("#_op" + rowno).empty();
+                clone.find("#_op" + rowno).append('<option value="all">ALL of:</option><option value="any">ANY of:</option><option value="not">NOT (Exclude):</option>');
+                // tr.before(clone);
+                tr.after(clone);
+                if (rowno == 6) {
+
+                    $(".Maintbl").find(".addsearchln").hide()
+                }
+            }
+
+        });
+
+        $(document).on("change", ".srchinddl", function () {
+
+            var sel = $(this).val();
+            var curtr = $(this).parents("tr")
+            var srfrdl = curtr.find(".srfrddl")
+            var disc = $(".cogNote");
+            //disc.show();
+
+            srfrdl.empty();
+            if (sel == "Author") {
+                srfrdl.append('<option value="all">NAME:</option>' + '<option value="not">NOT (Exclude):</option>');
+                disc.text("Limit one author name per search line. Examples:LastnameLastname FLastname FM")
+            }
+            else if (sel == ("Title/Abstract/MeSH Term") || sel == ("Title/Abstract") || sel == ("Title")) {
+                srfrdl.append('<option value="all">ALL of:</option><option value="any">ANY of:</option><option value="not">NOT (Exclude):</option>');
+                disc.text("Note: Searches against Title or Abstract are presently limited to citations from 2001/01/01 or more recent; this limitation will be removed in an upcoming improvement to our site. We apologize for the inconvenience.")
+            }
+            else {
+                srfrdl.append('<option value="all">ALL of:</option><option value="any">ANY of:</option><option value="not">NOT (Exclude):</option>');
+                disc.text(" ")
+            }
+        });
+
+
+        $(document).on("click", ".clearsearchln", function () {
+
+            var ttr = $(this).parents("tr");
+
+            $(this).parents("tr").remove();
+            if ($(".Maintbl").find('.addsearchln[style*="display: block"]').length < 1) {
+                $('.SearchForTR').find(".addsearchln").hide()
+                $('.SearchForTR:last').find(".addsearchln").show()
+            }
+            i--;
+            // debugger;
+            var temp = $("[id*=searchTr]")
+            for (j = 0; j < temp.length; j++) {
+                $(temp[j]).attr('id', 'searchTr_' + (j + 1));
+                $($(temp[j]).find(".srfrddl")).attr("id", "_op" + (j + 1));
+                $($(temp[j]).find(".searchtxt")).attr("id", "_term" + (j + 1));
+                $($(temp[j]).find(".srchinddl")).attr("id", "_tab" + (j + 1));
+            }
+        });
+
+        $("#Resetbtn").click(function () {
+            // debugger;
+            $(document).find(".SearchForTR").remove();
+            $(document).find(".cogNote").text("Note: Searches against Title or Abstract are presently limited to citations from 2001/01/01 or more recent; this limitation will be removed in an upcoming improvement to our site. We apologize for the inconvenience.")
+            var clone = gtr.clone();
+            $($($(document).find(".cogNote")).parents("tr")).before(clone)
+            if ($(".Maintbl").find('.addsearchln[style*="display: block"]').length < 1) {
+                $('.SearchForTR:last').find(".addsearchln").show()
+            }
+            i = 2;
+        });
+
+        $("#Showsrch,#Hidesrch").click(function () {
+            $("#Showsrch").toggle();
+            $("#Hidesrch").toggle();
+            $("#limitsMsghide,#limitshow").toggle();
+
+            $("#Limits").toggle('blind');
+        });
+
+        $("#ddl_MyQueries").change(function () {
+            window.location.href = '/Search/Search?ddlValue=' + $(this).val();
+
+        });
+
+        $('#btnSearchMedline').click(function (event) {
+
+            var ter1 = $.trim($("#_term1").val());
+            var ter2 = $.trim($("#_term2").val());
+            var ter3 = $.trim($("#_term3").val());
+            var ter4 = $.trim($("#_term4").val());
+            var ter5 = $.trim($("#_term5").val());
+            var ter6 = $.trim($("#_term6").val());
+
+            var regExp = '/[0-9a-z]/i';
+            //  debugger;
+            if (!ter1.match(regExp) && !ter2.match(regExp) && !ter3.match(regExp) && !ter4.match(regExp) && !ter5.match(regExp) && !ter6.match(regExp)) {
+                $("#validationterm").show();
+            }
+            ter1 = SpecialChar(ter1);
+            ter2 = SpecialChar(ter2);
+            ter3 = SpecialChar(ter3);
+            ter4 = SpecialChar(ter4);
+            ter5 = SpecialChar(ter5);
+            ter6 = SpecialChar(ter6);
+
+            if (ter1 != "" || ter2 != "" || ter3 != "" || ter4 != "" || ter5 != "" || ter6 != "") {
+
+                $('#load').show();
+                $('#unload').hide();
+                $("#Div_Footer").hide();
+
+                var FormObject = GetSearchParameters();
+
+                var val = JSON.stringify(FormObject);
+
+                $.ajax({
+                    type: "POST",
+                    url: "../Search/Search",
+                    data: val,
+
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (res) {
+                        window.location.href = "../Search/SearchResults";
+                    },
+
+                    error: function (res) {
+                        $('#loading').hide();
+                        $('#unload').show();
+                        $("#Div_Footer").show();
+                    }
+                })
+
+            }
+            else {
+                $("#validationterm").show();
+
+            }
+        });
+
+        function GetSearchParameters() {
+
+            var SearchLimits = {
+                op1: $('#_op1').val(),
+                term1: SpecialChar($.trim($("#_term1").val())),
+                tab1: $('#_tab1').val(),
+
+                op2: $('#_op2').val(),
+                term2: SpecialChar($.trim($("#_term2").val())),
+                tab2: $('#_tab2').val(),
+
+                op3: $('#_op3').val(),
+                term3: SpecialChar($.trim($("#_term3").val())),
+                tab3: $('#_tab3').val(),
+
+                op4: $('#_op4').val(),
+                term4: SpecialChar($.trim($("#_term4").val())),
+                tab4: $('#_tab4').val(),
+
+                op5: $('#_op5').val(),
+                term5: SpecialChar($.trim($("#_term5").val())),
+                tab5: $('#_tab5').val(),
+
+                op6: $('#_op6').val(),
+                term6: SpecialChar($.trim($("#_term6").val())),
+                tab6: $('#_tab6').val(),
+
+                PublicationType: $('#PublicationType').val(),
+                SubjectAge: $('#SubjectAge').val(),
+                Species: $('#Species').val(),
+                Language: $('#Language').val(),
+                Gender: $('#Gender').val(),
+                PaperAge: $('#PaperAge').val(),
+                AbstractMask: $('#AbstractMask').is(':checked'),
+                MyQueryValue: $('#SearchID').val(),
+                SearchName: $('#SearchName').val(),
+                PaperAge: $('#PaperAge').val(),
+                DateStart: $('#DateStart').val(),
+                DateEnd: $('#DateEnd').val()
+            };
+            //debugger;
+            return SearchLimits;
+        }
+
+        $(document).on("change", "#PaperAge", function () {
+            $('#DateStart').val('1960');
+            $('#DateEnd').val('----');
+        });
+        $(document).on("change", "#DateStart", function () {
+            $('#PaperAge').val('0');
+            if ($('#DateStart').val() > $('#DateEnd').val()) {
+
+                if ($('#DateStart').val() > 0) {
+                    var index = $('#DateStart').val();
+                    $('#DateStart').val(index);
+                    $('#DateEnd').val(index);
+                }
+            }
+
+        });
+
+        $(document).on("change", "#DateEnd", function () {
+            $('#PaperAge').val('0');
+            if ($('#DateEnd').val() < $('#DateStart').val()) {
+                if ($('#DateEnd').val() > 0) {
+                    var index = $('#DateEnd').val();
+                    $('#DateStart').val(index);
+                    $('#DateEnd').val(index);
+                }
+            }
+        });
+
+        function SpecialChar(data) {
+            if (data != undefined && data != null) {
+                var data = data.replace(/'/g, '\'\'');
+                data = data.replace(/[^a-z0-9\-\s]/gi, ' ');
+                return data;
+            }
+
+        }
+    });;
+
+
+    $(function () {
+        $('input').keydown(function (e) {
+            if (e.keyCode == 13) {
+                $("input[value='Search']").focus().click();
+                return false;
+            }
+        });
+        var faddbtn = $("[id*=searchTr_]").last();
+        faddbtn.find(".addsearchln").show();
+    });
+
+
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+}

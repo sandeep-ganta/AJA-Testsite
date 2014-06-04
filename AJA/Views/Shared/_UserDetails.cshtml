@@ -1,0 +1,370 @@
+﻿@model DAL.Models.UserDetails
+
+@if (Model != null)
+{
+    using (@Html.BeginForm("UpdateUserDetails", "Admin", FormMethod.Post, new { @id = "form_Edit_UserDetails" }))
+    {
+    @Html.ValidationSummary(true)    
+    <div>
+        <div class="udctnt">
+            <ol>
+                <li>
+                    @Html.HiddenFor(model => model.UserID, new { @id = "txt_UserId" })
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmailID)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.EmailID, new { @id = "txt_EmailId" })
+                        @Html.ValidationMessageFor(model => model.EmailID)
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.UserName)
+                    </div>
+                    @if (Model.UserID != 0)
+                    {
+                        @Html.DisplayFor(model => model.UserName)
+                    }
+                    else
+                    {
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.UserName, new { @id = "txt_UserName" })
+                            @Html.ValidationMessageFor(model => model.UserName)
+                        </div>
+                    }
+
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FirstName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FirstName, new { @id = "txt_FirstName" })
+                        @Html.ValidationMessageFor(model => model.FirstName)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastName, new { @id = "txt_LastName" })
+                        @Html.ValidationMessageFor(model => model.LastName)
+
+                    </div>
+                </li>
+
+
+
+                @if (Model.UserID == 0)
+                {
+                    @Html.Raw("<li>")
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Password)
+                    </div>
+                }
+
+
+                @if (Model.UserID == 0)
+                {
+                    <div class="editor-field">
+                        @Html.PasswordFor(model => model.Password, new { @id = "txt_Password" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                    @Html.Raw("</li>")
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.Password)
+                }
+
+                @if (Model.UserID == 0)
+                {
+                    @Html.Raw("<li>")
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ConfirmPassword)
+                    </div>
+                }
+
+                @if (Model.UserID == 0)
+                {
+                    <div class="editor-field">
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @id = "txt_ConfirmPassword" })
+                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                    </div>
+                    @Html.Raw("</li>")
+                }
+                else
+                {                        
+                    @Html.HiddenFor(model => model.ConfirmPassword)                        
+                }
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Roles.FirstOrDefault().RoleName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsAdmin, new { @id = "chk_IsAdmin" }) @Html.LabelFor(i => i.IsAdmin)&nbsp; &nbsp;   @Html.CheckBoxFor(model => model.IsAJAUser, new { @id = "chk_IsAjaUser" }) @Html.LabelFor(i => i.IsAJAUser)
+
+                        <span id="roleError" style="display: none;" class="field-validation-error">Select Role</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.Label("Specialty")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(c => c.SpecialityID, Model.SpecialtiesList, "--Please Select--", new { @id = "ddl_speciality" })
+                        @Html.ValidationMessageFor(m => m.SpecialityID)
+                    </div>
+
+                    <p>
+                        Select your primary specialty. This will be used to set up your citation library. <strong>Medical Oncology</strong>, 
+		<strong>Radiation Oncology</strong>, and <strong>Psychiatry</strong> libraries have default seminal citations and are contributed to by panels of expert editors. 
+		All other specialties presently have only reference management tools.
+                    </p>
+                    <br>
+                </li>
+                <li>
+                    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        @Html.CheckBoxFor(m => m.NotNullIsSavedQueryemail, new { id = "chk_AutoQueryEmail" })
+                        Email <strong>Saved Query</strong> updates weekly.<br>
+                        <small>If checked, Saved Query updates are emailed weekly.</small>
+                    </div>
+                    <div>
+                        @Html.CheckBoxFor(m => m.NotNulIsendmail, new { id = "chk_sendemail" })
+                        Email <strong>Editors Choice</strong> updates monthly.<br>
+                        <small>If checked, updates are emailed when new Editors Choice citations have been added.</small>
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.CountryID)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(m => m.CountryID, Model.CountryList, "--Please Select--", new { @id = "ddl_countryID" })
+                        @Html.ValidationMessageFor(m => m.CountryID)
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">@Html.LabelFor(m => m.Title)</div>
+                    <div class="editor-field">@Html.DropDownListFor(m => m.Title, new SelectList(new DAL.Models.UserDetails().GetTitles(), "Title", "val"), "--Please Select--", new { @id = "ddl_title" })
+                        @Html.ValidationMessageFor(m => m.Title)
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.Profession)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(m => m.Profession, new SelectList(new DAL.Models.UserDetails().GetProfession(), "val", "Title"), "--Please Select--", new { @id = "ddl_Profession" })
+                        @Html.ValidationMessageFor(m => m.Profession)
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.GraduationYr)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(m => m.GraduationYr, new { @id = "GraduationYr" })
+                        @Html.ValidationMessageFor(m => m.GraduationYr)
+                        <br>
+                        <small>(from Medical/PhD/Nursing program)</small>
+                        <br>
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.postalcode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.postalcode, new { @id = "txt_Postalcode" })
+                        @Html.ValidationMessageFor(model => model.postalcode)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.Label("Principal Practice Environment")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(m => m.PracticeID, Model.PracticeList, "--Please Select--", new { @id = "ddl_PracticeID" })
+                        @Html.ValidationMessageFor(m => m.PracticeID, "Practice Environment is required")
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div>
+            <br />
+        </div>
+    </div>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <div class="ui-dialog-buttonset">
+            <input id="btn_Save_UserDetails" type="button" value="Save" role="button" aria-disabled="false" />
+        </div>
+    </div> 
+    }
+}
+
+<script type="text/javascript" src="~/Scripts/UserSaveChanges.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $("#btn_Save_UserDetails").click(function () { 
+            // $('input[name="chkRole"]').rules("add", { Minrules: true, messages: { required: "Select at least one Role." } });
+            $("#form_Edit_UserDetails").validate();
+            if ($("#form_Edit_UserDetails").valid()) {
+                var admin = $('#chk_IsAdmin').is(":checked");
+                var user = $('#chk_IsAjaUser').is(":checked");
+                if (admin == false && user == false) {
+                    $("#roleError").show();
+                    return false;
+                }
+                else {
+                    $("#roleError").hide();
+                }
+
+                var i = false;
+                var $form = $('#form_Edit_UserDetails');
+                var url = $form.attr('action');
+
+                var data = GetFormDataAsJson();
+                var val = JSON.stringify(data);
+
+                var RequestType = $form.attr('method');
+
+                $.ajax({
+                    type: RequestType,
+                    url: url,
+                    data: val,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) { 
+                        if (res == "newuser") {
+                            var dail = $("#form_Edit_UserDetails").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                            var dailogid = $(dail).attr('aria-describedby');
+                            $('#' + dailogid).dialog('close');
+                            alert('User Created Successfully');
+                            $("#tbl_AllUsers_Details .bt_grid_refresh").click();
+                        }
+                        else if (res == "edituser") {
+                            var dail = $("#form_Edit_UserDetails").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                            var dailogid = $(dail).attr('aria-describedby');
+                            $('#' + dailogid).dialog('close');
+                            alert('User Saved Successfully');
+                            $("#tbl_AllUsers_Details .bt_grid_refresh").click();
+                        }
+                        else {
+                            alert("Error in sending mails");
+                        }
+                    }
+                }).done(function () {
+
+
+                })
+                .fail(function (E) { alert("error"); }).
+                always(function () { });
+            }
+
+        });
+
+        // LoadRoleBasedOptions();
+
+    });
+
+    function onchangerole(e) {
+
+        var isChecked = $(e).is(':checked');
+        var text = $(e).next('label').text();
+
+        if (text == "All Users") {
+            //$('input[name="chkRole"]').each(function () {
+
+            $('input[name="chkRole"]').prop('checked', isChecked);
+            //});
+        }
+        else {
+            var allchecked = true;
+            //$('input[name="chkRole"]').each(function () {
+            //    if ($(e).next('label').text() != "All Users") {
+            //        allchecked = allchecked && $(e).is(':checked');
+            //    }
+            //});
+            //if (allchecked) {
+            //    $('input[name="chkRole"]').each(function () {
+            //        $(e).prop('checked', allchecked);
+            //    });
+            //}
+            //else {
+            //    $('input[name="chkRole"]').each(function () {
+            //        if ($(e).next('label').text() == "All Users") {
+            //            $(e).prop('checked', allchecked);
+            //        }
+            //    });
+
+            //}
+            $('input[name="chkRole"]').each(function () {
+                if ($(e).next('label').text() != "All User") {
+                    if (!$(e).is(':checked')) {
+                        $($('input[name="chkRole"]')[0]).prop("checked", false);
+                    }
+                }
+            });
+        }
+
+        LoadRoleBasedOptions();
+    }
+    function LoadRoleBasedOptions() {
+        $('input[name="chkRole"]').each(function () {
+            var text = $(e).next('label').text();
+            if (text != "All Users") {
+
+                var isChecked = $(e).is(':checked');
+                if (isChecked) {
+                    $('.' + text).parents('tr').css('display', 'table-row');
+                }
+                else {
+                    $('.' + text).parents('tr').css('display', 'none');
+                    EmptyControlsData($('.' + text).parents('tr'));
+                }
+            }
+
+        });
+    };
+
+    function EmptyControlsData(ctrl) {
+        $("input[type='checkbox']", ctrl).each(function () {
+
+            $(this).prop('checked', false);
+
+        });
+
+        $("input[type='radio']", ctrl).each(function () {
+
+            $(this).prop('checked', false);
+
+        });
+
+        $("input[type='text']", ctrl).each(function () {
+
+            $(this).val('');
+
+        });
+
+    };
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+}
+

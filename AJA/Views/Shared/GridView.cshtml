@@ -1,0 +1,271 @@
+﻿@model DAL.Models.Grid_old
+
+@if (Model != null)
+{
+
+    <div>
+        @*<div class="div_busy_panel_background" style="display: none;"></div>*@
+       
+        <div class="gridcontner">
+             <div class="loader-img" id="ajax_loader">
+
+            <table>
+                <tbody><tr>
+                    <td valign="middle">
+                         <img src="~/Content/images/ajax-loader.gif" alt="Loading Records..." /></td>
+                </tr>
+            </tbody></table>
+           
+        </div>
+        <table id='@Model.GridId' class="Gridtable">
+
+            <caption class="ui-widget-header ui-corner-top ui-helper-clearfix">
+
+
+                <button style="display: none;" class="bt_grid_refresh ac_btns_icons"></button>
+
+
+                <span class="ui-dialog-title titlefloat">@Model.Caption</span>
+
+
+                <div style="float: right">
+                    @if (Model.Searching)
+                    {
+                        <ul class="form-search">
+                            <li>
+                                <input type="text" name="" id= '@Model.SearchBoxId' value='@Model.SearchText'  class="header_tbSearch" onkeyup="Search(event,this);" />
+                            </li>
+                            <li>
+
+                                <span class="form-header-search-submit-btn" onclick="javascript:SortChange('@Model.TargetId','@Model.ActionUrl','@Model.PagerDrowpdownId','@Model.NoofRowsDropdownId','@Model.Count','@Model.Sort_Expression','@Model.Sort_Type','@Model.SearchBoxId','@Model.Paging.ToString()');">.</span>
+
+                            </li>
+                        </ul>
+                    }
+
+                    <button class="btn_show_hide_grid ac_btns_icons" onclick="ShowHideGrid(this);" style="float: right"></button>
+
+                </div>
+            </caption>
+            <thead>
+                <tr class="ui-accordion-header ui-state-default">
+
+                    @foreach (var col in Model.Columns)
+                    {
+                        if (col.idColumn)
+                        {
+                            //   <td style="display: none;">@Html.DisplayName(col.DisplayName)</td>
+                        }
+                        else
+                        {
+                        <td>
+                            @if (col.Sortable && @Model.Sorting)
+                            {
+                                <span class='sortable @col.GetSortCssClass(@Model.Sort_Expression, @Model.Sort_Type)' onclick="SortChange('@Model.TargetId','@Model.ActionUrl','@Model.PagerDrowpdownId','@Model.NoofRowsDropdownId','@Model.Count','@col.Property','@col.GetSortType(Model.Sort_Expression, Model.Sort_Type)','@Model.SearchBoxId','@Model.Paging.ToString()');">@col.DisplayName</span>
+
+                            }
+                            else
+                            {
+                                @Html.DisplayName(col.DisplayName)
+                            }
+                        </td>
+                        }
+                    }
+                    @if (Model.IsAnyActionButtons)
+                    {
+                        <td width="4%">Action
+                        </td>
+                    }
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model.Rows.Count > 0)
+                {
+                    foreach (var row in Model.Rows)
+                    {
+                    <tr>
+                        @foreach (var cell in row.Cells)
+                        {
+                            if (cell.isIdColumn)
+                            {
+                                //  <td style="display: none;"><span>@cell.Value</span></td>    
+                            }
+                            else
+                            {
+                                //TODO: check for null value here.
+
+                                if (cell.Value.ToString().IsDateTime() == true)
+                                {
+                                    if (cell.Value != null)
+                                    {
+                            <td><span>@Html.Raw(DateTime.Parse(cell.Value).ToString("d")) </span></td>  
+                                    }
+                                }
+                                else
+                                {     
+                            <td><span>@Html.Raw(cell.Value)</span></td>   
+                                }
+                            }
+
+                        }
+                        @if (Model.IsAnyActionButtons)
+                        {
+                            <td width="5%" align="center">
+                                @if (!row.NoActionNButtons || row.ActionButtons != null)
+                                {
+                                    <div>
+
+                                        <div class="menubar">
+                                            <ul>
+
+                                                <li><span>
+                                                    <img src="~/Content/images/list-icon.png" />
+                                                </span>
+                                                    <ul>
+                                                        @foreach (var button in row.ActionButtons)
+                                                        {
+                                                            <li>
+
+                                                                <span keyid ='@row.Cells[0].Value' keysecond="@row.Cells[1].Value" onclick='@button.OnClick'>@button.DisplayName</span>
+                                                            </li>
+                                                        }
+
+                                                    </ul>
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                        }
+                    </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td style="font-style:italic;" colspan='@Model.Columns.Count()'>No Results Found </td>
+                    </tr>
+                }
+
+
+            </tbody>
+
+            <tfoot>
+                @{int colspan = Model.Columns.Count();}
+                @if (Model.IsAnyActionButtons)
+                {
+                    colspan += 1;
+                }
+                <tr class="ui-dialog-titlebar ui-widget-header">
+                    <td colspan='@colspan'>
+                        <table width="100%">
+                            <tr>
+                                @if (Model.IsTableActions)
+                                {
+               
+                                    <td align="left">
+                                        @foreach (var tbaction in Model.TableActions)
+                                        {
+                     
+                                            <button class="btn_grid_create ac_btns_icons_text" onclick='@tbaction.OnClick'>@tbaction.DisplayName</button>       
+                            
+
+                                        }
+                                    </td>
+               
+                                }
+
+                                <td align="center">
+                                    @if (Model.Paging)
+                                    {                       
+                                        <label style="font-weight: normal;">Page</label>
+                                        <select id='@Model.PagerDrowpdownId' onchange="PagerChange('@Model.TargetId','@Model.ActionUrl','@Model.PagerDrowpdownId','@Model.NoofRowsDropdownId','@Model.AjaxPagerformId','@Model.Count','@Model.Sort_Expression','@Model.Sort_Type','@Model.SearchBoxId');">
+
+                                            @for (var i = 1; i <= Model.PagerCount; i++)
+                                            {
+                                                if (i == @Model.ActivePage)
+                                                {
+                                                <option selected="selected" value='@i'>@i</option>
+                                                }
+                                                else
+                                                {
+                                                <option value='@i'>@i</option>
+                                                }
+                                            }
+
+                                        </select>
+                                        <label style="font-weight: normal;"><span>of&nbsp</span>@Model.PagerCount </label>
+                        
+                                        <label style="font-weight: normal;">&nbsp&nbsp Show</label>
+                        
+                                        <select id='@Model.NoofRowsDropdownId' onchange="PagerChange('@Model.TargetId','@Model.ActionUrl','@Model.PagerDrowpdownId','@Model.NoofRowsDropdownId','@Model.AjaxPagerformId','@Model.Count','@Model.Sort_Expression','@Model.Sort_Type','@Model.SearchBoxId');">
+
+                                            @foreach (var i in Model.RowCount)
+                                            {
+                                                if (i == @Model.SelectedRowCount)
+                                                {
+                                                <option selected="selected" value='@i'>@i</option>
+                                                }
+                                                else
+                                                {
+                                                <option value='@i'>@i</option>
+                                                }
+                                            }
+
+                                        </select> 
+                                        <label style="font-weight: normal;">Rows per page</label>
+                                    }
+
+                                </td>
+                                <td>
+                                    <label style="float: right; font-weight: normal; padding: 4px;">Showing @Model.StartRecord-@Model.EndRecord of @Model.Count </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </tfoot>
+
+        </table>
+    </div> </div>
+    
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $(".bt_grid_refresh").button({
+            icons: {
+                primary: "ui-icon-refresh"
+            },
+            text: false
+
+
+        });
+
+        $(".btn_grid_create").button({
+            icons: {
+                primary: "ui-icon-plusthick"
+
+            }
+
+
+        });
+
+
+        $(".btn_show_hide_grid").button({
+            icons: {
+                primary: "ui-icon-circle-triangle-n"
+            },
+            text: false
+
+        });
+    });
+</script>
+

@@ -1,0 +1,79 @@
+﻿@model DAL.Models.ACRDocumentRelationshipModel
+@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{
+    ViewBag.Title = "ManageACRDocumentRelations";
+}
+
+
+
+@if (Model != null)
+{
+    using (Html.BeginForm())
+    {
+    @Html.HiddenFor(model => model.DocId)                 
+    @Html.Label("Topic Name") @:&nbsp;
+    @Html.DropDownListFor(model => model.TopicName, Model.TopicList, "--Please Select--", new { @id = "ddl_Topic" })
+    @Html.ValidationMessageFor(model => model.TopicName)    
+    @:&nbsp;&nbsp;
+    @Html.HiddenFor(model => model.SubTopicId)       
+    @:&nbsp;
+    @Html.LabelFor(model => model.SubTopicName)
+    @:&nbsp;
+    <select id="ddl_SubTopic" name="ddl_SubTopic"></select>
+    <span id="msg"></span>
+    @:&nbsp;
+    <input type="submit" value="Add Relationship" />    
+    }
+    <br />
+    <div id="div_ACRDocumentRelations">
+        @{MVC4Grid.Grid modelgrid = @ViewBag.Grid;}
+        @Html.GridFor(modelgrid)
+    </div>
+}
+
+@*<script type="text/javascript" src="~/Scripts/GridView.js"></script>*@
+
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+<link href="~/Content/GridView.css" rel="stylesheet" />
+<script type="text/javascript">
+    $('#ddl_Topic').change(function () {
+        var sid = $(this).val();
+        $.ajax({
+            url: '/admin/GetACRDocsSubTopics?id=' + sid,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            type: "GET",
+            error: function () {
+                alert("An error occurred.");
+            },
+            success: function (data) {
+                var items = "";
+                if (data != null) {
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+                    $("#ddl_SubTopic").html(items);
+                }
+                else { $("#msg").html("No Related SubTopic exists") }
+            }
+        });
+    });
+
+
+    //for deleting document
+
+    var DeleteDocumentRelation = function DeleteDocumentRelation(RelId) {
+
+        var confirmDelete = confirm("Are you sure to delete ACR Document Relation?");
+        if (confirmDelete == true) {
+            var url = '../Admin/DeleteDocumentRelationWithId?&RelId=' + $(RelId).attr('keyid');
+            $.get(url, null, function (html) {
+                $(RelId).closest('tr').remove();
+            });
+        }
+        else {
+            return false;
+        }
+    }
+</script>

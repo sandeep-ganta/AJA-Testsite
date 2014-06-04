@@ -1,0 +1,508 @@
+﻿
+/*Grid Table*/
+.Gridtable {
+    width: 100%;
+    padding: 2px 4px 2px 4px;
+    /*border: 1px solid #02284C;*/
+    line-height: 1.3em;
+    border-radius: 5px;
+    display: table;
+}
+
+.Chaild-Grid-table {
+    /* margin: 10px !important;*/
+    /* width:80% !important;*/
+    margin: 15px 0 15px 0 !important;
+}
+
+.tablescroll_head caption {
+    border: 1px solid #043057;
+    padding: 4px;
+    height: 20px;
+    font-weight: bold;
+    background-color: #02284C;
+    color: #fff;
+    line-height: 20px;
+    text-align: left;
+}
+
+.Gridtable > tbody > tr, .Gridtable > thead > tr {
+}
+
+    .Gridtable > tbody > tr > td {
+        padding: 2px 3px;
+        border-left: 1px #E0E0E0 solid;
+        border-bottom: 1px #E0E0E0 solid;
+        border-right: 1px #E0E0E0 solid;
+        font-size: 12px;
+    }
+
+        .Gridtable > tbody > tr > td.Grid-NoRsults-Td {
+            font-style: italic;
+        }
+
+
+.tablescroll_head thead td {
+    padding: 1px 4px;
+    height: 20px;
+    border-right: 1px solid #2884BF;
+    color: white;
+    font-weight: 600;
+}
+
+
+    .tablescroll_head thead td a {
+        color: #fff;
+        text-decoration: none;
+        line-height: 20px;
+        display: block;
+    }
+
+
+.tablescroll_wrapper {
+    overflow-y: scroll !important;
+    width: 100% !important;
+}
+
+.Gridtable > tbody > tr {
+    font-size: 14px;
+    color: #2C2C2C;
+}
+
+    .Gridtable > tbody > tr.SubGrid {
+        padding: 2px;
+    }
+
+.Gridtable th:hover {
+}
+
+.Gridtable > tbody > tr:nth-child(odd) {
+    background-color: #F2F2F2 !important;
+}
+
+
+.Gridtable > tbody > tr:hover {
+    background-color: #E8EDF2 !important;
+}
+
+.Gridtable caption {
+    padding: 2px 2px 2px 0;
+}
+
+
+
+    .Gridtable caption > div.Grid-Caption-Refresh {
+        float: left;
+        padding-left: 2px;
+    }
+
+
+    .Gridtable caption > div.Grid-Caption-Search {
+        float: right;
+    }
+
+    .Gridtable caption > button.btn_show_hide_grid {
+        float: right;
+    }
+
+    .Gridtable caption > button.btn-close-chaildGrid {
+        float: right;
+    }
+
+.Gridtable > thead > tr > td {
+    /*border-right: 1px solid #2884BF;*/
+    color: #222;
+    height: 20px;
+    padding: 0 4px;
+}
+
+    .Gridtable > thead > tr > td.Chaild-Grid-Opener-td {
+        width: 2%;
+    }
+
+    .Gridtable > thead > tr > td.Grid-RowAction-td {
+        width: 4%;
+        text-align: center;
+    }
+
+.Gridtable > tbody > tr > td.Grid-RowAction-td {
+    width: 4%;
+    text-align: center;
+}
+
+.Gridtable tfoot tr td {
+    padding: 0 0 0 1px;
+}
+
+.Gridtable > tfoot > tr > td > table.Grid-Tfoot-Subtable {
+    width: 100%;
+}
+
+    .Gridtable > tfoot > tr > td > table.Grid-Tfoot-Subtable > tbody > tr > td.Grid-T-ACButtonsTd {
+        width: 20%;
+        text-align: left;
+    }
+
+    .Gridtable > tfoot > tr > td > table.Grid-Tfoot-Subtable > tbody > tr > td.Grid-Pager-Td {
+        width: 60%;
+        text-align: center;
+    }
+
+    .Gridtable > tfoot > tr > td > table.Grid-Tfoot-Subtable > tbody > tr > td.Grid-info-Td {
+        width: 20%;
+    }
+
+        .Gridtable > tfoot > tr > td > table.Grid-Tfoot-Subtable > tbody > tr > td.Grid-info-Td > label.Grid-info-Label {
+            float: right;
+            font-weight: normal;
+            padding: 4px;
+        }
+
+
+.Chaild-Grid-Opener-tr {
+}
+
+tr.Chaild-Grid-Opener-tr > td > span {
+    font-weight: bold;
+    background-color: inherit;
+    letter-spacing: 0.5px;
+}
+
+tr.Chaild-Grid-Opener-tr > td:nth-child(2) > span {
+    /*background-color:#B7B6AB;*/
+    background-color: #F6C8BA;
+    padding: 0 4px;
+    border-radius: 1px;
+}
+
+.tablescroll_foot tfoot tr {
+    background-color: #02284C;
+    color: white;
+}
+
+    .tablescroll_foot tfoot tr td {
+        padding: 2px;
+        border: none;
+    }
+
+.tablescroll_foot tfoot td form {
+    display: inline-block;
+}
+
+.Grid-Tittle {
+    padding-left: 4px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.Sortable {
+    display: block;
+}
+
+    .Sortable:hover {
+        cursor: pointer;
+    }
+
+.sort {
+    background: url(images/column-sortable.png) no-repeat right;
+    padding-right: 15px;
+}
+
+.sort-asc {
+    background: url(images/column-asc.png) no-repeat right;
+    padding-right: 15px;
+}
+
+.sort-dsc {
+    background: url(images/column-desc.png) no-repeat right;
+    padding-right: 15px;
+}
+
+
+/*search*/
+.form-search {
+    float: left;
+    margin-top: 0;
+    position: relative;
+    right: 33px;
+}
+
+    .form-search li {
+        float: left;
+    }
+
+
+    .form-search input {
+        background-color: #FFFFFF;
+        border: 1px solid #CFCFCF;
+        border-right: none;
+        color: #333333;
+        font-size: 12px;
+        height: 19px;
+        line-height: 19px;
+        overflow: hidden;
+        padding: 0 5px;
+        vertical-align: middle;
+        border-radius: 4px 0 0 4px;
+        margin-bottom: 1px;
+    }
+
+.form-header-search-submit-btn {
+    background: url("images/search_icon.png") no-repeat scroll center center #FFFFFF;
+    cursor: pointer;
+    display: block;
+    height: 19px;
+    position: absolute;
+    right: -21px;
+    top: 0;
+    width: 20px;
+    z-index: 9;
+    border: 1px solid #CFCFCF;
+    border-left: none;
+    text-indent: -9999px;
+    border-left: 1px solid #ccc;
+    border-radius: 0 4px 4px 0px;
+}
+
+    .form-header-search-submit-btn:hover {
+        background-color: #C5DFDF;
+    }
+
+    .form-header-search-submit-btn:active {
+        background-color: #A5DCE4;
+    }
+
+
+/*search ends*/
+
+.splitdropmenu {
+    position: absolute;
+    z-index: 999999999999999999;
+}
+
+
+/*dropdown menu*/
+
+
+
+.menubar ul ul {
+    display: none;
+}
+/*.menubar ul li:hover > ul {
+    display: block;
+}*/
+
+
+.menubar ul {
+    padding: 0px;
+    margin: 0;
+    list-style: none;
+    /*position: absolute;*/
+    display: inline-table;
+}
+
+     
+    .menubar ul li {
+        float: none;
+    }
+
+        .menubar ul li:hover {
+            /*background: #D1D1D1;*/
+            background: #fff;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            /*border: 1px solid rgba(0,0,0,.2);*/
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            /*border-top:1px solid rgba(0,0,0,.2);
+            border-left:1px solid rgba(0,0,0,.2);
+            border-right:1px solid rgba(0,0,0,.2);*/
+        }
+
+            .menubar ul li:hover span {
+                color: #444;
+            }
+
+        .menubar ul li span {
+            padding: 0;
+            color: #fff;
+            text-decoration: none;
+        }
+
+            .menubar ul li span img {
+                margin-top: 2px;
+                height: 18px;
+            }
+
+    .menubar ul ul {
+        background: #fff;
+        border-radius: 0;
+        padding: 0;
+        position: absolute;
+        top: 3%;
+        min-width: 150px;
+        z-index: 99999999999999999999!important;
+        border: 1px solid #B5B5B5;
+        box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0,0,0,0.15);
+        -moz-box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0,0,0,0.15);
+        -webkit-box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0,0,0,0.15);
+        padding: 2px;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        right: 12px;
+    }
+
+        .menubar ul ul li {
+            float: none;
+            /*border-top: 1px solid #ebebeb;*/
+            position: relative;
+            font-size: 12px;
+        }
+
+            .menubar ul ul li span {
+                color: #333333;
+                padding: 2px 10px;
+                text-align: left;
+                display: block;
+                border-radius: 4px;
+                -moz-border-radius: 4px;
+                -webkit-border-radius: 4px;
+            }
+
+                .menubar ul ul li span:hover {
+                    background-color: #333;
+                    color: #fff;
+                    cursor: pointer;
+                }
+
+.menubar {
+    position: relative !important;
+}
+
+    .menubar ul ul ul {
+        position: absolute;
+        left: 100%;
+        top: 0;
+    }
+
+.Chaild-Grid-Opener {
+    opacity: 0.5;
+    cursor: pointer;
+    background: url(/Content/images/list_metro.png) no-repeat 0 0;
+    width: 16px;
+    height: 16px;
+}
+
+.Chaild-Grid-div {
+    /*margin: 2px;*/
+}
+
+.Grid_Number_Spinner {
+    width: 37px;
+}
+
+    .Grid_Number_Spinner:focus {
+        border: none !important;
+    }
+
+.list-icon-bgcss {
+    background: url(images/list-icon.png) no-repeat 0 0;
+    width: 16px;
+    height: 14px;
+    margin-top: 0.1em;
+}
+
+.ui-spinner-button {
+    cursor: default;
+    display: block;
+    font-size: 0.5em;
+    height: 50%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    width: 16px;
+}
+
+.ui-spinner {
+    height: 21px;
+    width: 60px;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    vertical-align: middle;
+}
+
+    .ui-spinner input {
+        border: medium none;
+    }
+
+        .ui-spinner input:focus {
+            border: medium none;
+        }
+
+.ui-spinner-input {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    color: inherit;
+    margin: 0 22px 0 0.4em;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.Grid_Number_Spinner {
+    width: 37px;
+}
+
+.ui-spinner a.ui-spinner-button {
+    border-bottom: medium none;
+    border-right: medium none;
+    border-top: medium none;
+}
+
+.ui-spinner .ui-icon {
+    left: 0;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+}
+
+.ui-spinner-up {
+    top: 0;
+}
+
+.ui-spinner-down {
+    bottom: 0;
+}
+
+.ui-spinner .ui-icon-triangle-1-s {
+    background-position: -65px -16px;
+}
+
+.Grid-Pager-Td label, .Grid-info-Label {
+    font-weight: bold !important;
+}
+
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text {
+    padding: 0.2em 0.8em 0 2em !important;
+}
+
+.ui-button {
+    cursor: pointer;
+    font-size: 12px !important;
+    text-align: center;
+}
+
+#tbl_ACRDocumets_Content .Grid_rows td span, #tbl_ACRDocumets_Content .Grid_rows td {
+    -ms-word-break: break-all;
+    word-break: break-all;
+    /* Non standard for webkit */
+    word-break: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}

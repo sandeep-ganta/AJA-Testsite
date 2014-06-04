@@ -1,0 +1,268 @@
+﻿@model DAL.Models.MyProfileModel
+@{
+    ViewBag.Title = "PROFILE";
+}
+@if (AJA_Core.CurrentUser.IsAuthenticated)
+{
+    using (Html.BeginForm())
+    {
+    <table width="100%">
+        <tr>
+            <td>
+                <table width="1170" align="center" style="margin:0 auto;">
+                    <tr>
+                        <td>
+                            <img src="~/Content/images/Subpage_bannerBig.jpg">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        @*<tr>
+            <td class="shdwContr"></td>
+        </tr>*@
+        <tr>
+            <td>
+                <div class="commonContent">
+                    <div class="floatleft">
+                        @Html.HiddenFor(m => m.UserID, new { @id = "txt_UserID" })
+                        @Html.ValidationSummary(true)
+                        <table align="center" width="1000" cellspacing="0" border="0" cellpadding="2">
+                            <tr>
+                                <td width="20%"></td>
+                                <td width="30%"></td>
+                                <td width="5%"></td>
+                                <td width="12%"></td>
+                                <td width="37%"></td>
+                            </tr>
+                            <tr>
+                                <td valign="Top" align="left" colspan="3">
+                                    <strong style="font-size: 12pt">
+                                        @{
+        var Title = "";
+        switch (CurrentUser.Title)
+        {
+            case "D.O.":
+            case "M.D.":
+            case "Ph.D.":
+            case "D.Sc.":
+                Title = "Dr.";
+
+                break;
+
+            case "R.N.":
+            case "n/a":
+                Title = "";
+                break;
+            case "N/A":
+                Title = "";
+                break;
+            default:
+                Title = CurrentUser.Title;
+
+                break;
+        }
+                                        }
+                                        <h2>@Title @CurrentUser.FirstName @CurrentUser.LastName's @ViewBag.Title </h2>
+                                        @* @Html.DisplayFor(m => m.UserTitle)*@
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.LabelFor(m => m.FirstName, htmlAttributes: new { @class = "strong" })</td>
+                                <td>@Html.TextBoxFor(m => m.FirstName)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.FirstName, "First name is required")
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>@Html.Label("User Name")</td>
+                                <td>
+                                    @Html.DisplayFor(m => m.UserName)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.LabelFor(m => m.LastName, htmlAttributes: new { @class = "strong" })</td>
+                                <td>
+                                    @Html.TextBoxFor(m => m.LastName)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.LastName, "Last name is required")
+                                </td>
+                                <td></td>
+
+                                <td>@Html.Label("Password") @Html.ValidationMessageFor(m => m.Password)</td>
+                                <td>@Html.PasswordFor(x => x.Password, new { value = Model.Password, autocomplete = "off" })</td>
+                            </tr>
+
+                            <tr>
+                                <td valign="top">@Html.LabelFor(m => m.UserTitle)</td>
+                                <td valign="top">
+                                    @Html.DropDownListFor(m => m.UserTitle, new SelectList(new DAL.Models.MyProfileModel().GetTitles(), "Title", "val"), "--Please Select--")
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.UserTitle)
+                                </td>
+                                <td></td>
+
+                                <td>@Html.Label("Re-enter Password")</td>
+                                <td>@Html.PasswordFor(m => m.ConfirmPassword, new { value = Model.Password , autocomplete = "off"})
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td valign="top">@Html.LabelFor(m => m.CountryID)</td>
+                                <td valign="top">
+                                    @Html.DropDownListFor(c => c.CountryID, Model.CountryList, "--Please Select--")
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.CountryID, "Select Country")
+                                </td>
+                                <td></td>
+
+                                <td valign="top">@Html.LabelFor(m => m.EmailID)
+
+                                </td>
+
+                                <td valign="top">
+                                    @Html.TextBoxFor(m => m.EmailID)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.EmailID)
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td valign="top">@Html.LabelFor(m => m.postalcode)</td>
+                                <td valign="top">
+                                    @Html.TextBoxFor(m => m.postalcode)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.postalcode)
+                                </td>
+                                <td colspan="2"></td>
+                                <td>
+                                    <small>This email address is used only for ACR Journal Advisor Updates if you choose to have them; 
+				and in case you forget your password, it will be sent to this email address.
+                                    </small>
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Specialty")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(c => c.Speciality)
+                                </td>
+                                <td colspan="2"></td>
+                                <td>
+                                    @Html.CheckBoxFor(m => m.Isendemail)
+                                    Email <strong>Editors Choice</strong> updates monthly.<br>
+                                    <small>If checked, updates are emailed when new Editors Choice citations have been added.</small>
+
+                                    <br />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td valign="top">
+                                    <label>Profession:</label></td>
+                                <td valign="top">
+                                    @Html.DropDownListFor(m => m.Profession, new SelectList(new DAL.Models.MyProfileModel().GetProfession(), "val", "Title"), "--Please Select--")
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Profession)
+                                </td>
+                                <td colspan="2"></td>
+                                <td valign="top">
+                                    @Html.CheckBoxFor(m => m.Isasemail)
+                                    Email <strong>Saved Query</strong> updates weekly.<br>
+                                    <small>If checked, Saved Query updates are emailed weekly.</small>
+                                </td>
+                            </tr>
+                        </table>
+                        <table align="center" width="1000" cellspacing="0" border="0" cellpadding="2">
+                            <tr>
+                                <td style="color: #336699">
+                                    <strong>Health Care Providers</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    @Html.Label("Graduation Year")
+                                </td>
+                                <td width="30">
+                                    @Html.TextBoxFor(m => m.GraduationYr, new { @id = "GraduationYr" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.GraduationYr)
+                                    <br>
+                                    <small>(from Medical/PhD/Nursing program)</small>
+                                </td>
+                                <td colspan="2"></td>
+                                <td>
+                                    <table align="right" width="330">
+                                        <tr>
+                                            <td>
+                                                @Html.CheckBoxFor(m => m.RememberMe)
+                                                <strong>Auto-Login </strong>: If checked, your User Name will be saved on this machine and will be used by default; you will not be required to enter it again to access ACR Journal Advisor from this machine. A cookie (a small text file) will be saved on this machine.</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    @Html.Label("Type of Practice")
+                                </td>
+                                <td width="30%">
+                                    @Html.DropDownListFor(m => m.PracticeID, Model.PracticeList, "--Please Select--")
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.PracticeID)
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" align="center">
+                                    <table width="330" align="right">
+                                        <tr>
+                                            <td align="left">
+                                                <input name="command" class="register_btn" type="submit" value="Update Profile" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                            <tr>
+                                <td>
+                                    <div align="center">
+                                        <hr>
+                                        <strong>Please unsubscribe me.</strong>
+                                        <br>
+                                        I understand this will remove my folders and information from ACR Journal Advisor.
+			If I wish to re-register, I may do so at any time.<br>
+                                        <br>
+                                        @Html.ActionLink("Unsubscribe", "DeleteMyProfile", "User", null, new { onclick = "return confirm('You will be unsubscribed, Do you want to continue?')", @class = "register_btn" })
+                                        @* @Html.ActionLink("Unsubscribe", "DeleteMyProfile", "User", null, new { id = "Prompt", @class = "register_btn", onclick = "return confirm('You will be unsubscribed.\n Do you want to continue?')" })*@
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="floatright">
+                        <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                            <img src="~/Content/images/160x600-ad.jpg" /></a>
+                    </div>
+
+                    <div class="clear"></div>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="div_User_details"></div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/Common")
+}

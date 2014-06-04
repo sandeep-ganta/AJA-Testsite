@@ -1,0 +1,318 @@
+﻿@model DAL.Models.TestGene
+
+@if (Model != null)
+{
+    using (Html.BeginForm("SaveTestComments", "Admin", FormMethod.Post, new { @id = "form_Test_Comment" }))
+    {
+    <ol>
+        <li>
+            @Html.HiddenFor(model => model.TestID, new { @id = "hdtestId" })
+            @Html.HiddenFor(model => model.commentid, new { @id = "hdcommentId" })
+            <div id="geneCommentForm">
+                <div class="udctnt">
+                    <ol>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label("Specialty(ies):")
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.SpecialtyName, Model.Specialtylist, "--Please Select--", new { @id = "ddl_Specialty" })
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label("Topic(s): ")
+                            </div>
+
+                            <div class="editor-field">
+                                <select id="ddl_Topic"></select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label(" SubTopic(s):")
+                            </div>
+                            <div class="editor-field">
+                                <select id="ddl_SubTopic"></select>
+                                <input value="Attach to Comment" type="button" onclick="add_combination_Test();" />
+                            </div>
+                        </li>
+
+                        <li>
+
+                            <table class="commentAttachments" border="0" cellspacing="1">
+                                <tbody id="combination_table">
+                                    <tr valign="top">
+                                        <th width="90%">Attached Specialities</th>
+                                        <th align="center">
+                                            <input value="Remove All" type="button" onclick="delete_all_combo(this)" /></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div id="maintest_comment">
+                                @if (Model.Testcomentdetails != null)
+                                {
+                                    foreach (var data in Model.Testcomentdetails)
+                                    { 
+                                    <div class="div_testcomment" id="divtest">
+                                        <table width="100%">
+                                            <colgroup>
+                                                <col width="50%" />
+                                                <col width="" />
+                                            </colgroup>
+                                            <tr>
+                                                <td align="left" style="padding-right: 5px;">
+                                                    <label class="lbledit lbltest" aria-labelledby=@data.Specialtyid'_'@data.Topicid'_'@data.SubTopicid>@data.SpecialtyName --> @data.Topicname --> @data.Subtopicname </label>
+                                                </td>
+                                                <td>
+                                                    <input class="delete_attchspeclty" name="' + nextid + '" onclick="delete_attchspeclty(this)" type="button" value="Delete" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    }
+                                }
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label("  Author:")
+                            </div>
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.Authorsgene, Model.CommentAuthorslist, "--Please Select--", new { @id = "ddl_Author_test" })
+                                @Html.TextBoxFor(model => model.testcomnt_date, new { @id = "test_date" })
+                                @Html.ValidationMessageFor(model => model.testcomnt_date, "Please Enter Correct Date!")
+
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label(" Test Comment:")
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => model.testComment, new { @id = "test_comment_form" ,@class = "txtareacomment"})
+                            </div>
+                        </li>
+                        @*                <div align="right">
+                    <input type="button" value="Add Gene Comment" onclick="add_gene_comment(this);" id="gene_comment_btn" />
+                </div>*@
+                    </ol>
+                </div>
+            </div>
+        </li>
+    </ol>
+        
+    <input type="button" id="btnSave_Comments" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" /> 
+    
+    <button type="button" id="btncancel" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Cancel();">
+        <span class="ui-button-text">Cancel</span></button>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ddl_Topic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+            $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+        });
+
+        var Cancel = function Cancel() {
+            $('#Test_Comments').dialog('close');
+        }
+
+        $('#ddl_Specialty').change(function () {
+            if ($('#ddl_Specialty option:selected').text() != "--Please Select--") {
+                var sid = $(this).val();
+                $.ajax({
+                    url: ServerURL + '/Admin/GetTopics_Test?specialtytest=' + sid + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "GET",
+                    error: function () {
+                        alert("An error occurred.");
+                    },
+                    success: function (data) {
+                        var items = ""; items = "<option value=''>" + '--Please Select--' + "</option>"
+                        if (data != null) {
+                            $.each(data, function (i, item) {
+                                items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                            });
+                            $("#ddl_Topic").html(items);
+                        }
+                    }
+                });
+            }
+            else {
+                $('#ddl_Topic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+                $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+            }
+        });
+
+        $('#ddl_Topic').change(function () {
+            if ($('#ddl_Topic option:selected').text() != "--Please Select--") {
+                var tid = $(this).val();
+                $.ajax({
+                    url: ServerURL + '/Admin/GetSubTopics_Test?Topictest=' + tid + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "GET",
+                    error: function () {
+                        alert("An error occurred.");
+                    },
+                    success: function (data) {
+                        var items = ""; items = "<option value=''>" + '--Please Select--' + "</option>"
+                        if (data != null) {
+                            $.each(data, function (i, item) {
+                                items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                            });
+                            $("#ddl_SubTopic").html(items);
+                        }
+                    }
+                });
+            }
+            else {
+                $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+            }
+        });
+
+        $(document).ready(function () {
+            $("#test_date").datepicker();
+            $("#test_date").datepicker('setDate', new Date());
+        });
+
+        function delete_all_combo(btn) {
+            $($("#maintest_comment").children()).remove();
+        }
+
+        function Deletegenecit(btn) {
+            $(btn).parents('.diveachgene').remove();
+        }
+
+        function delete_attchspeclty(btn) {
+            if (confirm("Are you sure to delete specialty/topic/subtopic for this Comment ?")) {
+                $(btn).parents('.div_testcomment').remove();
+            }
+        }
+
+
+        $('#btnSave_Comments').click(function (event) {
+
+            // if ($.trim($('#maintest_comment').html()) != '') {
+            if ($.trim($('#test_comment_form').val()) != '') {
+                if ($('#ddl_Author_test option:selected').text() != "--Please Select--") {
+                    var $form = $('#form_Test_Comment');
+                    var newfield = GetFieldJson();
+                    var url = $form.attr('action');
+                    var val = JSON.stringify(newfield);
+                    var RequestType = $form.attr('method');
+                    $.ajax({
+                        type: RequestType,
+                        url: url,
+                        data: val,
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (res) {
+                            if (res == true) {
+                                var dail = $("#form_Test_Comment").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                                var dailogid = $(dail).attr('aria-describedby');
+                                $('#' + dailogid).dialog('close');
+                                alert("Field Saved Successfully");
+                                $("#tbl_TestComments .bt_grid_refresh").click();
+                            } else {
+                                alert("Error in saving Field");
+                            }
+                        }
+                    })
+                }
+                else {
+                    alert("Author is Required");
+                }
+            }
+            else {
+                alert("Comment is Required");
+            }
+            // }
+            // else { alert("Please Add a Attachment"); }
+
+            event.preventDefault();
+        });
+
+        function GetFieldJson() {
+
+            var options = GetTestComments();
+            var GeneField = {
+                Authorid: $('#ddl_Author_test').val(),
+                testComment: $("#test_comment_form").val(),
+                testcomnt_date: $('#test_date').val(),
+                commentid: $('#hdcommentId').val(),
+                NewTestComments: options,
+            };
+            return GeneField;
+        }
+
+        //To get added Gene Comments Data
+        var GetTestComments = function GetTestComments() {
+            var Genes = [];
+            $('.lbltest').each(function (index, element) {
+                if ($(element).hasClass('lbladd')) {
+                    var id = $(element).attr('aria-labelledby');
+                    var cmid = [];
+                    cmid = id.split('_');
+                    var Field = { SpecialtyId: cmid[0], Topicid: cmid[1], SubTopicid: cmid[2], GeneValue: index + 1 };
+                    Genes.push(Field);
+                }
+                else if ($(element).hasClass('lbledit')) {
+                    var uid = $(element).attr('aria-labelledby');
+                    var csmid = [];
+                    csmid = uid.split("'_'");
+                    var editField = { SpecialtyId: csmid[0], Topicid: csmid[1], SubTopicid: csmid[2], GeneValue: index + 1 };
+                    Genes.push(editField);
+                }
+            });
+            return Genes;
+        }
+
+
+        function add_combination_Test(cntrl) {
+
+            if ($('select[id$=ddl_Specialty] :selected').val() != "" && $('select[id$=ddl_Specialty] :selected').val() != undefined) {
+                if ($('select[id$=ddl_Topic] :selected').val() != "" && $('select[id$=ddl_Topic] :selected').val() != undefined) {
+                    if ($('select[id$=ddl_SubTopic] :selected').val() != "" && $('select[id$=ddl_SubTopic] :selected').val() != undefined) {
+                        var speacilaty = $('select[id$=ddl_Specialty] :selected').text();
+                        var topic = $('select[id$=ddl_Topic] :selected').text();
+                        var subtopic = $('select[id$=ddl_SubTopic] :selected').text();
+                        var nextid = $('select[id$=ddl_Specialty] :selected').val() + '_' + $('select[id$=ddl_Topic] :selected').val() + '_' + $('select[id$=ddl_SubTopic] :selected').val();
+                        if (speacilaty != "--Please Select--") {
+
+                            if ($(".div_testcomment label").length == 0) {
+                                var newdiv = $('<div class="div_testcomment" id="divtest">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;"><label class="lbladd lbltest" aria-labelledby="' + nextid + '">' + speacilaty + '-->' + topic + '-->' + subtopic + '</label></td><td><input name="' + nextid + '" onclick="delete_attchspeclty(this)" type="button" value="Delete"/></td></tr></table>'
+                                  + '</div>');
+                                $('#maintest_comment').append(newdiv);
+                            }
+
+                            else {
+                                var exist = 0;
+                                for (var i = 0; i < $(".div_testcomment label").length; i++) {
+                                    if (nextid == $($(".div_testcomment label")[i]).attr('aria-labelledby')) {
+                                        exist = 1;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (exist == 0) {
+                                var newdiv = $('<div class="div_testcomment" id="divtest">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;"><label class="lbladd lbltest" aria-labelledby="' + nextid + '">' + speacilaty + '-->' + topic + '-->' + subtopic + '</label></td><td><input name="' + nextid + '" onclick="delete_attchspeclty(this)" type="button" value="Delete"/></td></tr></table>'
+                                  + '</div>');
+                                $('#maintest_comment').append(newdiv);
+                            }
+                            if (exist == 1) { alert("This combintation of specialty/topic/subtopic is already exists"); }
+                        }
+                    } else { alert("Please choose SubTopic:"); }
+
+                } else { alert("Please choose Topic:"); }
+            } else { alert("Please choose Specialty:"); }
+        }
+    </script>
+    }
+}

@@ -1,0 +1,201 @@
+﻿@model DAL.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+@using (Html.BeginForm())
+{
+    <table width="100%">
+        <tr>
+            <td>
+                <table width="1170" align="center" style="margin:0 auto;">
+                    <tr>
+                        <td align="left">
+                            <img src="~/Content/images/Subpage_banner.jpg"></td>
+                        <td align="right"><a href="/User/Register">
+                            <img src="~/Content/images/Subpage_profilebgrnd.jpg"></a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="shdwContr"></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="commonContent">
+                    <div class="floatleft">
+                        <h1>Create My ACR Journal Advisor Profile</h1>
+
+                        <small>(If you have already registered, you may proceed directly to @Html.ActionLink("Log in", "Login", "User")<br>
+                            If you have forgotten your user name or password, @Html.ActionLink("click here", "ForgotPassword", "User") )</small><br>
+                        <br>
+                        @*@Html.HiddenFor(m => m.UserID, new { @id = "txt_UserID" })*@
+                        @Html.ValidationSummary(true)
+                        <table align="center" width="1000" cellspacing="0" border="0" cellpadding="2">
+                            <tr>
+                                <td width="20%"></td>
+                                <td width="30%"></td>
+                                <td width="5%"></td>
+                                <td width="12%"></td>
+                                <td width="37%"></td>
+                            </tr>
+                            <tr>
+                                <td>@Html.LabelFor(m => m.FirstName, htmlAttributes: new { @class = "strong" }) <span style="color: red">*</span></td>
+                                <td>@Html.TextBoxFor(m => m.FirstName)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.FirstName)
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>@Html.LabelFor(m => m.UserName) <span style="color: red">*</span></td>
+                                <td>@Html.TextBoxFor(m => m.UserName)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.UserName)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.LabelFor(m => m.LastName, htmlAttributes: new { @class = "strong" }) <span style="color: red">*</span></td>
+                                <td>
+                                    @Html.TextBoxFor(m => m.LastName)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.LastName, "The Last name field is required")
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>@Html.LabelFor(m => m.Password) <span style="color: red">*</span></td>
+                                <td>@Html.PasswordFor(m => m.Password, new {autocomplete = "off" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Password, "Minimum 6 characters")</td>
+                            </tr>
+                            <tr>
+                                <td valign="top">@Html.LabelFor(m => m.UserTitle) <span style="color: red">*</span></td>
+                                <td valign="top">
+                                    @Html.DropDownListFor(m => m.UserTitle, new SelectList(new DAL.Models.RegisterModel().GetTitles(), "Title", "val"), "--Please Select--")
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.UserTitle)
+                                </td>
+                                <td>&nbsp;</td>
+                                <td width="15%">@Html.LabelFor(m => m.ConfirmPassword)<span style="color: red"> *</span></td>
+                                <td>@Html.PasswordFor(m => m.ConfirmPassword, new {autocomplete = "off" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword)</td>
+                            </tr>
+                            <tr>
+                                <td valign="top">@Html.LabelFor(m => m.CountryID) <span style="color: red">*</span></td>
+                                <td valign="top">
+                                    @*@Html.DropDownListFor(m => m.CountryID, new SelectList(Model.CountryList, "Value", "Text"))*@
+                                    @Html.DropDownListFor(c => c.CountryID, Model.CountryList, "--Please Select--")
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.CountryID, "Select Country")
+                                </td>
+                                <td></td>
+                                <td valign="top">@Html.LabelFor(m => m.Email) <span style="color: red">*</span></td>
+
+                                <td valign="top">
+                                    @Html.TextBoxFor(m => m.Email)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Email)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">@Html.LabelFor(m => m.postalcode) <span style="color: red">*</span></td>
+                                <td valign="top">
+                                    @Html.TextBoxFor(m => m.postalcode)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.postalcode)
+                                </td>
+                                <td></td>
+                                <td colspan="2">
+                                    <small>This email address is used only for ACR Journal Advisor Updates if you choose to have them; 
+				and in case you forget your password, it will be sent to this email address.
+                                    </small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td colspan="2">
+                                    @Html.CheckBoxFor(m => m.Isendemail, new { id = "chk_sendemail" })
+                                    Email <strong>Editors Choice</strong> updates monthly.<br>
+                                    <small>If checked, updates are emailed when new Editors Choice citations have been added.</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td colspan="2">
+                                    @Html.CheckBoxFor(m => m.Isasemail, new { @checked = "checked" })
+                                    Email <strong>Saved Query</strong> updates weekly.<br>
+                                    <small>If checked, Saved Query updates are emailed weekly.</small>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table align="center" width="1000" cellspacing="0" border="0" cellpadding="2">
+                            <tr>
+                                <td>
+                                    <hr height="1" width="100%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DropDownListFor(c => c.SpecialityID, Model.SpecialtiesList)
+                                    @Html.ValidationMessageFor(m => m.SpecialityID)
+                                    <br>
+                                    Select your primary specialty. This will be used to set up your citation library. <strong>Medical Oncology</strong>, 
+		<strong>Radiation Oncology</strong>, and <strong>Psychiatry</strong> libraries have default seminal citations and are contributed to by panels of expert editors. 
+		All other specialties presently have only reference management tools.
+		<br>
+                                    <br>
+                                    Profession: 
+          @Html.DropDownListFor(m => m.Profession, new SelectList(new DAL.Models.RegisterModel().GetProfession(), "val", "Title"), "--Please Select--")
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Profession)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <hr height="1" width="100%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Graduation year")
+                                    @Html.TextBoxFor(m => m.GraduationYr, new { @id = "GraduationYr" })&nbsp;
+                                    @Html.ValidationMessageFor(m => m.GraduationYr)
+                                    <br>
+                                    <small>(from Medical/PhD/Nursing program)</small>
+                                    <br>
+                                    <br>
+                                    @Html.Label("Principal Practice Environment")
+                                    @Html.DropDownListFor(m => m.PracticeID, Model.PracticeList, "--Please Select--")
+                                    @Html.ValidationMessageFor(m => m.PracticeID, "The Practice Environment field is required")
+                                    <br>
+                                    <br>
+                                    @Html.CheckBoxFor(m => m.IsTermsAccepted) @Html.Label("I have read and accept the ") @Html.ActionLink("terms of use", "About", "Home")
+                                    @Html.ValidationMessageFor(m => m.IsTermsAccepted, "You must read and accept the terms for website use.")
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <input class="register_btn" type="submit" value="Register" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="floatright">
+                        <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                            <img src="~/Content/images/160x600-ad.jpg" /></a>
+                    </div>
+
+                    <div class="clear"></div>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+}

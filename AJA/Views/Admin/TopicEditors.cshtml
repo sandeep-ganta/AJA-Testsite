@@ -1,0 +1,200 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{
+    ViewBag.Title = "Topic Editors";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<div id="div_AllEditors" class="commonContent">
+    @{MVC4Grid.Grid modelgrid = @ViewBag.GridData;}
+    @Html.GridFor(modelgrid)
+</div>
+<div>
+    </br>
+</div>
+<div id="Assignment_Grid">
+
+
+    @if (ViewBag.Assignments != null)
+    {
+        <div id="div_EditorAssignment" class="commonContent">
+            @{MVC4Grid.Grid Assignmentmodelgrid = @ViewBag.Assignments;}
+            @Html.GridFor(Assignmentmodelgrid)
+        </div>
+    }
+
+
+</div>
+<div id="Edit_Editor_Dialog" title="Edit User">
+</div>
+<br />
+
+<div id="Edit_Assignment_Dialog" title="Edit User">
+</div>
+<br />
+
+<script type="text/javascript">
+
+    var CreateTopicEditor = function CreateTopicEditor() {
+        var url = '../Admin/GetTopicEditorwithID?Eid=0&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_Editor_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Editor_Dialog"));
+            $('#Edit_Editor_Dialog').dialog({
+                modal: true,
+                title: "Create Editor",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_AllEditors_Noofrows').change();
+                }
+            });
+        });
+    }
+
+    function EditEditor(ctrl) {
+
+        var url = '../Admin/GetTopicEditorwithID?Eid=' + $(ctrl).attr('keyid') + '&rand=' + randGenerator();
+
+        $.get(url, null, function (html) {
+            $('#Edit_Editor_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Editor_Dialog"));
+            $('#Edit_Editor_Dialog').dialog({
+                modal: true,
+                title: "Edit Editor",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_AllEditors_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    function EditorAssignment(ctrl) {
+
+        //var url = '../Admin/EditorAssignment?Eid=' + $(ctrl).attr('keyid') + '&FromGrid=' + true + '&rand=' + randGenerator();
+        //window.location.href = url;
+
+        var topicID = $(ctrl).attr('keyid');
+        var url = '../Admin/EditorAssignment?Eid=' + $(ctrl).attr('keyid') + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Assignment_Grid').html(html);
+
+            LoadAllJqueryStyles();
+        });
+
+    }
+
+    var DeleteTopicEditors = function DeleteTopicEditors(ctrl) {        
+        var topicId = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="MenuDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Topic Editors",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: '../Admin/DeleteTopicEditors?Eid=' + topicId + '&rand=' + randGenerator(),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (msg) {                                   
+                                    if (msg)
+                                        alert('Topic Editor Deleted successfully');
+                                    else
+                                        alert('Unable to delete Topic Editor since related Comments/Assignments mapping exist.');
+
+                                    $("#tbl_AllEditors .bt_grid_refresh").click();
+                                },
+                                error: function (msg) { alert('Error occured in deleting the Assignment'); }
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+    var CreateEditor = function CreateEditor(Eid) {
+        var url = '../Admin/GetEditorTopicwithID?Eid=' + Eid + '&&topicId=0&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_Assignment_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Assignment_Dialog"));
+            $('#Edit_Assignment_Dialog').dialog({
+                modal: true,
+                title: "Add Assignment",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_EditorAssignment_Noofrows').change();
+                }
+            });
+        });
+    }
+
+    function EditField(Eid, ctrl) {
+        var url = '../Admin/GetEditorTopicwithID?Eid=' + Eid + '&&topicId=' + $(ctrl).attr('keyid') + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_Assignment_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Assignment_Dialog"));
+            $('#Edit_Assignment_Dialog').dialog({
+                modal: true,
+                title: "Edit Assignment",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_EditorAssignment_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+
+    var DeleteEditorAssignment = function DeleteEditorAssignment(Eid, ctrl) {
+
+        var topicId = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="MenuDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Assignment",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: "../Admin/DeleteEditorAssignment?Eid=' + Eid + '&&topicId=' + topicId +  '&rand=' + randGenerator()",
+                                data: JSON.stringify({ Eid: Eid, topicId: topicId }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (msg) {
+                                    alert('Editor Assignment deleted successfully');
+                                    $("#tbl_EditorAssignment .bt_grid_refresh").click();
+                                },
+                                error: function (msg) { alert('Error occured in deleting the Assignment'); }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+</script>
+@*<script type="text/javascript" src="~/Scripts/GridView.js"></script>*@
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+
+<link href="~/Content/GridView.css" rel="stylesheet" />

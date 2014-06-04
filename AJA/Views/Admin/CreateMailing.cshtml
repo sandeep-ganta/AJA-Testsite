@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "CreateMailing";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@model DAL.Models.Monthlyeditorsmail
+
+<h2>Monthly Editors Choice Update Mailing</h2>
+<h4>First, please select the Editors Choice Edition that will be announced in this mailing</h4>
+ 
+@using (Html.BeginForm("Messageproperty", "Admin", FormMethod.Post, new { @id = "form_Editionsmail" }))
+{
+    @Html.ValidationSummary(true)
+   
+    <table border="0" width="100%">
+        <tr>
+            <td align="left">
+                <table border="0" cellpadding="10" cellspacing="0">
+                    <tr>
+                        <td>
+                            @Html.DropDownListFor(model => model.editionid, Model.RecentEditionsList, "--Please Select--", new { @id = "ddl_edition" })
+                            @Html.ValidationMessageFor(model => model.editionid)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" id="btnCreatemail" value="Create Mailing" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table> 
+   
+    <script type="text/javascript">
+        //history.pushState(null, null, $(window).attr("href"));
+        //$(window).on("popstate", function (e) {
+        //    e.preventDefault();
+        //    alert("dashboard");
+        //    //load dashboard
+        //});
+
+        // To disable browser back button
+
+        //$(window).unload(function () {
+        //});
+        
+        //function stopError() {
+        //    return true;
+        //}
+
+        //window.onerror = stopError;
+
+        //window.history.forward(1);
+        //window.onunload = function () {
+        //    if (window.event.clientX < 0 || window.event.clientX > 10000) {
+        //        document.location.href = "/ep/WindowUnloadServlet";
+        //    }
+        //}
+       
+        //function preventBack() { window.history.forward(); }
+        //setTimeout("preventBack()", 0);
+        //window.onunload = function () { null };
+
+        //function DisableBackButton() {
+        //    window.history.forward()
+        //}
+        //DisableBackButton();
+        //window.onload = DisableBackButton;
+        //window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        //window.onunload = function () { void (0) }
+         
+    </script>
+}
+ 

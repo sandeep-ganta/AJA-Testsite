@@ -1,0 +1,374 @@
+﻿@model DAL.Models.EditorialCommentsModel
+
+@if (Model != null)
+{
+    using (Html.BeginForm((Model.CommentID != 0) ? "UpdateEditorialComments" : "SaveEditorialComments", "Admin", FormMethod.Post, new { @id = "form_Edit_Comments" }))
+    {
+    @Html.ValidationSummary(true)
+
+    <ol>
+        <li>
+            @Html.HiddenFor(model => model.CommentID, new { @id = "hdCommentId" })
+            @Html.Hidden("hdComment", Model.Comment, new { @id = "hd_comment" })
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.AuthorName)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.AuthorName, Model.Authorslist, "--Please Select--", new { @id = "ddl_Author", @name = "TypeAuthor" })
+                <input type="button" id="btn_author" value="Add" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Addauthor(this)" />
+            </div>
+
+            <table width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>Selected authors:</td>
+                        <td>
+                            <input class="removeallauthor" onclick="Removeallauthor(this)" type="button" value="RemoveAll" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="mainauthor">
+                @if (Model.Authordetails != null)
+                {
+                    foreach (var item in Model.Authordetails)
+                    { 
+                    <div class="diveachauthor" id="divaut_@item.id">
+                        <table width="100%">
+                            <colgroup>
+                                <col width="50%" />
+                                <col width="" />
+                            </colgroup>
+                            <tr>
+                                <td align="left" style="padding-right: 5px;">
+                                    <label for="txtauthor_@item.id" class="txtedit txtauthor" aria-labelledby="@item.id">@item.name</label>
+                                </td>
+                                <td>
+                                    <input class="deleteauthor" name="@item.id" onclick="Deleteauthor(this)" type="button" value="Remove"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    }
+                }
+            </div>
+        </li>
+
+        <li>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Name, Model.Genelist, "--Please Select--", new { @id = "ddl_Gene", @name = "Typegene" })
+                <input type="button" id="btn_gene" value="Add" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Addgene(this)" />
+            </div>
+            <table width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>Attached Genes:</td>
+                        <td>
+                            <input class="removeallgene" onclick="Removeallgene(this)" type="button" value="RemoveAll" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="main_gene">
+
+                @if (Model.Genedetails != null)
+                {
+                    foreach (var data in Model.Genedetails)
+                    {
+                        var geneid = @data.GeneID; var Name = @data.Name;
+                    <div class="diveachgene" id="divgene_@data.GeneID">
+                        <table width="100%">
+                            <colgroup>
+                                <col width="50%" />
+                                <col width="" />
+                            </colgroup>
+                            <tr>
+                                <td align="left" style="padding-right: 5px;">
+                                    <label for="txtgene_@data.GeneID" class="txtedgn txtgene" aria-labeledby="@data.GeneID">@data.Name</label>
+                                </td>
+                                <td>
+                                    <input class="deletegene" name="@data.GeneID" onclick="Deletegene(this)" type="button" value="Remove"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    }
+                }
+            </div>
+        </li>
+
+        <div id="Comnthide" class="cmt_hide">
+            Hide Comment Box
+        </div>
+
+        <div id="ComntShow" class="cmt_show">
+            Click Here to Show Comment Box
+        </div>
+
+        <div class="CmtArea">
+            <li>
+                <div class="editor-field">
+                    Comment:<br />
+                    @Html.TextAreaFor(model => model.Comment, new { @id = "txt_comment" })
+                    @Html.ValidationMessageFor(model => model.Comment)
+                </div>
+            </li>
+        </div>
+    </ol>
+    <br />    
+    <div>
+        <input type="button" id="btnSave_Comments" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
+        <button type="button" id="btncancel" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Cancel();">
+            <span class="ui-button-text">Cancel</span></button>
+    </div>
+    <link href="@Url.Content("~/Content/jquery.cleditor.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.cleditor.js")" type="text/javascript"></script>
+    <style>
+        .cmt_show
+        {
+            cursor: pointer;
+            border: 1px solid #9FE7E1;
+            width: 240px;
+            margin: 6px;
+            text-align: center;
+            padding: 4px;
+            background-color: #01657D;
+            color: #fff;
+            border-radius: 12px;
+            line-height: 18px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        cmt_show:hover
+        {
+            border: 1px solid #37d31f;
+        }
+
+        .cmt_hide
+        {
+            cursor: pointer;
+            border: 1px solid #9FE7E1;
+            width: 140px;
+            margin: 6px;
+            text-align: center;
+            padding: 4px;
+            background-color: #01657D;
+            color: #fff;
+            border-radius: 12px;
+            line-height: 18px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        cmt_hide:hover
+        {
+            border: 1px solid #37d31f;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $('#Comnthide').hide();
+            $('.CmtArea').hide();
+            $("#ComntShow").click(function () {
+                var cledit = $('#txt_comment').cleditor({ width: "100%", height: "100%" })[0];
+                cledit.refresh();
+                cledit.$frame.css('width', '779px');
+                cledit.$frame.css('height', '230px');
+                // $('#ancrshow').hide();
+                $('.CmtArea').toggle(500);
+                $("#ComntShow").hide();
+                $("#Comnthide").show();
+            });
+
+            $("#Comnthide").click(function () {
+                //$('#ancrshow').show();
+                $("#Comnthide").hide();
+                $("#ComntShow").show();
+
+                $('.CmtArea').toggle(500);
+            });
+
+            $('#btnSave_Comments').click(function (event) {
+              
+                var rex = /(<([^>]+)>)/ig;
+                var txt = $('#txt_comment').val();
+                var temp = txt.replace(rex, "").replace(/&nbsp;/g, '');
+                if ($.trim($('#mainauthor').html()) != '') {
+                    if (temp != '') {
+                        var $form = $('#form_Edit_Comments');
+                        var url = $form.attr('action');
+                        var newfield = GetFieldJson();
+                        var val = JSON.stringify(newfield);
+                        var RequestType = $form.attr('method');
+                        $.ajax({
+                            type: RequestType,
+                            url: url,
+                            data: val,
+                            async: false,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (res) {
+                                if (res == true) {
+                                    var dail = $("#form_Edit_Comments").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                                    var dailogid = $(dail).attr('aria-describedby');
+                                    $('#' + dailogid).dialog('close');
+                                    alert("Field Saved Successfully");
+                                    $("#tbl_Comments .bt_grid_refresh").click();
+                                } else {
+                                    alert("Error in saving Field");
+                                }
+                            }
+                        }).done(function () { })
+                        .fail(function (E) { alert(E.msg); }).
+                        always(function () { });
+                    }
+                    else {
+                        alert("Comment is Required");
+                    }
+                }
+                else {
+                    alert("Please Add a author");
+                }
+                // event.preventDefault();
+            });
+        });
+
+        var Cancel = function Cancel() {
+            $('#Editions_Comments').dialog('close');
+        }
+
+        var Addauthor = function Addauthor(cntrl) {
+            var authors = $('select[id$=ddl_Author] :selected').text();
+            var nextid = $('select[id$=ddl_Author] :selected').val();
+            if (authors != "--Please Select--") {
+                if ($(".diveachauthor label").length == 0) {
+                    var newdiv = $('<div class="diveachauthor" id="divaut_' + nextid + '">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;"><label for="txtauthor' + nextid + '" class="txtadd txtauthor" aria-labelledby="' + nextid + '">' + authors + '</label></td><td><input class="deleteauthor" name="' + nextid + '" onclick="Deleteauthor(this)" type="button" value="Remove"/></td></tr></table>'
+                                      + '</div>');
+                    $('#mainauthor').append(newdiv);
+                }
+                else {
+                    var exist = 0;
+                    for (var i = 0; i < $(".diveachauthor label").length; i++) {
+                        if (nextid == $($(".diveachauthor label")[i]).attr('aria-labelledby')) {
+                            exist = 1;
+                            break;
+                        }
+                    }
+                }
+                if (exist == 0) {
+                    var newdiv = $('<div class="diveachauthor" id="divaut_' + nextid + '">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;"><label for="txtauthor' + nextid + '" class="txtadd txtauthor" aria-labelledby="' + nextid + '">' + authors + '</label></td><td><input class="deleteauthor" name="' + nextid + '" onclick="Deleteauthor(this)" type="button" value="Remove"/></td></tr></table>'
+
+                    + '</div>');
+                    $('#mainauthor').append(newdiv);
+                }
+                if (exist == 1) { alert("Author already exists"); }
+            }
+        }
+
+        function Deleteauthor(btn) {
+            $(btn).parents('.diveachauthor').remove();
+        }
+
+        function Removeallauthor(btn) {
+            $($("#mainauthor").children()).remove();
+        }
+
+        function Removeallgene(btn) {
+            $($("#main_gene").children()).remove();
+        }
+
+        function Deletegene(btn) {
+            $(btn).parents('.diveachgene').remove();
+        }
+
+        var Addgene = function Addgene(cntrl) {
+            var genes = $('select[id$=ddl_Gene] :selected').text();
+            var nextgene = $('select[id$=ddl_Gene] :selected').val();
+            if (genes != "--Please Select--") {
+                if ($(".diveachgene label").length == 0) {
+                    var newgenediv = $('<div class="diveachgene" id="divgene_' + nextgene + '">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;">'
+
+                                     + '<label for=txtgene' + nextgene + '" class="txtadg txtgene" aria-labeledby="' + nextgene + '">' + genes + '</label>' + '</td><td>'
+                                     + '<input class="deletegene" name="' + nextgene + '" onclick="Deletegene(this)" type="button"  value="Remove" />' + '</td></tr></table>'
+                                 + '</div>');
+                    $('#main_gene').append(newgenediv);
+                }
+                else {
+                    var exist = 0;
+                    for (var i = 0; i < $(".diveachgene label").length; i++) {
+                        if (nextgene == $($(".diveachgene label")[i]).attr('aria-labeledby')) {
+                            exist = 1;
+                            break;
+                        }
+                    }
+                }
+                if (exist == 0) {
+                    var newgenediv = $('<div class="diveachgene" id="divgene_' + nextgene + '">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;">'
+
+                                     + '<label for=txtgene' + nextgene + '" class="txtadg txtgene" aria-labeledby="' + nextgene + '">' + genes + '</label>' + '</td><td>'
+                                     + '<input class="deletegene" name="' + nextgene + '" onclick="Deletegene(this)" type="button"  value="Remove" />' + '</td></tr></table>'
+                                + '</div>');
+                    $('#main_gene').append(newgenediv);
+                }
+
+                if (exist == 1) { alert("Gene already exists"); }
+            }
+        }
+
+        var GetFieldJson = function GetFieldJson() {
+            var options = GetAuthors();
+            var genedata = Getgenes();
+            var AuthorField = {
+                CommentID: $('#hdCommentId').val(),
+                Comment: $("#txt_comment").val(),
+                NewAuthorValues: options,
+                NewGeneValues: genedata
+            };
+            return AuthorField;
+        }
+
+        //To get added Authors Data
+        var GetAuthors = function GetAuthors() {
+            var Authors = [];
+            $('.txtauthor').each(function (index, element) {
+                if ($(element).hasClass('txtadd')) {
+                    var Field = { AuthorID: $(element).attr('aria-labelledby'), AuthorText: $.trim(element.value), AuthorValue: index + 1 };
+                    Authors.push(Field);
+                }
+                else if ($(element).hasClass('txtedit')) {
+                    var editField = { AuthorID: $(element).attr('aria-labelledby'), AuthorText: $.trim(element.value), AuthorValue: index + 1 };
+                    Authors.push(editField);
+                }
+            });
+            return Authors;
+        }
+
+        //To get added Gene Values
+        var Getgenes = function Getgenes() {
+            var Genes = [];
+            $('.txtgene').each(function (index, element) {
+                if ($(element).hasClass('txtadg')) {
+                    var data = { GeneId: $(element).attr('aria-labeledby'), GeneText: $.trim(element.value), GeneValue: index + 1 };
+                    Genes.push(data);
+                }
+                else if ($(element).hasClass('txtedgn')) {
+                    var dataedit = { GeneId: $(element).attr('aria-labeledby'), GeneText: $.trim(element.value), GeneValue: index + 1 };
+                    Genes.push(dataedit);
+                }
+            });
+            return Genes;
+        }
+    </script>
+    }
+}

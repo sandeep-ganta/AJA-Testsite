@@ -1,0 +1,120 @@
+﻿@model  DAL.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in"; 
+}
+
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+{
+    @Html.AntiForgeryToken()
+    <table width="100%">
+        <tr>
+            <td>
+                <table width="1170" align="center" style="margin:0 auto;">
+                    <tr>
+                        <td align="left">
+                            <img src="~/Content/images/Subpage_banner.jpg"></td>
+                        <td align="right"><a href="/User/Register">
+                            <img src="~/Content/images/Subpage_profilebgrnd.jpg"></a></td>
+                    </tr>
+                </table>
+                <div style="position: absolute; left: 0px; width: 100%; background: url('../Content/images/banner_shade.png') repeat-x; height: 15px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="center" class="commonContent">
+
+                    <table width="1170">
+
+                        <tr>
+                            <td colspan="3" height="20"></td>
+                        </tr>
+                        <tr>
+
+                            <td align="left" valign="top">
+                                <div>
+                                    <h1>USER LOGIN</h1>
+                                    <br />
+                                    <span>New users: Please @Html.ActionLink("Register", "Register", "User") Now.</span>
+                                    <hr color="#f3f3f3">
+                                    <p>
+                                        <span>Please Note: Cookies must be turned on in your browser.  They are required for the use of this 
+					    application. Thank you.</span>
+                                    </p>
+                                    <hr>
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="25%">@*@Html.ValidationSummary(true, "Invalid Credentials !")*@</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(m => m.LoginID)
+
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.LoginID) &nbsp;&nbsp; @Html.ActionLink("Forgot your Username?", "ForgotPassword", "User")
+                                                @Html.ValidationMessageFor(m => m.LoginID)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+
+                                                @Html.LabelFor(m => m.Password)
+                                            </td>
+                                            <td>
+                                                @Html.PasswordFor(m => m.Password, new {autocomplete = "off" })&nbsp;&nbsp; @Html.ActionLink("Forgot your Password?", "ForgotPassword", "User")
+                                                @Html.ValidationMessageFor(m => m.Password)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                @Html.ActionLink("Login with Google", "ExternalLogin", "User", new { provider = "google" }, null) &nbsp;&nbsp;&nbsp;
+                                                @Html.ActionLink("Login with Facebook", "ExternalLogin", "User", new { provider = "myfacebook" }, null)
+                                                @* @Html.ActionLink("Forgot your Password?", "ForgotPassword", "User")*@
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div>
+                                        <p>
+                                            <span>@Html.CheckBoxFor(m => m.RememberMe) Check this box to enable auto login. If checked, your user name 
+					will be saved on this machine and will be used by default; you will not 
+					be required to enter it again to access ACR Journal Advisor from this machine. 
+					A cookie (a small text file) will be saved on this machine.   
+                                            </span>
+                                        </p>
+
+                                        <hr />
+                                    </div>
+                                    <p class="PT10">
+                                        <input class="register_btn" type="submit" value="Login" />
+                                    </p>
+                                </div>
+
+                            </td>
+                            <td width="10"></td>
+                            <td align="right" valign="top" width="160">
+                                  <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank"/>
+                                <img src="~/Content/images/160x600-ad.jpg" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

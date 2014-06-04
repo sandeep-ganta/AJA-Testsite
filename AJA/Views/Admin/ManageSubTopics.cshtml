@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "ManageSubTopics";
+}
+
+
+<div class="commonContent">
+</div>
+<div id="div_AllSubTopics" class="commonContent">
+    @{DAL.Models.Grid_old modelgrid = @ViewBag.GridData;}
+    @Html.Partial("GridView", modelgrid)
+</div>
+<div id="NewSubTopic_Dialog" title="Crete Sub-Topic">
+</div>
+
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+
+<script>
+    var CreateSubTopic = function CreateSubTopic(TopicID) {
+         
+        var url = '../Admin/CreateNewSubTopicWithTopicID?ID=' + TopicID;
+        $.get(url, null, function (html) {
+            $('#NewSubTopic_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#NewSubTopic_Dialog"));
+            $('#NewSubTopic_Dialog').dialog({
+                modal: true,
+                title: "Create Sub-Topic",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_SubTopics_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    function EditSubTopic(ctrl) {
+       
+        var topicID = $(ctrl).attr('keyid');
+        var url = '../Admin/EditSubTopictwithSubTopicID?ID=' + topicID + '&FromGrid=' + true + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#NewSubTopic_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#NewSubTopic_Dialog"));
+            $('#NewSubTopic_Dialog').dialog({
+                modal: true,
+                title: "Edit Sub-Topic",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_SubTopics_Noofrows').change();
+                }
+            });
+        });
+    }
+
+</script>

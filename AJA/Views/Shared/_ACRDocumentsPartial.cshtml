@@ -1,0 +1,161 @@
+﻿@model DAL.Models.ACRDocumentsModel
+
+@if (Model != null)
+{
+    using (Html.BeginForm("AddACRDocument", "Admin", FormMethod.Post, new { @id = "form_Add_ACRDocument" }))
+    { 
+    @Html.ValidationSummary(true)
+     
+    <div>
+        <ol>
+            <li>
+                @Html.HiddenFor(model => model.Id, new { @id = "hdACRDocumentId" })
+            </li>
+            <li>
+                <div class="editor-label">
+                    @Html.Label("Document Source")
+                </div>
+                <div class="editor-field">
+                    @*<input type="text" name="pub_date" id="pub_date" />*@
+                    @Html.TextBoxFor(model => model.Source)
+                    @Html.ValidationMessageFor(model => model.Source)
+
+                </div>
+            </li>
+
+            <li>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @*<input type="text" name="pub_date" id="pub_date" />*@
+                    @Html.TextBoxFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+
+                </div>
+            </li>
+
+            <li>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.LastUpdatedDate)
+                </div>
+                <div class="editor-field">
+                    @*<input type="text" name="pub_date" id="pub_date" />*@
+                    @Html.TextBoxFor(model => model.LastUpdatedDate, new { id = "txtLastUpdateDate", @readonly = true })
+                    @Html.ValidationMessageFor(model => model.LastUpdatedDate)
+                </div>
+            </li>
+
+            @* <li>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.chkIsAutpUpdate)
+                </div>
+                <div class="editor-field">
+                    @*<input type="text" name="pub_date" id="pub_date" />*@
+            @*   @Html.CheckBoxFor(model => model.chkIsAutpUpdate)
+                </div>
+            </li>*@
+
+            <li>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.ClicksCount)
+                </div>
+                <div class="editor-field">
+                    @*<input type="text" name="pub_date" id="pub_date" />*@
+                    @Html.TextBoxFor(model => model.ClicksCount)
+                    @Html.ValidationMessageFor(model => model.ClicksCount)
+                </div>
+            </li>
+        </ol>
+
+        <button type="submit" id="btnSave" name="Command" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+            <span class="ui-button-text">Save</span></button>
+
+        &nbsp; &nbsp;
+            <button type="button" id="btncancel" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Cancel();">
+                <span class="ui-button-text">Cancel</span></button>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#txtLastUpdateDate").datepicker();
+            $("#txtLastUpdateDate").datepicker('setDate', new Date());
+        });
+
+        var Cancel = function Cancel() {
+            $('#ACRDocuments_Add_dialog').dialog('close');
+        }
+
+    </script>
+    
+@*<script type="text/javascript">
+        $(document).ready(function () { $("#txtLastUpdateDate").datepicker({ dateFormat: "mm/dd/yy" }); });
+        //$("#btnSave").button().click(function () {
+        //    //  $("#pub_date").rules("add", { Checkpubdate: true });
+        //    if ($('#form_Edit_ACRDocument').valid()) {
+        //        if ($('#form_Edit_ACRDocument').valid()) {
+
+        //            if ($('#form_Edit_ACRDocument').valid()) {
+        //                var $form = $('#form_Edit_ACRDocument');
+        //                var url = $form.attr('action');
+        //                var newfield = GetFieldJson();
+        //                var val = JSON.stringify(newfield);
+        //                var RequestType = $form.attr('method');
+        //                $.ajax({
+        //                    type: RequestType,
+        //                    url: url,
+        //                    data: val,
+        //                    async: false,
+        //                    contentType: "application/json; charset=utf-8",
+        //                    dataType: "json",
+        //                    success: function (res) {
+        //                        if (res == true) {
+        //                            var dail = $("#form_Edit_ACRDocument").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+        //                            var dailogid = $(dail).attr('aria-describedby');
+        //                            $('#' + dailogid).dialog('close');
+        //                            alert("ACR Document Details Updated Successfully");
+
+        //                        } else {
+        //                            alert("Error in saving Field");
+        //                        }
+        //                    }
+        //                }).done(function () { })
+        //                .fail(function (E) { alert(E.msg); }).
+        //                always(function () { });
+        //            }
+        //        }
+        //    }
+        //});
+
+        //$.validator.addMethod("Checkpubdate", function (value, element) {
+        //    // checking whether the date entered is in correct format
+        //    var isValid = value.match(/^\d\d\?\/\d\d?\/\d\d\d\d$/);
+        //    if (isValid) {
+        //        var minDate = Date.parse("01/01/1900");
+        //        var today = new Date();
+        //        var DOB = $.datepicker.parseDate("dd/mm/yy", value);
+        //        // var DOB = Date.parse(value);
+        //        if ((DOB <= today)) {
+        //            isValid = false;
+        //        }
+        //        return isValid;
+        //    }
+        //}, "Enter Valid Date");
+
+        //var Cancel = function Cancel() {
+        //    $('#Editions_Edit_dialog').dialog('close');
+        //}
+
+        //var GetFieldJson = function GetFieldJson() {
+        //    var AddDocumentField = {
+        //        Id: $("#hdACRDocumentId").val(),
+        //        LastUpdatedDate: $('#txtLastUpdateDate').val()
+        //    };
+        //    return AddDocumentField;
+        //}
+        //var Cancel = function Cancel() {
+        //    $('#ACRDocuments_Edit_dialog').dialog('close');
+        //}
+    </script>*@
+    }
+}

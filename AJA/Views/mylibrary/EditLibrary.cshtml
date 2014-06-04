@@ -1,0 +1,411 @@
+﻿@using DAL;
+@using DAL.Models;
+@model DAL.Models.MyLibraryModel
+
+@{
+    ViewBag.Title = "Edit Library";
+}
+
+<link rel="stylesheet" href="/resources/demos/style.css" />
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#tabs").tabs();
+    });
+    function setParent(folderid) {
+        $('#FolderParent').val(folderid);
+        var TextBoxId="FolderName"+folderid; 
+        return true;
+    }
+    function ConfirmDelete(container) {
+        if (container == 'folder') {
+            var result = confirm('Are you sure you want to delete the folder? \n All customizations will be lost. Associated auto-queries will also be deleted.')
+            return result;
+        }
+        else if(container =="specialty")
+        {
+            var result = confirm('Are you sure you want to delete this specialty? \n All customizations will be lost. Associated auto-queries will also be deleted.')
+            return result;
+        }
+    }
+    
+    $('#ValidationDiv :submit').on("click", function(){
+        var ControlId='FolderName'+$(this).attr('aja-val');
+        $.validator.unobtrusive.parse($("#ValidationDiv"));
+        $('#editform').validate({
+            rules: {
+                ControlId: "required", //ofcourse set different options for every field               
+            }
+        }); 
+    });
+
+
+    $('#btnAddTopic').on("click", function(){               
+        $('#editform').validate({
+            rules: {
+                Foldername0: "required" //ofcourse set different options for every field              
+            }
+        }); 
+    });
+
+</script>
+
+<script type="text/javascript">
+    var isAllChecked = false;
+    var checkBoxArray = new Array();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // toggleCheckBoxes
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    function toggleCheckBoxes(orgid) {
+
+        // Debug text.
+        txt = "";
+        txt = txt + "hello world2 \n";
+
+        //
+        var boxesToCheck = new Array();
+
+        // Walk through boxes to see if any are checked, if so we're gonna uncheck everything.
+        isAllChecked = true;
+        var allElements = checkBoxArray[orgid];
+        for (var i = 0; i < allElements.length; i++) {
+            if (allElements[i].checked != true) {
+                isAllChecked = false;
+            }
+        }
+        //
+        var boxesToCheck = new Array();
+        boxesToCheck = checkBoxArray[orgid];
+
+        // Temp.
+        for (var i = 0; i < checkBoxArray[orgid].length; i++) {
+            txt = txt + "val = " + checkBoxArray[orgid][i].value + "\n";
+        }
+
+        // Here's the candy. Check or uncheck our list of form elements.
+        for (var i = 0; i < boxesToCheck.length; i++) {
+            if (isAllChecked) {
+                boxesToCheck[i].checked = false; // was false;
+            } else {
+                boxesToCheck[i].checked = true;
+            }
+        }
+
+        // Alert debug text.
+        //alert( txt );
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // toggleAllCheckBoxes
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    function toggleAllCheckBoxes() {
+
+        // Debug text.
+        txt = "";
+        txt = txt + "hello world2 \n";
+
+        // See if any checkbox is checked, initially assume not.
+        isAnyChecked = false;
+        var allElements = document.editform.elements;
+        for (var i = 0; i < allElements.length; i++) {
+            thisElement = allElements[i];
+            if (thisElement.type == "checkbox") {
+                if (thisElement.checked == true) {
+                    isAnyChecked = true;
+                }
+            }
+        }
+
+        // See if any checkbox is checked, initially assume not.
+        for (var i = 0; i < allElements.length; i++) {
+            thisElement = allElements[i];
+            if (thisElement.type == "checkbox") {
+                if (isAnyChecked) {
+                    thisElement.checked = false;
+                } else {
+                    thisElement.checked = true;
+                }
+            }
+        }
+
+        // Alert debug text.
+        //alert( txt );
+    }
+</script>
+
+@using (Html.BeginForm("EditLibrary", "mylibrary", FormMethod.Post, new { id = "editform", name = "editform" }))
+{
+
+    <table width="100%">
+        <tr>
+            <td>
+                <table width="1170" align="center" style="margin:0 auto;">
+                    <tr>
+                        <td>
+                            <img src="~/Content/images/Subpage_banner-1170.jpg">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        @*<tr>
+            <td class="shdwContr"></td>
+        </tr>*@
+        <tr>
+            <td>
+                <div class="commonContent">
+                    <div class="floatleft">
+                        <div>
+                            <h2>Edit Library</h2>
+                        </div>
+                        @{
+    var SpecCount = 1;
+    var TopicCount = 1;
+                        }
+
+                        <table cellspacing="0" cellpadding="10" border="0">
+                            <tr>
+                                @foreach (var item in Model.AllUserSpecialities)
+                                {
+                                    if (ViewBag.SpecId == item.SpecialityId)
+                                    {
+                                    <td bgcolor="#efefef"><b>@item.SpecialityName </b></td>     
+                                    }
+                                    else
+                                    {
+                                        string HREF = "/mylibrary/editlibrary?specid=" + item.SpecialityId;                                        
+                                    <td>
+                                        <a href="@HREF">@item.SpecialityName</a>
+                                    </td>
+                                             
+                                    }
+
+                                    SpecCount++;
+                                }
+
+                                @if (@Model.AllUserSpecialities.Count < 3)
+                                {
+                                    <td>
+                                        <a href="#" onclick="GetSpeciality()">Add a Topic or Subtopic from another Specialty</a>
+                                    </td>  
+                                }
+                            </tr>
+                        </table>
+
+                        <table>
+                            <tr bgcolor="#efefef">
+                                <td colspan="3" valign="top" bgcolor="#efefef">
+
+                                    <table width="965">
+                                        <tr>
+                                            <td align="left">
+                                                <i>Use checkboxes to select topics/subtopics, then click one of the buttons at right. Hidden topics appear gray.</i>
+                                            </td>
+                                            <td align="right">
+                                                <input type="submit" name="btnShowFolder" value="Show" />
+                                                <input type="submit" name="btnHideFolder" value="Hide" />
+                                                check
+                                <input type="button" name="Toggle" value="All" onclick="toggleAllCheckBoxes()">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br />
+
+                        <div id="ValidationDiv">
+                            @if (Model.AllUserSpecialities.Select(n => n.SpecialityId).FirstOrDefault() != ViewBag.SpecId)
+                            {
+                                <div>
+                                    @Html.ActionLink("[Remove Specialty]", "DeleteSpecialty", new { specid = ViewBag.SpecId }, new { onclick = "return ConfirmDelete('specialty')" })
+                                </div>                                     
+                                <br />
+                            }
+
+
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+
+                                        <div class="divtopicbg">
+                                            <span>Add Topic</span>
+                                            <input type="text" name="FolderName0" id="FolderName0" />
+                                            <input type="submit" name="btnAddTopic" id="btnAddTopic" value="Add" />
+                                        </div>
+                                        <br />
+                                        @{
+                            int? OrgNameTemp = -1;
+                            string btnAddSubTopicName = " ";
+
+                            int count = 1;
+                            int rowCount = 0;
+                                            <table width="100%">
+                                                <tr>
+                                                    @foreach (var OrgName in Model.AllUserFoldersEdit)
+                                                    {
+                                                        btnAddSubTopicName = "FolderName" + OrgName.OrgId;
+                                                        string SubTopicOnclick = "setParent(" + OrgName.OrgId + ")";
+                                                        if (OrgName.OrgId != OrgNameTemp)
+                                                        {
+
+                                                            if (rowCount == 0)
+                                                            { 
+                                                        @Html.Raw(HttpUtility.HtmlDecode("<td valign=\"top\">"))
+                                                            }
+                                                            else if (rowCount == 6)
+                                                            {
+                                                        @Html.Raw(HttpUtility.HtmlDecode("</td><td  valign=\"top\" style=\"float: right;\">")) 
+                                                            }
+                                                                                                 
+                                                        <table width="400" bgcolor="#efefef">
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" name="TopicIdCheckboxList" value="@OrgName.OrgId" />
+                                                                    <script type="text/javascript">							
+                                                                        checkBoxArray[@OrgName.OrgId] = new Array();
+                                                                        allElements = document.editform.elements;
+                                                                        thisElement = allElements[ allElements.length - 1 ];
+                                                                        checkBoxArray[@OrgName.OrgId].push( thisElement );
+                                                                    </script>
+
+                                                                    @if (!Model.HiddenTopicIds.Contains(Convert.ToInt32(OrgName.OrgId)))
+                                                                    {
+                                                                        <span class="topic" id="@OrgName.OrgId">@OrgName.OrgName</span>
+                                                                        rowCount++;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="topic" style="font-style:italic;color:gray" id="@OrgName.OrgId">@OrgName.OrgName</span>                                        
+                                                                        rowCount++;
+                                                                    }
+                                                                    @if (OrgName.OrgType == 2)
+                                                                    {@:&nbsp;
+                                                                        @Html.ActionLink("[Delete]", "DeleteUserTopic", new { DisplaySpecialityId = OrgName.SpecialtyID, TopicId = OrgName.OrgId }, new { onclick = "return ConfirmDelete('folder')" })
+                                                                    }
+                                                                    else if (OrgName.OrgType == 3)
+                                                                    {@:&nbsp;
+                                                                        @Html.ActionLink("[Remove]", "DeleteUserSponsorTopic", new { DisplaySpecialityId = OrgName.SpecialtyID, TopicId = OrgName.OrgId }, new { onclick = "return ConfirmDelete('folder')" }) 
+                                                                    }
+                                                                </td>
+                                                                <td align="right">
+                                                                    @{string OnclickFucn = "toggleCheckBoxes(" + OrgName.OrgId + ")";}
+                                                                    <span>check</span>
+                                                                    <input type="button" value="All" id="btnCheckAll" onclick="@OnclickFucn" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <br />
+                                
+                                                                      if (OrgName.OrgType != 3)
+                                                                      {
+                                                        <div>
+                                                            <span>Add Subtopic</span>
+                                                            <input type="text" name="@btnAddSubTopicName" data-val="true" />
+                                                            <input type="submit" name="btnAddSubTopic" aja-val="@OrgName.OrgId" value="Add" onclick="@SubTopicOnclick" />
+                                                        </div>
+                                                                      }
+                                                        <br />
+                                                                      foreach (var FuncName in Model.AllUserFoldersEdit)
+                                                                      {
+                                                                          if ((@OrgName.OrgId == @FuncName.OrgId) && FuncName.FunId != null)
+                                                                          {
+                              
+                                                        <input type="checkbox" name="SubTopicIdCheckboxList" value="@FuncName.FunId" />
+                                                                              if (!Model.HiddenSubTopicIds.Contains(Convert.ToInt32(FuncName.FunId)))
+                                                                              {
+                                                        <span class="subtopic" id="@FuncName.FunId">@FuncName.FunName</span>
+                                                                              }
+                                                                              else
+                                                                              {
+                                                        <span class="subtopic" style="font-style:italic;color:gray" id=@FuncName.FunId>@FuncName.FunName</span>
+                                                                              }
+                                            
+                                                        <script type="text/javascript">							
+                                                            allElements = document.editform.elements;
+                                                            thisElement = allElements[ allElements.length - 1 ];
+                                                            checkBoxArray[ @FuncName.OrgId ].push( thisElement );    
+                                                        </script>
+                                            
+                                                                              if (FuncName.FunType == 2)
+                                                                              {@:&nbsp;
+                                                        @Html.ActionLink("[Delete]", "DeleteUserSubTopic", new { DisplaySpecialityId = FuncName.SpecialtyID, TopicId = FuncName.OrgId, FolderId = FuncName.FunId }, new { onclick = "return ConfirmDelete('folder')" }) 
+                                                                              }
+                                                        <br />
+                                                                          }
+                                                                      }
+                                                                      OrgNameTemp = OrgName.OrgId;
+                                                        <br />
+                                                        }
+                                                        count++;
+                                                    }
+                                                    @Html.Raw(HttpUtility.HtmlDecode("</td>"))
+                                                </tr>
+                                            </table>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                        <table width="965" bgcolor="#efefef">
+                            <tr>
+                                <td align="left">
+                                    <i>Use checkboxes to select topics/subtopics, then click one of the buttons at right. Hidden topics appear gray.</i>
+                                </td>
+                                <td align="right">
+                                    <input type="submit" name="btnShowFolder" value="Show" />
+                                    <input type="submit" name="btnHideFolder" value="Hide" />
+                                    check
+                                <input type="button" name="Toggle" value="All" onclick="toggleAllCheckBoxes()">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="floatright">
+
+                        <div class="floatright">
+
+                            <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                                <img src="~/Content/images/160x600-ad.jpg" /></a>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+    <input type="hidden" id="FolderParent" name="FolderParent" />
+                                                    //int? SpecId = @Model.AllUserSpecialities.Select(m => m.SpecialityId).FirstOrDefault();       
+    <input type="hidden" id="DisplaySpecialityId" name="DisplaySpecialityId" value="@ViewBag.SpecId" />    
+}
+
+<div id="EditLibrary_GetSpecialty_dialog">
+</div>
+
+
+<script type="text/javascript">
+
+    var GetSpeciality = function GetSpeciality() {
+        var url = '../mylibrary/GetSpecialty';
+        $.get(url, null, function (html) {
+            $('#EditLibrary_GetSpecialty_dialog').html(html);            
+            $('#EditLibrary_GetSpecialty_dialog').dialog({
+                modal: true,
+                title: "Add User Specialty",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                }
+            });
+        });
+    }
+
+</script>

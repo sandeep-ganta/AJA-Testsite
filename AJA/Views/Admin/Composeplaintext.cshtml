@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Composeplaintext";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@model DAL.Models.Monthlyeditorsmail
+
+@*<a href="~/Admin/Messageproperty" class="">Back</a>*@
+
+@using (Html.BeginForm("PreviewPlaintext", "Admin", FormMethod.Post, new { @id = "form_plaintext" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="clear"></div>
+    <table border="0" cellpadding="10" cellspacing="0" width="100%">
+        <tr>
+            <td align="center">
+                <table border="0" cellpadding="10" cellspacing="0" style="background-color: #f4f4f4; border: 1px solid #ccc; width: 100%">
+                    <tr>
+                        <td style="width: 10%"></td>
+                        <td></td>
+                        <td style="width: 10%"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%"></td>
+                        <td class="mailPageHeading"><b>Plaintext Message</b></td>
+                        <td style="width: 10%"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%"></td>
+                        <td>Users who are using a mail client that does not support or allow HMTL email will see the message below</td>
+                        <td style="width: 10%"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%"></td>
+                        <td>
+                            @Html.HiddenFor(model => model.editionid, new { @id = "hdcompid" })
+                            @Html.TextAreaFor(model => model._message, new { @id = "txtMessage", @style = "max-width: 950px; width: 950px; margin: 0px 0px 5px; height: 305px" })
+                            @Html.ValidationMessageFor(model => model._message)
+                            @Html.HiddenFor(model => model._htmlmesage)
+                            @Html.HiddenFor(model => model.SpecialtyID)
+                            @Html.HiddenFor(model => model.Ishtml)
+                            @Html.HiddenFor(model => model.senderaddres)
+                            @Html.HiddenFor(model => model.sendername)
+                            @Html.HiddenFor(model => model.subject)
+                            @Html.HiddenFor(model => model.editionid)
+                            @Html.HiddenFor(model => model.editionname)
+                            @Html.HiddenFor(model => model.SpecialtyName)
+                        </td>
+                        <td style="width: 10%"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%"></td>
+                        <td align="right">
+                            <input type="submit" id="btnTest" value="Preview Message" name="Command" />
+                            <input type="submit" id="btnSavemsg" value="Save & Contine >>" name="Command" />
+                        </td>
+                        <td style="width: 10%"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%"></td>
+                        <td></td>
+                        <td style="width: 10%"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table> 
+    <script type="text/javascript">
+        //history.pushState(null, null, $(window).attr("href"));
+        //$(window).on("popstate", function (e) {
+        //    e.preventDefault();
+        //    alert("dashboard");
+        //    //load dashboard
+        //});
+
+        // To disable browser back button
+
+        //$(window).unload(function () {
+        //    alert('Handler for .unload() called.');
+        //});
+
+        //function stopError() {
+        //    return true;
+        //}
+
+        //window.onerror = stopError;
+
+        //window.history.forward(1);
+        //window.onunload = function () {
+        //    if (window.event.clientX < 0 || window.event.clientX > 10000) {
+        //        document.location.href = "/ep/WindowUnloadServlet";
+        //    }
+        //}
+
+        //function preventBack() { window.history.forward(); }
+        //setTimeout("preventBack()", 0);
+        //window.onunload = function () { null };
+
+        //function DisableBackButton() {
+        //    window.history.forward()
+        //}
+        //DisableBackButton();
+        //window.onload = DisableBackButton;
+        //window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        //window.onunload = function () { void (0) }
+
+    </script>
+}

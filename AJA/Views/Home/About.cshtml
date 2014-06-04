@@ -1,0 +1,286 @@
+﻿@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css" type="text/css" rel="stylesheet" />
+     <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+    <style>
+        .sub_cont
+        {
+            display: none;
+        }
+
+        .ui-widget
+        {
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <table width="100%">
+
+        <tr>
+            <td>
+                <table width="1170" align="center" style="margin:0 auto;">
+                    <tr>
+                        <td align="left">
+                            <img src="/Content/images/Subpage_banner.jpg"></td>
+                        <td align="right"><a href="@Url.Action("Register", "User")">
+                            <img src="/Content/images/Subpage_profilebgrnd.jpg"></a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="shdwContr"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <div align="center" class="commonContent">
+
+                    <div class="floatleft">
+                        <table width="1000">
+                            <tr>
+                                <td>
+                                    <h1>About Us</h1>
+                                    <p>
+                                        Physicians and scientists created ACR Journal Advisor to put compelling research and 
+				interpretation at your fingertips.  This site provides registered users with strata of 
+				reading suggestions, expert commentary, and integrated search and archive tools, layered 
+				over the MEDLINE® database.
+                                    </p>
+
+                                    <p>
+                                        Our intent is to encourage users to read, by means compliant with any copyright 
+				restrictions, the full text article referred to by bibliographic citations and author 
+				abstracts.  Abstracts are displayed only to communicate the minimum amount of 
+				information necessary to motivate users to seek out and read the full text article.  
+				Abstracts cannot be construed as a comprehensive representation of the contents of the 
+				full text article.  Abstracts, including copyright notices within the abstract when 
+				supplied by the publisher, are always displayed with the citation author, title, and 
+				source information.  ACR Journal Advisor neither implies nor expresses a creative or 
+				proprietary role in the abstracts or any other part of the MEDLINE® record.
+                                    </p>
+
+                                    <div id='med_subhead'>
+                                        <p><strong style="color: #00667D;">MEDLINE®</strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                MEDLINE® is the National Library of Medicine's (NLM) premier bibliographic 
+				database covering the fields of medicine, nursing, dentistry, veterinary medicine, 
+				the health care system, and the preclinical sciences. MEDLINE® contains bibliographic 
+				citations and author abstracts from more than 4,000 biomedical journals published in 
+				the United States and 70 other countries. The file contains over 11 million citations 
+				dating back to the mid 1960's. Coverage is worldwide, but most records are from 
+				English-language sources or have English abstracts.
+                                            </p>
+
+                                            <p>
+                                                NLM's MEDLINE® is reproduced and distributed by ACR Journal Advisor at its own expense, in full compliance with its 
+				Lease Agreement with NLM. No endorsement by the NLM, the National Center for Biotechnology Information, the 
+				National Institutes of Health, ACR Journal Advisor, or any of the products or services advertised on this system is 
+				intended or should be inferred.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div id='Notice_subhead'>
+                                        <p><strong style="color: #00667D;">Notice to Users Who Search MEDLINE® at ACR Journal Advisor</strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                Unless otherwise prohibited, organizations or institutions may download small 
+				amounts of NLM-produced citations for redistribution. For MEDLINE, this is about 1,000 
+				per month or 12,000 records for each year of coverage. Since NLM makes corrections and 
+				enhancements to and performs maintenance on these records at least annually, you should 
+				plan to replace or correct the records once a year to ensure that they are still 
+				correct and searchable as a group.
+                                            </p>
+
+                                            <p>
+                                                NLM databases are produced by a U.S. government agency and as such the contents 
+				are not covered by copyright domestically. They may be copyrighted outside the U.S. Some 
+				NLM produced data is from copyrighted publications of the respective copyright 
+				claimants. Users of the NLM databases are solely responsible for compliance with any 
+				copyright restrictions and are referred to the publication data appearing in the 
+				bibliographic citations, as well as to the copyright notices appearing in the original 
+				publications, all of which are incorporated by reference. Users should consult legal 
+				counsel before using NLM-produced records to be certain that their plans are in 
+				compliance with appropriate laws.
+                                            </p>
+
+                                            <p>All records must be identified as being derived from NLM databases.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id='Copyright_subhead'>
+                                        <p><strong style="color: #00667D;"><a name="Copyright Constraints" style="padding:0;"></a>Copyright Constraints</strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                All MEDLINE® data at the ACR Journal Advisor site is identified as being derived from NLM 
+				databases.  Some material in the NLM databases is from copyrighted publications of the 
+				respective copyright claimants. Users of the NLM databases are solely responsible for 
+				compliance with any copyright restrictions and are referred to the publication data 
+				appearing in the bibliographic citations, as well as to the copyright notices appearing 
+				in the original publications, all of which are hereby incorporated by 
+				reference.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div id='Copyright_subhead'>
+                                        <p><strong style="color: #00667D;">No Warranties or Representations </strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                The MEDLINE® data at the ACR Journal Advisor site is provided under a license agreement 
+				with the NLM and is formulated with a reasonable standard of care. ACR Journal Advisor and 
+				the NLM make no representation or warranties, expressed or implied. This includes, but 
+				is not limited to, any implied warranty of merchantability or fitness for a particular 
+				purpose, with respect to the NLM databases, and NLM specifically disclaims any such 
+				warranties and representations.
+                                            </p>
+
+                                            <p>
+                                                Expert interpretative commentary within the ACR Journal Advisor site appear under the 
+				heading "Editor's Comments" and are easily identified as text embedded in a colored 
+				background.  These statements reflect the views of the author, as of the date made, and 
+				are subject to risks and uncertainties, and do not necessarily reflect the views of 
+				their affiliated institutions or ACR Journal Advisor. While the authors and ACR Journal Advisor 
+				have exerted every effort to ensure that information provided is accurate, it may 
+				include errors or inaccuracies.  Particularly in view of ongoing research, changes in 
+				government regulations, and the constant flow of information relating to standards of 
+				medical practice, no statement found within "Editor's Comments" should supersede the 
+				reader's sound clinical judgment.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div id='Privacy_subhead'>
+                                        <p><strong style="color: #00667D;"><a name="Privacy Policy" style="padding:0;"></a>Privacy Policy</strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                ACR Journal Advisor respects your privacy.  We want you to feel comfortable visiting our 
+				web site and using its services.  We urge you to read the following Privacy Policy so 
+				that you will understand our commitment to your privacy.
+                                            </p>
+
+                                            <p>
+                                                If you link to a third-party site from ACR Journal Advisor, any information you reveal on 
+				that site is not subject to our Privacy Policy. You should consult the privacy policies 
+				of each site you visit.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div id='Personally_subhead'>
+                                        <p><strong style="color: #00667D;">Personally Provided Information </strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                We collect personal information only when you register or update your profile.  The 
+				information we collect in these areas includes Name, Title, Specialty, Country, Postal 
+				Code, Years in Practice, and Type of Practice. This information helps ACR Journal Advisor 
+				tailor relevant expert commentary, search tools, default citation libraries, and 
+				appropriate advertising.
+                                            </p>
+
+                                            <p>
+                                                You do not have to give us personal information to visit our web site. We require you 
+				to register so that we can provide personalization for your visit and searches saved at 
+				the ACR Journal Advisor site.  You may cancel your registration at any time; all personal 
+				information will be deleted from our servers.
+                                            </p>
+
+                                            <p>
+                                                If you choose to provide us with additional information about yourself through an 
+				e-mail message, form, survey, etc., we will only maintain the information as long as 
+				needed to respond to your question or to fulfill the stated purpose of the 
+				communication.
+                                            </p>
+
+                                            <p>
+                                                When you register or update your profile, you will also be given the option of 
+				receiving recurring e-mails from ACR Journal Advisor alerting you to new content relevant 
+				to your interests. You may decline to  receive these alerts at registration or any time 
+				thereafter.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div id='Information_subhead'>
+                                        <p><strong style="color: #00667D;">Information Automatically Collected and Stored </strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                For site management and statistical purposes, we collect information through standard 
+				web logs. These web logs contain the domain name or IP address from which you connect 
+				to our site, the date and time you access the site, search terms, and the pages 
+				visited. We make periodic checks of the types of browsers/operating systems used and of 
+				the pages from which you direct-link to our site. We regularly delete raw data logs 
+				from the system. We create summary statistics from the web logs in order to measure the 
+				number of visitors to the various sections of our site and to help make the site more 
+				useful.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div id='Cookie_subhead'>
+                                        <p><strong style="color: #00667D;">Cookie </strong></p>
+                                        <div class='sub_cont'>
+                                            <p>
+                                                A "cookie" is information stored on your computer by a web server and used to customize 
+				your web service in some way. ACR Journal Advisor, PubMed, and the other Entrez databases 
+				at the NLM National Center for Biotechnology Information use cookies to store 
+				information about your interactions that may be needed later to perform a function. 
+				Cookies allow the search and retrieval system to provide more interactive features. You 
+				can choose not to accept cookies and still use the ACR Journal Advisor service. However, 
+				you will be unable to use the cookie-dependent features. Refer to the help information 
+				in your browser software for instructions on how to disable cookies if that is your 
+				preference.
+                                            </p>
+
+                                            <p>
+                                                Advertisers may also use cookies when you click through their advertisements. Cogent 
+				Medicine is unable to control their use of cookies or how they manage the information 
+				they gather.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div id='Disclosure_subhead'>
+                                        <p><strong style="color: #00667D;">Disclosure </strong></p>
+                                        <div class='sub_cont'>
+                                            Except for authorized law enforcement investigations, no attempt is made to identify 
+				individual users or usage patterns. We do not give, share, sell or transfer any 
+				personal information to a third party which could be used to identify or contact you. 
+				Authorized ACR Journal Advisor employees are permitted to access your personal information. 
+				All ACR Journal Advisor employees must abide by our Privacy Policy, and those who violate 
+				it are subject to disciplinary action.  ACR Journal Advisor may provide information about 
+				you which does not allow you to be identified or contacted ("Aggregate Information") 
+				to third parties. For example, we might inform third parties regarding the number of 
+				users of our site and the activities they conduct while on our site. Depending on the 
+				circumstances, we may or may not charge for this information.</p>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+
+
+                        </table>
+                    </div>
+
+                    <div class="floatright">
+                        <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                            <img src="/Content/images/160x600-ad.jpg" /></a>
+                    </div>
+
+                    <div class="clear"></div>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</body>
+</html>

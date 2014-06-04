@@ -1,0 +1,31 @@
+﻿@if (AJA_Core.CurrentUser.IsAuthenticated)
+{
+    <text>
+    @* @Html.ActionLink(User.Identity.Name, "#", "User", routeValues: null, htmlAttributes: new { @class = "username", title = "Modify",onclick = "EditDetails();" }) *@
+    <a href="#" title="" class="username" id="loginButton"><span>@AJA_Core.CurrentUser.UserName</span></a>
+    &nbsp;
+        @*@using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm", @class = "logoff" }))
+        {
+            @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a>
+        }*@
+    </text>
+    <div id="loginBox">
+        <div style="top: -14px; right: 12px; position: absolute; height: 13px;">
+            <img src="~/Content/images/arow-top.png" />
+        </div>
+        <div id="loginForm" class="loginForm">
+            <div style="padding: 10px;">
+                <span style="font-weight: bold; display: block">@AJA_Core.CurrentUser.UserName</span>
+                <span style="color: #999999">@AJA_Core.CurrentUser.EmailId</span>
+                <p><a href="#ModifyDetails" onclick="javascript:EditDetails('@User.Identity.Name')">Modify Account</a> | <a href="#ChangePassword" onclick="javascript:ChangePassword();">Change Password</a> </p>
+            </div>
+
+            <div class="signoubtnCtr"><a href="~/User/LogOff" id="login" class="signoubtndrp">Sign Out</a></div>
+        </div>
+    </div>
+    
+    <div id="div_User_details"></div>
+    
+   
+}

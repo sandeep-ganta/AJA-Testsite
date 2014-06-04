@@ -1,0 +1,303 @@
+﻿@using DAL;
+@using DAL.Models;
+@model DAL.Models.MyLibraryModel
+
+@{
+    ViewBag.Title = "My Library";
+    int start = 1;
+}
+
+@{
+    if (Request.QueryString["start"] != null)
+    {
+        start = int.Parse(Request.QueryString["start"].ToString());
+    }
+    else
+    {
+        start = 1;
+    }
+}
+
+<table width="100%">
+    <tr>
+        <td>
+            <table width="1170" align="center" style="margin:0 auto;">
+                <tr>
+                    <td>
+                        <img src="~/Content/images/Subpage_banner-1170.jpg">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+   @* <tr>
+        <td class="shdwContr"></td>
+    </tr>*@
+    <tr>
+        <td>
+            <div class="commonContent">
+
+                <table width="1170">
+
+                    <tr>
+                        <td width="400" align="left" valign="top">
+                            @Html.Partial("_mylibraryFolders", Model)
+                        </td>
+
+                        <td valign="top" align="left">
+
+                            @if (Request.QueryString["selaction"] == null)
+                            {
+                                <table border="0" cellpadding="7" cellspacing="0" style="border: 1px solid #ccc; margin-right: 10px;" align="right">
+                                    <tr>
+                                        <td colspan="2"><b>Container Legend</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td height="4" colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top">
+                                            <img src="~/Content/images/folder-org-closed.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top">Library Topic - Organizational Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/user-folder-org-closed.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top"><em>My Topic</em> - Organizational Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/folder-org-closed.sponsor.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top"><em>Sponsor Topic</em> - Organizational Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/folder-func-closed.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top">Library Subtopic - Functional Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/user-folder-func-closed.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top"><em>My Subtopic</em> - Functional Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/folder-func-closed.sponsor.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top"><em>Sponsor Subtopic</em> - Functional Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/folder-search-icon.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top">Subtopic - Functional Container with AutoQuery</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/folder-choice-closed.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top">Folder - Editors Choice or Seminal Citation Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/folder-saved-closed.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top"><em>Folder</em> - My Saved Citation Container</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="~/Content/images/folder-choice-closed.sponsor.gif" width="24" height="20" border="0"></td>
+                                        <td valign="top"><em>Folder</em> - Seminal Citation Container</td>
+                                    </tr>
+                                </table>
+                            }
+
+                            else if (Request.QueryString["selaction"] == "acr")
+                            {                                
+                                <div style="padding: 5px 16px; width: 400px; position: relative; top: -35; height: 175px;">
+                                    <div>
+                                        <a href="http://www.acr.org/" target="_blank">
+                                            <img width="88" height="40" border="0" align="left" src="content/images/banner-acr.gif" style="margin-right: 12px;"></a>
+                                        <p style="font-family: Arial; font-size: 8pt; line-height: 14px; margin-top: 0px; margin-left: 100px;">
+                                            In cooperation with the ACR, ACR Journal Advisor<br>
+                                            presents ACR Appropriateness Criteria&reg;.
+                                            <br>
+                                            Reprinted with permission of the American College
+                                            <br>
+                                            of Radiology. No other representation of this
+                                            <br>
+                                            document is authorized without express, written
+                                            <br>
+                                            permission from the American College of Radiology. 
+                                        </p>
+                                        <br>
+                                    </div>
+
+
+                                    @foreach (var item in Model.AcrDocumentsMyLibraryList)
+                                    {
+                                        <li style="padding: 0px 0px 10px 0px; vertical-align: top; list-style-type: none;">
+                                            <img align="left" style="padding-right: 8px;" src="content/images/doc-icon-acr.gif">
+                                            @Html.ActionLink(item.doc_nm, "viewacrdocument", new { id = item.doc_id, src = item.doc_source }, new { style = "font-size: 10pt; text-decoration: underline; vertical-align: top;", target = "_blank" })
+
+
+                                            @*<a href="@item.doc_source" target="_blank">@item.doc_nm</a>*@
+                                        </li>                                        
+                                    }
+                                </div>
+                                
+                            }
+
+                            else if (Request.QueryString["selaction"] != null)
+                            {
+                                if (Model.CitationDetails != null)
+                                {
+
+                                    Model.FolderECList = MyLibraryBL.GetFolderECComments(int.Parse(Request.QueryString["specid"]));
+                                                    
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <strong>Sort:</strong>
+                                            <a href="MyLibrary?specid=@Request.QueryString["specid"]&oid=@Request.QueryString["oid"]&fid=@Request.QueryString["fid"]&selaction=@Request.QueryString["selaction"]&sort=authors&start=@Request.QueryString["start"]">Author</a> |
+        <a href="MyLibrary?specid=@Request.QueryString["specid"]&oid=@Request.QueryString["oid"]&fid=@Request.QueryString["fid"]&selaction=@Request.QueryString["selaction"]&sort=journal&start=@Request.QueryString["start"]">Journal</a> |
+        <a href="MyLibrary?specid=@Request.QueryString["specid"]&oid=@Request.QueryString["oid"]&fid=@Request.QueryString["fid"]&selaction=@Request.QueryString["selaction"]&sort=date&start=@Request.QueryString["start"]">Date</a>
+
+
+
+                                            <table align="right">
+                                                <tr align="right">
+                                                    <td align="right">
+                                                        @if (start > 25)
+                                                        {
+                                                            @Html.ActionLink("| Back |", "index", new { specid = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], selaction = Request.QueryString["selaction"], start = start - 25 })
+                                                        }
+                                                        @if (Model.CitationDetailsTotal.Count > start + 25)
+                                                        {
+                                                            @Html.ActionLink("| Next |", "index", new { specid = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], selaction = Request.QueryString["selaction"], start = start + 25 })
+                                                        }
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr bgcolor="#cccccc">
+                                        <td>
+                                            <strong style="font-size: 9pt">Citations:</strong> @Model.CitationDetailsTotal.Count
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="cogBoxColor">
+                                            @using (Html.BeginForm("SearchFolder", "mylibrary", FormMethod.Post, new { specid = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], selaction = Request.QueryString["selaction"] }))
+                                            {
+                                                <table border="0" cellspacing="5">
+                                                    <tr>
+                                                        <td>
+                                                            <strong>
+                                                                <span class="cit">Search Folder:</span>
+                                                            </strong>
+                                                            <input type="text" name="search" size="35" class="cit">
+                                                            <input type="submit" value="search" class="cit">
+                                                        </td>
+                                                    </tr>
+                                                </table>                                                
+                                                <input type="hidden" name="searchspecid" value="@Request.QueryString["specid"]" />
+                                                <input type="hidden" name="searchoid" value="@Request.QueryString["oid"]" />
+                                                <input type="hidden" name="searchfid" value="@Request.QueryString["fid"]" />
+                                                <input type="hidden" name="searchselaction" value="@Request.QueryString["selaction"]" />                                                
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    @foreach (var item in Model.CitationDetails)
+                                    {   
+                                        <tr>
+                                            <td>
+                                                @Html.ActionLink("Open", "abstract", new { specid = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], MID = item.pmid, action = Request.QueryString["action"] })
+                                                @if (Request.QueryString["selaction"] == "saved")
+                                                { 
+                                                    @Html.ActionLink(" || Delete", "DeleteCitation", new { specid = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], MID = item.pmid, action = "saved", start = Request.QueryString["start"] })
+                                                }
+                                            </td>
+                                        </tr>                                    
+                                    
+                                        <tr>
+                                            <td>
+                                                @if (Model.FolderECList.Where(u => u.PMID == item.pmid).Any())
+                                                {
+                                                    <span style="color: red">*</span>   
+                                                }
+
+                                                @if (!string.IsNullOrEmpty(Model.Citations.Where(n => n.pmid == item.pmid).Select(n => n.nickname).FirstOrDefault()))
+                                                {
+                                                    <strong><i>@Model.Citations.Where(n => n.pmid == item.pmid).Select(n => n.nickname).FirstOrDefault()</i></strong><br />
+                                                }
+
+                                                <i>@item.AuthorList</i><br />
+                                                @item.ArticleTitle<br />
+                                                @item.MedlineTA .
+                                            @item.DisplayDate .
+                                            @item.MedlinePgn .
+                                            <br />
+                                                @item.pmid . 
+                                            @item.StatusDisplay
+                                                <br />
+                                                <br />
+                                            </td>
+                                        </tr> 
+                                    }
+                                    <tr>
+                                        <td>
+                                            <table align="right">
+                                                <tr align="right">
+                                                    <td align="right">
+                                                        @if (start > 25)
+                                                        {
+                                                            @Html.ActionLink("| Back |", "index", new { specid = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], selaction = Request.QueryString["selaction"], start = start - 25 })
+                                                        }
+                                                        @if (Model.CitationDetailsTotal.Count > start + 25)
+                                                        {
+                                                            @Html.ActionLink("| Next |", "index", new { specid = Request.QueryString["specid"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], selaction = Request.QueryString["selaction"], start = start + 25 })
+                                                        }
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                }
+                                else
+                                {
+                                    if (Request.QueryString["selaction"] == "saved")
+                                    {
+                                <strong>There are no saved citations in this folder.</strong>
+                                    }
+                                    else if (Request.QueryString["selaction"] == "seminal")
+                                    {
+                                <strong>There are no seminal citations in this folder.</strong>
+                                    }
+                                    else if (Request.QueryString["selaction"] == "sponsor")
+                                    {
+                                <strong>There are no sponsor citations in this folder.</strong>
+                                    }
+                                    else if (Request.QueryString["selaction"] == "editor")
+                                    {
+                                <strong>There are no Editors Choice citations in this folder.</strong>
+                                    }
+                                }
+
+                            }
+
+                        </td>
+
+                        <td width="170" valign="top" align="right" style="text-align: right">
+                            <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                                <img src="~/Content/images/160x600-ad.jpg" /></a>
+                        </td>
+
+                    </tr>
+
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>

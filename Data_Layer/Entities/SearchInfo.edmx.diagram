@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2c2218fc78614db6bef2ec9d1bcdd97d" Name="Diagram1" ZoomLevel="85">
+        <EntityTypeShape EntityType="SearchInfo.SearchSummary" Width="1.5" PointX="0.75" PointY="1.875" />
+        <EntityTypeShape EntityType="SearchInfo.SearchDetail" Width="1.5" PointX="0.769777045012348" PointY="26.108867970345948" />
+        <EntityTypeShape EntityType="SearchInfo.SearchResult" Width="1.5" PointX="4.9336722516145892" PointY="6.2609055369444686" />
+        <EntityTypeShape EntityType="SearchInfo.UserCitation" Width="1.5" PointX="11.274923186411579" PointY="1.601034194976573" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

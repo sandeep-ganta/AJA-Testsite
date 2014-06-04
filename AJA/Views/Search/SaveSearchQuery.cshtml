@@ -1,0 +1,154 @@
+﻿@model DAL.SearchBL.ManageQuery
+@{
+    ViewBag.Title = "SaveSearchQuery";
+}
+@using (Html.BeginForm("SaveSearchQueryOrUpdate", "Search", FormMethod.Post))
+{
+    <div align="center">
+
+        <div>
+            <div>
+                <table width="1170" align="center" style="margin:0 auto;">
+                    <tr>
+                        <td>
+                            <img src="~/Content/images/Subpage_bannerBig.jpg">
+                        </td>
+                    </tr>
+                </table>
+                <table width="705" border="0" cellspacing="0" cellpadding="0" style="border-collapse: initial;" class="AjaBoxColor">
+
+                    <tr>
+                        <td height="45" valign="top">
+                            <span class="AjaTitle"><a href="/Search/Search">Search MEDLINE</a><sup><small>®</small></sup>
+                                &nbsp;&gt;&nbsp;<a href="/Search/SearchResults">Search Results</a>
+                                &nbsp;&gt;&nbsp;Save Query
+                            </span>
+                        </td>
+                        <td valign="top" align="right">
+                            <span style="text-align: center;">
+                                <a href="/Search/save_query_help">Saved Query Help</a>
+                            </span>
+                        </td>
+                    </tr>
+                    @Html.HiddenFor(m => m.SearchId, new { @id = "txt_SearchID" })
+                    <tr>
+                        <td height="20" colspan="2" valign="top">
+                            <span class="AjaQueryDetails">QUERY DETAILS :  @Html.DisplayFor(m => m.QueryDetails) </span>
+
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div>
+            <div class="errmsgg">    @Html.ValidationMessageFor(m => m.Name, "You must enter a valid query name")</div>
+
+                <table width="705" border="0" cellspacing="0" cellpadding="4" style="border-collapse: initial;" class="AjaBoxColor ajabgbx">
+                    <tr>
+                        <td colspan="2">
+                            <div style="display: none;" id="validationterm">
+                                Please specify a destination folder. 
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>Title (required):</td>
+                        <td>Description / notes:</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.TextBoxFor(m => m.Name)</td>
+                        <td>@Html.TextBoxFor(m => m.Description)</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            @Html.CheckBoxFor(m => m.Autosearch, new { @id = "Chk_UpdateProfile" })
+                            Run this query weekly; save citations to library folder:</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            @Html.DropDownListFor(c => c.FolderID, Model.TopicsList, "Select Topic", new { @id = "SelectedTopic", style = "width:220px" })
+                            <br />
+                            <br />
+                            <select id="ddlUserSubTopic" name="ddlUserSubTopic" style="width: 220px">
+                                <option value="">Select SubTopic</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table>
+                                <tr>
+                                    <td colspan="2">@Html.RadioButtonFor(model => model.KeepDelete, "1", true) Keep 
+                            <br />
+                                        @Html.RadioButtonFor(model => model.KeepDelete, "0", false) Delete </td>
+                                    <td>citations after:      
+
+                                 @Html.DropDownListFor(m => m.ShelfLife, new SelectList(new DAL.SearchBL.ManageQuery().GetShelfLife(), "val", "Title"))
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(m => m.DestinationFolder)</td>
+                    </tr>
+
+                </table>
+
+
+                <table width="705">
+                    
+                        <tr>
+                            <td align="center">
+                                <input id="btn_Save_LargeEditorDetails" type="submit" value="Save" role="button" aria-disabled="false" />
+
+                            <span class="normbtn">    @Html.ActionLink("Cancel", "SearchResults", "Search", new { FID = @Model.FolderID, searchid = @Model.SearchId, SearchName = @Model.Title }, null)</span>
+
+                            </td>
+                        </tr>
+                    
+                </table>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script>
+
+    $('#SelectedTopic').change(function () {
+        var sid = $(this).val();
+        $.ajax({
+            url: '/mylibrary/GetUserSubTopics?TopicId=' + sid,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            type: "GET",
+            error: function () {
+                alert("An error occurred.");
+            },
+            success: function (data) {
+                var items = "";
+                if (data != null) {
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+                    $("#ddlUserSubTopic").html(items);
+                }
+                else { $("#msg").html("No Related SubTopic exists") }
+            }
+        });
+    });
+    $(function () {
+        $('#btn_Save_LargeEditorDetails').click(function (event) {
+            if ($('#Chk_UpdateProfile').is(':checked') && ($('#SelectedTopic').val() == "" || $('ddlUserSubTopic').val() == 'undefined' || $('ddlUserSubTopic').val() == "")) {
+                $("#validationterm").removeAttr("display");
+
+            }
+            // alert('test');
+        });
+    });
+</script>

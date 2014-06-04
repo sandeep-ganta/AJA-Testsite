@@ -1,0 +1,212 @@
+﻿@if (AJA_Core.CurrentUser.IsAuthenticated)
+{  
+    <div>
+
+        @if (AJA_Core.CurrentUser.IsAdmin)
+        {
+            if (TempData["NewMenu"] != null)
+            {
+                TempData.Keep("NewMenu"); 
+            <div class="mainNav">
+                <div class="commonContent">
+                    <div class="menuleft">
+                        <div class="menubar">
+                            <ul>
+                                <li>@Html.ActionLink("Personalized Medicine", "personalized_medicine", "personalizedmed")</li>
+                                <li>@Html.ActionLink("Editors Choice", "EditorsChoice", "User")</li>
+                                <li>@Html.ActionLink("Search Medline", "Search", "Search")</li>
+                                <li>@Html.ActionLink("My Library", "Index", "MyLibrary")</li>
+                                <li>@Html.ActionLink("My Queries", "myqueries", "MyQueries")</li>
+                                <li>@Html.ActionLink("My Profile", "MyProfile", "User")</li>
+                                <li>@Html.ActionLink("Editors", "Bios", "Home")</li>
+                               @* <li>@Html.ActionLink("Switchto Admin", "SwitchAdmin", "User")</li>*@
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="menuright">
+                        <a class="loginn_btn" href="~/User/LogOff">Log Out</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div> 
+                return;
+            }
+        }
+        @if (AJA_Core.CurrentUser.IsAdmin && HttpContext.Current.Request.Url.ToString().Contains("Admin"))
+        {
+            if (TempData["Mailmenu"] != null)
+            {
+                if (HttpContext.Current.Cache != null)
+                {
+                    var tempData = HttpContext.Current.Items["TempData"];
+                }
+                // TempData.Keep("Mailmenu");
+                DAL.Models.Monthlyeditorsmail mproperty = (DAL.Models.Monthlyeditorsmail)Session["composetext"];
+                
+            <div class="mainNavadmin">
+                <div class="commonContent">
+                    <div class="menuleft">
+                        <div class="adminmenubar">
+                            <ul>
+                                <li>@Html.ActionLink("New Mailing", "CreateMailing", "Admin") </li>
+                                <li>@Html.ActionLink("Message Properties", "Messageproperty", "Admin")</li>
+                                <li>@Html.ActionLink("Compose Plaintext", "Composeplaintext", "Admin")
+                                    <ul>
+                                        <li>@Html.ActionLink("Preview Plaintext", "PreviewPlaintext", "Admin")</li>
+                                    </ul>
+                                </li>
+                                @if (mproperty != null)
+                                {
+                                    if (mproperty.Ishtml)
+                                    {
+                                    <li>@Html.ActionLink("Compose HTML", "Composehtml", "Admin")
+                                        <ul>
+                                            <li>@Html.ActionLink("Preview HTML", "PreviewHtml", "Admin")</li>
+                                        </ul>
+                                    </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>@Html.ActionLink("Compose HTML", "Composehtml", "Admin", new { onclick = "javascript:return false;" })
+                                        <ul>
+                                            <li>@Html.ActionLink("Preview HTML", "PreviewHtml", "Admin", new { onclick = "javascript:return false;" })</li>
+                                        </ul>
+                                    </li>
+                                }
+                                <li><a href="#" class="">Send Mail</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("TEST", "SendTest", "Admin")</li>
+                                        <li>@Html.ActionLink("Select Recipients", "SelectRecipients", "Admin")</li>
+                                        <li>@Html.ActionLink("Status", "Sendstatus", "Admin")</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="menuright">
+                        <a class="loginn_btn" href="~/User/LogOff">LogOut</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+             
+            }
+            else
+            {
+                
+            <div class="mainNavadmin">
+                <div class="commonContent">
+                    <div class="menuleft">
+                        <div class="adminmenubar">
+                            <ul>
+                                <li><a>Web Site Administration</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("Users", "UserManagement", "Admin")</li>
+                                        @*  <li>@Html.ActionLink("FieldManagement", "FieldManagement", "User")</li>*@
+                                        <li>@Html.ActionLink("Library Topics", "AddManageTopics", "Admin")</li>
+                                        @*<li>@Html.ActionLink("Specialty Management", "AdminHome", "Admin")</li>*@
+                                        @* <li>@Html.ActionLink("Select User Database", "")</li>*@
+                                    </ul>
+                                </li>
+                                <li><a>Content Management</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("Editions", "Editionschoice", "Admin")</li>
+                                        <li>@Html.ActionLink("Monthly Editors Choice Announcement", "CreateMailing", "Admin")</li>
+                                        <li>@Html.ActionLink("Non-Medline Citations", "NonMedlineCitations", "Admin")</li>
+                                        <li>@Html.ActionLink("ACR Documents", "ACRDocuments", "Admin")</li>
+                                    </ul>
+                                </li>
+                                <li><a>ACR JournalAdvisor Administration</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("Topic Editors", "TopicEditors", "Admin")</li>
+                                        <li>@Html.ActionLink("At-large Editors", "AtlargeEditors", "Admin")</li>
+                                        @*<li>@Html.ActionLink("In-house Users", "")</li>*@
+                                    </ul>
+                                </li>
+                                <li><a>Personalized Medicine</a>
+                                    <ul>
+                                        <li>@Html.ActionLink("TEST", "Test", "Admin")</li>
+                                        <li>@Html.ActionLink("GENE", "Gene", "Admin")</li>
+                                    </ul>
+                                </li>
+                                @if (CurrentUser.Roles != null)
+                                {
+                                    if ((CurrentUser.Roles.Contains("Administrator") && CurrentUser.Roles.Contains("AJA User")))
+                                    {
+                                   @* <li>@Html.ActionLink("Switchto User", "SwitchUser", "User")</li>*@
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="menuright">
+                        <a class="loginn_btn" href="~/User/LogOff">Log Out</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            
+            }
+            return;
+        }
+@*        @if (!AJA_Core.CurrentUser.IsAdmin)*@
+        else
+        {
+            <div class="mainNav">
+                <div class="commonContent">
+                    <div class="menuleft">
+                        <div class="menubar">
+                            <ul>
+                                <li>@Html.ActionLink("Personalized Medicine", "personalized_medicine", "personalizedmed")</li>
+                                <li>@Html.ActionLink("Editors Choice", "EditorsChoice", "User")</li>
+                                <li>@Html.ActionLink("Search Medline", "Search", "Search")</li>
+                                <li>@Html.ActionLink("My Library", "Index", "MyLibrary")</li>
+                                <li>@Html.ActionLink("My Queries", "myqueries", "MyQueries")</li>
+                                <li>@Html.ActionLink("My Profile", "MyProfile", "User")</li> 
+                                <li>@Html.ActionLink("Editors", "Bios", "Home")</li>
+                                 @if ((CurrentUser.Roles.Contains("Administrator") && CurrentUser.Roles.Contains("AJA User")))
+                                {
+                                   @* <li>@Html.ActionLink("Switchto Admin", "SwitchAdmin", "User")</li>*@
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="menuright">
+                        <a class="loginn_btn" href="~/User/LogOff">Log Out</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div> 
+                                return;
+        }
+
+
+    </div>
+}
+
+else
+{
+    <div class="mainNav">
+        <div class="commonContent">
+            <div class="menuleft">
+                <div class="menubar">
+                    <ul>
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About Us", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact Us", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("Preview", "Preview", "Home")</li>
+                        <li>@Html.ActionLink("Register", "Register", "User")</li>
+                        <li>@Html.ActionLink("Editors", "Bios", "Home")</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="menuright">
+                <a class="loginn_btn" href="/User/Login">Log In</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+}
+
+

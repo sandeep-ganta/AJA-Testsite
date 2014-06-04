@@ -1,0 +1,23 @@
+﻿@model DAL.Models.PersonalizedMedicine_User
+
+@if (Model != null)
+{
+
+    if (Model.Getclinicalinks != null)
+    {
+        foreach (var item in Model.Getclinicalinks)
+        {
+    <div class="citation">
+        <a target="_blank" href="/Search/SearchDetails?PMID=@item.ArticleId" >@item.ArticleTitle</a>
+
+    </div>
+    <div class="author">
+        <label>@item.AuthorList</label>
+    </div>
+    <div class="year">
+        <label>@item.Year</label>
+    </div>
+    <div class="cleaner"></div>  
+        }
+    }
+}

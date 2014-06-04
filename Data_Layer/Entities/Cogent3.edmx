@@ -1,0 +1,557 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Cogent3Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="Cogent3ModelStoreContainer">
+          <EntitySet Name="iCitation" EntityType="Cogent3Model.Store.iCitation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="iWide" EntityType="Cogent3Model.Store.iWide" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="iWideNew" EntityType="Cogent3Model.Store.iWideNew" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="iCitation">
+          <Key>
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Name="PMID" Type="int" Nullable="false" />
+          <Property Name="MedlineID" Type="int" />
+          <Property Name="StatusID" Type="tinyint" Nullable="false" />
+          <Property Name="OwnerID" Type="tinyint" Nullable="false" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="DateCompleted" Type="smalldatetime" />
+          <Property Name="DateRevised" Type="smalldatetime" />
+          <Property Name="NumberOfReferences" Type="smallint" Nullable="false" />
+          <Property Name="AuthorList" Type="varchar" MaxLength="100" />
+          <Property Name="MedlineTA" Type="varchar" MaxLength="100" />
+          <Property Name="MedlinePgn" Type="varchar" MaxLength="500" />
+          <Property Name="DisplayDate" Type="varchar" MaxLength="100" />
+          <Property Name="DisplayNotes" Type="varchar" MaxLength="200" />
+          <Property Name="UpdateSource" Type="smallint" Nullable="false" />
+          <Property Name="UpdateDate" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="iWide">
+          <Key>
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Name="PMID" Type="int" Nullable="false" />
+          <Property Name="ArticleTitle" Type="nvarchar(max)" />
+          <Property Name="AbstractText" Type="nvarchar(max)" />
+          <Property Name="CopyrightInformation" Type="text" />
+          <Property Name="VernacularTitle" Type="text" />
+          <Property Name="Affiliation" Type="text" />
+          <Property Name="timestamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="unicodeFixed" Type="bit" />
+        </EntityType>
+        <EntityType Name="iWideNew">
+          <Key>
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Name="PMID" Type="int" Nullable="false" />
+          <Property Name="ArticleTitle" Type="nvarchar(max)" />
+          <Property Name="AbstractText" Type="nvarchar(max)" />
+          <Property Name="CopyrightInformation" Type="text" />
+          <Property Name="VernacularTitle" Type="text" />
+          <Property Name="Affiliation" Type="text" />
+          <Property Name="timestamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="unicodeFixed" Type="bit" />
+        </EntityType>
+        <Function Name="ap_DisplayPMID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="PMIDList" Type="varchar(max)" Mode="In" />
+          <Parameter Name="DisplayMode" Type="int" Mode="In" />
+          <Parameter Name="SearchSort" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="ap_DisplayPMID_AJA_Dev" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="PMIDList" Type="varchar(max)" Mode="In" />
+          <Parameter Name="DisplayMode" Type="int" Mode="In" />
+          <Parameter Name="SearchSort" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="ap_DisplayPMID_AJA_Dev_Detailed" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="PMIDList" Type="varchar(max)" Mode="In" />
+          <Parameter Name="DisplayMode" Type="int" Mode="In" />
+          <Parameter Name="SearchSort" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="ap_SearchBuildEachQuery_AJA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Op" Type="char" Mode="In" />
+          <Parameter Name="Tab" Type="varchar" Mode="In" />
+          <Parameter Name="Field" Type="varchar" Mode="In" />
+          <Parameter Name="TermA" Type="varchar" Mode="In" />
+          <Parameter Name="TermB" Type="varchar" Mode="In" />
+          <Parameter Name="FindA" Type="int" Mode="In" />
+          <Parameter Name="FindB" Type="int" Mode="In" />
+          <Parameter Name="TestOrder" Type="int" Mode="In" />
+          <Parameter Name="Extra" Type="varchar" Mode="In" />
+          <Parameter Name="FullOld" Type="int" Mode="In" />
+          <Parameter Name="FullNew" Type="int" Mode="In" />
+          <Parameter Name="FullOldLimit" Type="varchar" Mode="In" />
+          <Parameter Name="QuerySub" Type="varchar" Mode="InOut" />
+          <Parameter Name="QueryDetails" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="ap_SearchBuildFullQuery_AJA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchID" Type="int" Mode="In" />
+          <Parameter Name="SearchMode" Type="int" Mode="In" />
+          <Parameter Name="ShelfLife" Type="int" Mode="In" />
+          <Parameter Name="LimitToUserLibrary" Type="int" Mode="In" />
+          <Parameter Name="ThisAutorunDate" Type="smalldatetime" Mode="In" />
+          <Parameter Name="ResultsFolder1" Type="int" Mode="In" />
+          <Parameter Name="ResultsFolder2" Type="int" Mode="In" />
+          <Parameter Name="UserDB" Type="varchar" Mode="In" />
+          <Parameter Name="KeepDelete" Type="tinyint" Mode="In" />
+          <Parameter Name="QueryFinal" Type="varchar" Mode="InOut" />
+          <Parameter Name="RunQuery" Type="int" Mode="InOut" />
+          <Parameter Name="ErrorDesc" Type="varchar" Mode="InOut" />
+          <Parameter Name="QueryDetails" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="ap_SearchExecute_AJA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="SearchName" Type="varchar" Mode="In" />
+          <Parameter Name="SearchID" Type="int" Mode="In" />
+          <Parameter Name="SearchMode" Type="int" Mode="In" />
+          <Parameter Name="ShelfLife" Type="int" Mode="In" />
+          <Parameter Name="LimitToUserLibrary" Type="int" Mode="In" />
+          <Parameter Name="ThisAutorunDateS" Type="varchar" Mode="In" />
+          <Parameter Name="ResultsFolder1" Type="int" Mode="In" />
+          <Parameter Name="ResultsFolder2" Type="int" Mode="In" />
+          <Parameter Name="UserDB" Type="varchar" Mode="In" />
+          <Parameter Name="KeepDelete" Type="int" Mode="In" />
+          <Parameter Name="DoNoExecute" Type="int" Mode="In" />
+          <Parameter Name="SearchResultsCount" Type="int" Mode="InOut" />
+          <Parameter Name="QueryDetails" Type="varchar" Mode="InOut" />
+          <Parameter Name="ErrorDesc" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="ap_SearchFetchRange_AJA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="SearchName" Type="varchar" Mode="In" />
+          <Parameter Name="SearchID" Type="int" Mode="In" />
+          <Parameter Name="RangeStart" Type="int" Mode="In" />
+          <Parameter Name="RangeEnd" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ap_SearchQueryAdd_AJA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Op1" Type="char" Mode="In" />
+          <Parameter Name="Terms1" Type="varchar" Mode="In" />
+          <Parameter Name="Tab1" Type="varchar" Mode="In" />
+          <Parameter Name="Op2" Type="char" Mode="In" />
+          <Parameter Name="Terms2" Type="varchar" Mode="In" />
+          <Parameter Name="Tab2" Type="varchar" Mode="In" />
+          <Parameter Name="Op3" Type="char" Mode="In" />
+          <Parameter Name="Terms3" Type="varchar" Mode="In" />
+          <Parameter Name="Tab3" Type="varchar" Mode="In" />
+          <Parameter Name="Op4" Type="char" Mode="In" />
+          <Parameter Name="Terms4" Type="varchar" Mode="In" />
+          <Parameter Name="Tab4" Type="varchar" Mode="In" />
+          <Parameter Name="Op5" Type="char" Mode="In" />
+          <Parameter Name="Terms5" Type="varchar" Mode="In" />
+          <Parameter Name="Tab5" Type="varchar" Mode="In" />
+          <Parameter Name="Op6" Type="char" Mode="In" />
+          <Parameter Name="Terms6" Type="varchar" Mode="In" />
+          <Parameter Name="Tab6" Type="varchar" Mode="In" />
+          <Parameter Name="PublicationTypeMask" Type="smallint" Mode="In" />
+          <Parameter Name="SubjectAgeMask" Type="smallint" Mode="In" />
+          <Parameter Name="LanguageMask" Type="tinyint" Mode="In" />
+          <Parameter Name="SpeciesMask" Type="tinyint" Mode="In" />
+          <Parameter Name="GenderMask" Type="tinyint" Mode="In" />
+          <Parameter Name="AbstractMask" Type="tinyint" Mode="In" />
+          <Parameter Name="PaperAge" Type="tinyint" Mode="In" />
+          <Parameter Name="DateStart" Type="smallint" Mode="In" />
+          <Parameter Name="DateEnd" Type="smallint" Mode="In" />
+          <Parameter Name="SearchSort" Type="tinyint" Mode="In" />
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="SearchName" Type="varchar" Mode="In" />
+          <Parameter Name="AutoSearch" Type="tinyint" Mode="In" />
+          <Parameter Name="ShelfLife" Type="smallint" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="LimitToUserLibrary" Type="tinyint" Mode="In" />
+          <Parameter Name="ResultsFolder1" Type="int" Mode="In" />
+          <Parameter Name="ResultsFolder2" Type="int" Mode="In" />
+          <Parameter Name="UserDB" Type="varchar" Mode="In" />
+          <Parameter Name="KeepDelete" Type="tinyint" Mode="In" />
+          <Parameter Name="ReturnCode" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="ap_SearchQueryGet_AJA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="SearchName" Type="varchar" Mode="In" />
+          <Parameter Name="SearchID" Type="int" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Cogent3Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Cogent3Entities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="iCitations" EntityType="Cogent3Model.iCitation" />
+          <FunctionImport Name="ap_DisplayPMID">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="PMIDList" Mode="In" Type="String" />
+            <Parameter Name="DisplayMode" Mode="In" Type="Int32" />
+            <Parameter Name="SearchSort" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="ap_DisplayPMID_AJA_Dev">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="PMIDList" Mode="In" Type="String" />
+            <Parameter Name="DisplayMode" Mode="In" Type="Int32" />
+            <Parameter Name="SearchSort" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="ap_DisplayPMID_AJA_Dev_Detailed">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="PMIDList" Mode="In" Type="String" />
+            <Parameter Name="DisplayMode" Mode="In" Type="Int32" />
+            <Parameter Name="SearchSort" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="ap_SearchQueryGet">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchName" Mode="In" Type="String" />
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ap_SearchExecute_AJA">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchName" Mode="In" Type="String" />
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchMode" Mode="In" Type="Int32" />
+            <Parameter Name="ShelfLife" Mode="In" Type="Int32" />
+            <Parameter Name="LimitToUserLibrary" Mode="In" Type="Int32" />
+            <Parameter Name="ThisAutorunDateS" Mode="In" Type="String" />
+            <Parameter Name="ResultsFolder1" Mode="In" Type="Int32" />
+            <Parameter Name="ResultsFolder2" Mode="In" Type="Int32" />
+            <Parameter Name="UserDB" Mode="In" Type="String" />
+            <Parameter Name="KeepDelete" Mode="In" Type="Int32" />
+            <Parameter Name="DoNoExecute" Mode="In" Type="Int32" />
+            <Parameter Name="SearchResultsCount" Mode="InOut" Type="Int32" />
+            <Parameter Name="QueryDetails" Mode="InOut" Type="String" />
+            <Parameter Name="ErrorDesc" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ap_SearchBuildEachQuery_AJA">
+            <Parameter Name="Op" Mode="In" Type="String" />
+            <Parameter Name="Tab" Mode="In" Type="String" />
+            <Parameter Name="Field" Mode="In" Type="String" />
+            <Parameter Name="TermA" Mode="In" Type="String" />
+            <Parameter Name="TermB" Mode="In" Type="String" />
+            <Parameter Name="FindA" Mode="In" Type="Int32" />
+            <Parameter Name="FindB" Mode="In" Type="Int32" />
+            <Parameter Name="TestOrder" Mode="In" Type="Int32" />
+            <Parameter Name="Extra" Mode="In" Type="String" />
+            <Parameter Name="FullOld" Mode="In" Type="Int32" />
+            <Parameter Name="FullNew" Mode="In" Type="Int32" />
+            <Parameter Name="FullOldLimit" Mode="In" Type="String" />
+            <Parameter Name="QuerySub" Mode="InOut" Type="String" />
+            <Parameter Name="QueryDetails" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ap_SearchBuildFullQuery_AJA">
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchMode" Mode="In" Type="Int32" />
+            <Parameter Name="ShelfLife" Mode="In" Type="Int32" />
+            <Parameter Name="LimitToUserLibrary" Mode="In" Type="Int32" />
+            <Parameter Name="ThisAutorunDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ResultsFolder1" Mode="In" Type="Int32" />
+            <Parameter Name="ResultsFolder2" Mode="In" Type="Int32" />
+            <Parameter Name="UserDB" Mode="In" Type="String" />
+            <Parameter Name="KeepDelete" Mode="In" Type="Byte" />
+            <Parameter Name="QueryFinal" Mode="InOut" Type="String" />
+            <Parameter Name="RunQuery" Mode="InOut" Type="Int32" />
+            <Parameter Name="ErrorDesc" Mode="InOut" Type="String" />
+            <Parameter Name="QueryDetails" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ap_SearchQueryAdd_AJA">
+            <Parameter Name="Op1" Mode="In" Type="String" />
+            <Parameter Name="Terms1" Mode="In" Type="String" />
+            <Parameter Name="Tab1" Mode="In" Type="String" />
+            <Parameter Name="Op2" Mode="In" Type="String" />
+            <Parameter Name="Terms2" Mode="In" Type="String" />
+            <Parameter Name="Tab2" Mode="In" Type="String" />
+            <Parameter Name="Op3" Mode="In" Type="String" />
+            <Parameter Name="Terms3" Mode="In" Type="String" />
+            <Parameter Name="Tab3" Mode="In" Type="String" />
+            <Parameter Name="Op4" Mode="In" Type="String" />
+            <Parameter Name="Terms4" Mode="In" Type="String" />
+            <Parameter Name="Tab4" Mode="In" Type="String" />
+            <Parameter Name="Op5" Mode="In" Type="String" />
+            <Parameter Name="Terms5" Mode="In" Type="String" />
+            <Parameter Name="Tab5" Mode="In" Type="String" />
+            <Parameter Name="Op6" Mode="In" Type="String" />
+            <Parameter Name="Terms6" Mode="In" Type="String" />
+            <Parameter Name="Tab6" Mode="In" Type="String" />
+            <Parameter Name="PublicationTypeMask" Mode="In" Type="Int16" />
+            <Parameter Name="SubjectAgeMask" Mode="In" Type="Int16" />
+            <Parameter Name="LanguageMask" Mode="In" Type="Byte" />
+            <Parameter Name="SpeciesMask" Mode="In" Type="Byte" />
+            <Parameter Name="GenderMask" Mode="In" Type="Byte" />
+            <Parameter Name="AbstractMask" Mode="In" Type="Byte" />
+            <Parameter Name="PaperAge" Mode="In" Type="Byte" />
+            <Parameter Name="DateStart" Mode="In" Type="Int16" />
+            <Parameter Name="DateEnd" Mode="In" Type="Int16" />
+            <Parameter Name="SearchSort" Mode="In" Type="Byte" />
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchName" Mode="In" Type="String" />
+            <Parameter Name="AutoSearch" Mode="In" Type="Byte" />
+            <Parameter Name="ShelfLife" Mode="In" Type="Int16" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="LimitToUserLibrary" Mode="In" Type="Byte" />
+            <Parameter Name="ResultsFolder1" Mode="In" Type="Int32" />
+            <Parameter Name="ResultsFolder2" Mode="In" Type="Int32" />
+            <Parameter Name="UserDB" Mode="In" Type="String" />
+            <Parameter Name="KeepDelete" Mode="In" Type="Byte" />
+            <Parameter Name="ReturnCode" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ap_SearchFetchRange_AJA" ReturnType="Collection(Cogent3Model.ap_SearchFetchRange_AJA_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchName" Mode="In" Type="String" />
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+            <Parameter Name="RangeStart" Mode="In" Type="Int32" />
+            <Parameter Name="RangeEnd" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ap_SearchQueryGet_AJA" ReturnType="Collection(Cogent3Model.ap_SearchQueryGet_AJA_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchName" Mode="In" Type="String" />
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="iWides" EntityType="Cogent3Model.iWide" />
+          <EntitySet Name="iWideNews" EntityType="Cogent3Model.iWideNew" />
+        </EntityContainer>
+        <EntityType Name="iCitation">
+          <Key>
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Name="PMID" Type="Int32" Nullable="false" />
+          <Property Name="MedlineID" Type="Int32" />
+          <Property Name="StatusID" Type="Byte" Nullable="false" />
+          <Property Name="OwnerID" Type="Byte" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="DateCompleted" Type="DateTime" Precision="0" />
+          <Property Name="DateRevised" Type="DateTime" Precision="0" />
+          <Property Name="NumberOfReferences" Type="Int16" Nullable="false" />
+          <Property Name="AuthorList" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="MedlineTA" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="MedlinePgn" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="DisplayDate" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="DisplayNotes" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="UpdateSource" Type="Int16" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <ComplexType Name="ap_SearchFetchRange_AJA_Result">
+          <Property Type="Int32" Name="PMID" Nullable="false" />
+          <Property Type="Int32" Name="List" Nullable="false" />
+          <Property Type="String" Name="ArticleTitle" Nullable="true" MaxLength="Max" />
+          <Property Type="String" Name="AuthorList" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="MedlineTA" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="MedlinePgn" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="DisplayDate" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DisplayNotes" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="ap_SearchQueryGet_AJA_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="String" Name="SearchName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="SearchID" Nullable="true" />
+          <Property Type="String" Name="Op1" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms1" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab1" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op2" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms2" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab2" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op3" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms3" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab3" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op4" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms4" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab4" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op5" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms5" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab5" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op6" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms6" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab6" Nullable="true" MaxLength="35" />
+          <Property Type="Int16" Name="PublicationTypeMask" Nullable="true" />
+          <Property Type="Int16" Name="SubjectAgeMask" Nullable="true" />
+          <Property Type="Byte" Name="LanguageMask" Nullable="true" />
+          <Property Type="Byte" Name="SpeciesMask" Nullable="true" />
+          <Property Type="Byte" Name="GenderMask" Nullable="true" />
+          <Property Type="Byte" Name="AbstractMask" Nullable="true" />
+          <Property Type="Byte" Name="PaperAge" Nullable="true" />
+          <Property Type="Int16" Name="DateStart" Nullable="true" />
+          <Property Type="Int16" Name="DateEnd" Nullable="true" />
+          <Property Type="Byte" Name="SearchSort" Nullable="true" />
+          <Property Type="String" Name="SearchName1" Nullable="true" MaxLength="100" />
+          <Property Type="Byte" Name="AutoSearch" Nullable="true" />
+          <Property Type="Int16" Name="ShelfLife" Nullable="true" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="Byte" Name="LimitToUserLibrary" Nullable="true" />
+          <Property Type="Int32" Name="LastAutorunHits" Nullable="true" />
+          <Property Type="DateTime" Name="LastAutorunDate" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="ResultsFolder1" Nullable="true" />
+          <Property Type="Int32" Name="ResultsFolder2" Nullable="true" />
+          <Property Type="String" Name="UserDB" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="KeepDelete" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="iWide">
+          <Key>
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Type="Int32" Name="PMID" Nullable="false" />
+          <Property Type="String" Name="ArticleTitle" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="AbstractText" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CopyrightInformation" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="VernacularTitle" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Affiliation" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="timestamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Type="Boolean" Name="unicodeFixed" />
+        </EntityType>
+        <EntityType Name="iWideNew">
+          <Key>
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Type="Int32" Name="PMID" Nullable="false" />
+          <Property Type="String" Name="ArticleTitle" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="AbstractText" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CopyrightInformation" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="VernacularTitle" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Affiliation" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="timestamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Type="Boolean" Name="unicodeFixed" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Cogent3ModelStoreContainer" CdmEntityContainer="Cogent3Entities">
+          <EntitySetMapping Name="iCitations">
+            <EntityTypeMapping TypeName="Cogent3Model.iCitation">
+              <MappingFragment StoreEntitySet="iCitation">
+                <ScalarProperty Name="PMID" ColumnName="PMID" />
+                <ScalarProperty Name="MedlineID" ColumnName="MedlineID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateCompleted" ColumnName="DateCompleted" />
+                <ScalarProperty Name="DateRevised" ColumnName="DateRevised" />
+                <ScalarProperty Name="NumberOfReferences" ColumnName="NumberOfReferences" />
+                <ScalarProperty Name="AuthorList" ColumnName="AuthorList" />
+                <ScalarProperty Name="MedlineTA" ColumnName="MedlineTA" />
+                <ScalarProperty Name="MedlinePgn" ColumnName="MedlinePgn" />
+                <ScalarProperty Name="DisplayDate" ColumnName="DisplayDate" />
+                <ScalarProperty Name="DisplayNotes" ColumnName="DisplayNotes" />
+                <ScalarProperty Name="UpdateSource" ColumnName="UpdateSource" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ap_DisplayPMID" FunctionName="Cogent3Model.Store.ap_DisplayPMID" />
+          <FunctionImportMapping FunctionImportName="ap_DisplayPMID_AJA_Dev" FunctionName="Cogent3Model.Store.ap_DisplayPMID_AJA_Dev" />
+          <FunctionImportMapping FunctionImportName="ap_DisplayPMID_AJA_Dev_Detailed" FunctionName="Cogent3Model.Store.ap_DisplayPMID_AJA_Dev_Detailed" />
+          <FunctionImportMapping FunctionImportName="ap_SearchExecute_AJA" FunctionName="Cogent3Model.Store.ap_SearchExecute_AJA" />
+          <FunctionImportMapping FunctionImportName="ap_SearchBuildEachQuery_AJA" FunctionName="Cogent3Model.Store.ap_SearchBuildEachQuery_AJA" />
+          <FunctionImportMapping FunctionImportName="ap_SearchBuildFullQuery_AJA" FunctionName="Cogent3Model.Store.ap_SearchBuildFullQuery_AJA" />
+          <FunctionImportMapping FunctionImportName="ap_SearchQueryAdd_AJA" FunctionName="Cogent3Model.Store.ap_SearchQueryAdd_AJA" />
+          <FunctionImportMapping FunctionImportName="ap_SearchFetchRange_AJA" FunctionName="Cogent3Model.Store.ap_SearchFetchRange_AJA">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cogent3Model.ap_SearchFetchRange_AJA_Result">
+                <ScalarProperty Name="PMID" ColumnName="PMID" />
+                <ScalarProperty Name="List" ColumnName="List" />
+                <ScalarProperty Name="ArticleTitle" ColumnName="ArticleTitle" />
+                <ScalarProperty Name="AuthorList" ColumnName="AuthorList" />
+                <ScalarProperty Name="MedlineTA" ColumnName="MedlineTA" />
+                <ScalarProperty Name="MedlinePgn" ColumnName="MedlinePgn" />
+                <ScalarProperty Name="DisplayDate" ColumnName="DisplayDate" />
+                <ScalarProperty Name="DisplayNotes" ColumnName="DisplayNotes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ap_SearchQueryGet_AJA" FunctionName="Cogent3Model.Store.ap_SearchQueryGet_AJA">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cogent3Model.ap_SearchQueryGet_AJA_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SearchName" ColumnName="SearchName" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="Op1" ColumnName="Op1" />
+                <ScalarProperty Name="Terms1" ColumnName="Terms1" />
+                <ScalarProperty Name="Tab1" ColumnName="Tab1" />
+                <ScalarProperty Name="Op2" ColumnName="Op2" />
+                <ScalarProperty Name="Terms2" ColumnName="Terms2" />
+                <ScalarProperty Name="Tab2" ColumnName="Tab2" />
+                <ScalarProperty Name="Op3" ColumnName="Op3" />
+                <ScalarProperty Name="Terms3" ColumnName="Terms3" />
+                <ScalarProperty Name="Tab3" ColumnName="Tab3" />
+                <ScalarProperty Name="Op4" ColumnName="Op4" />
+                <ScalarProperty Name="Terms4" ColumnName="Terms4" />
+                <ScalarProperty Name="Tab4" ColumnName="Tab4" />
+                <ScalarProperty Name="Op5" ColumnName="Op5" />
+                <ScalarProperty Name="Terms5" ColumnName="Terms5" />
+                <ScalarProperty Name="Tab5" ColumnName="Tab5" />
+                <ScalarProperty Name="Op6" ColumnName="Op6" />
+                <ScalarProperty Name="Terms6" ColumnName="Terms6" />
+                <ScalarProperty Name="Tab6" ColumnName="Tab6" />
+                <ScalarProperty Name="PublicationTypeMask" ColumnName="PublicationTypeMask" />
+                <ScalarProperty Name="SubjectAgeMask" ColumnName="SubjectAgeMask" />
+                <ScalarProperty Name="LanguageMask" ColumnName="LanguageMask" />
+                <ScalarProperty Name="SpeciesMask" ColumnName="SpeciesMask" />
+                <ScalarProperty Name="GenderMask" ColumnName="GenderMask" />
+                <ScalarProperty Name="AbstractMask" ColumnName="AbstractMask" />
+                <ScalarProperty Name="PaperAge" ColumnName="PaperAge" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="SearchSort" ColumnName="SearchSort" />
+                <ScalarProperty Name="SearchName1" ColumnName="SearchName1" />
+                <ScalarProperty Name="AutoSearch" ColumnName="AutoSearch" />
+                <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LimitToUserLibrary" ColumnName="LimitToUserLibrary" />
+                <ScalarProperty Name="LastAutorunHits" ColumnName="LastAutorunHits" />
+                <ScalarProperty Name="LastAutorunDate" ColumnName="LastAutorunDate" />
+                <ScalarProperty Name="ResultsFolder1" ColumnName="ResultsFolder1" />
+                <ScalarProperty Name="ResultsFolder2" ColumnName="ResultsFolder2" />
+                <ScalarProperty Name="UserDB" ColumnName="UserDB" />
+                <ScalarProperty Name="KeepDelete" ColumnName="KeepDelete" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="iWides">
+            <EntityTypeMapping TypeName="Cogent3Model.iWide">
+              <MappingFragment StoreEntitySet="iWide">
+                <ScalarProperty Name="unicodeFixed" ColumnName="unicodeFixed" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="Affiliation" ColumnName="Affiliation" />
+                <ScalarProperty Name="VernacularTitle" ColumnName="VernacularTitle" />
+                <ScalarProperty Name="CopyrightInformation" ColumnName="CopyrightInformation" />
+                <ScalarProperty Name="AbstractText" ColumnName="AbstractText" />
+                <ScalarProperty Name="ArticleTitle" ColumnName="ArticleTitle" />
+                <ScalarProperty Name="PMID" ColumnName="PMID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="iWideNews">
+            <EntityTypeMapping TypeName="Cogent3Model.iWideNew">
+              <MappingFragment StoreEntitySet="iWideNew">
+                <ScalarProperty Name="unicodeFixed" ColumnName="unicodeFixed" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="Affiliation" ColumnName="Affiliation" />
+                <ScalarProperty Name="VernacularTitle" ColumnName="VernacularTitle" />
+                <ScalarProperty Name="CopyrightInformation" ColumnName="CopyrightInformation" />
+                <ScalarProperty Name="AbstractText" ColumnName="AbstractText" />
+                <ScalarProperty Name="ArticleTitle" ColumnName="ArticleTitle" />
+                <ScalarProperty Name="PMID" ColumnName="PMID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

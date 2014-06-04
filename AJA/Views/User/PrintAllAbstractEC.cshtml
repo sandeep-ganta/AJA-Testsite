@@ -1,0 +1,696 @@
+﻿@*For Printing the selected Citation abstract and its Content--RaviM *@
+
+@model DAL.Models.EditorsChoicemodel
+@{
+    ViewBag.Title = "PrintAllAbstractEditorsChoice";
+    Layout = "";
+}
+
+<link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+
+@*@Scripts.Render("~/bundles/jqueryui")*@
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/jquery")
+
+
+<table width="1048" cellpadding="8" cellspacing="0" border="0" class="headerContr">
+    <tbody>
+        <tr valign="top" height="85">
+            <td colspan="2" align="left">
+                <img src="/Content/images/Logo.fw.png" width="310" height="83">
+            </td>
+            <td width="270" align="right" valign="bottom" style="text-align: right">
+
+                @Html.ActionLink("Back", "EditorsChoice", "User", new { id = Model.SpecialtyID }, null)
+                &nbsp;|&nbsp; 
+						<input type="submit" value="Print" onclick="window.print()">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.ThreadId != null && Model.PMID != 0)
+{
+    <table width="100%">
+        <tr>
+            <td>
+                <div class="floatright">
+                </div>
+                <div class="commonContent">
+
+                    <div class="floatleft">
+
+                        <div>
+                        </div>
+
+                        <div id="ECcits">
+
+                            <a href="#"></a><a href="#"></a><a href="#"></a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" class="editorsuls"></td>
+        </tr>
+
+        <tr>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                <div>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div style="width:1024px; float:left;">
+                                    <table border="1" cellpadding="7" cellspacing="0" bordercolor="#CCCCCC" width="1024" align="left">
+
+                                        <tr>
+                                            <td>
+                                                <table border="0" cellpadding="3" cellspacing="0" bgcolor="#f2f2f2" width="1024" align="left">
+                                                    <tr>
+                                                        <td>
+                                                            <span style="color: black" class="cit">
+                                                                <a name="#"></a><strong>EDITOR'S SELECTION</strong>
+                                                                <br>
+                                                                <br>
+
+                                                                <table cellpadding="5" cellspacing="0" border="0" width="1024">
+                                                                    <tr class="edComHeading">
+                                                                        <td width="20%"><b>Date:</b></td>
+                                                                        <td>@Html.Label(Model.originalpubdatewords)</td>
+                                                                    </tr>
+                                                                    <tr class="edComHeading">
+                                                                        <td><strong>Editor or Editors: </strong></td>
+                                                                        <td><strong>@Model.ThreadEditors</strong></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="edComHeading" valign="top"><strong>Topic&nbsp;|&nbsp;SubTopic: </strong></td>
+                                                                        <td><strong>@Model.ThreadTopics </strong></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="edComHeading" valign="top"><b>Article:</b></td>
+                                                                        <td>
+                                                                            @{
+    string temp;
+    int ac;
+    if (Model.ArticleTitle != null)
+    {
+        ac = (Model.ArticleTitle).Length;
+        if (ac > 80)
+        {
+            temp = Model.ArticleTitle.Substring(0, 61) + "...";
+
+        }
+        else
+        {
+            temp = Model.ArticleTitle;
+        }                                                                         
+                                                                                <strong>@Html.Raw(temp)</strong><br />
+    }
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        @if (Model.GetecThreadComments != null)
+                                                                        {
+                                                                            foreach (var item in Model.GetecThreadComments)
+                                                                            {
+                                                                                if (item.IsEditor == false)
+                                                                                {
+                                                                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                                <tr>
+                                                                                    <td colspan="2">&nbsp;</td>
+                                                                                </tr>
+                                                                                <tr class="edComHeading">
+                                                                                    <td width="20%"><strong>Comment By:</strong></td>
+                                                                                    <td>
+                                                                                        <strong>@Html.Raw(item.Authors) </strong>
+                                                                                    </td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <td colspan="2">
+                                                                                        <br />
+                                                                                        <span style="color: navy;>@Html.Raw(item.Comment)</span>
+                                                                                    </td>
+                                                                                </tr>
+
+                                                                            </table>                                                        
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                                <tr class="edComHeading">
+                                                                                    <td width="20%"></td>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                                <span style="color: navy;">@Html.Raw(item.Comment)</span>
+                                                                                <tr>
+                                                                                    <td colspan="2">&nbsp;</td>
+                                                                                </tr>
+                                                                            </table>  
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </tr>
+
+                                                                </table>
+
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+
+                                                            <table border="0" cellpadding="10" cellspacing="3" align="center" width="1024">
+                                                                <tr>
+                                                                    <td>
+                                                                        @if (Model.ArticleTitle != null && Model.AbstractText != null)
+                                                                        {
+                                                                            <p style="font-weight: bold; text-align: left">CITATION</p>
+                                                                        }
+                                                                        @if (Model.AuthorFullList != "")
+                                                                        {
+                                                                            @Model.AuthorFullList<br />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @Model.AuthorList<br />
+                                                                        }
+
+                                                                        <strong>@Model.ArticleTitle</strong>
+                                                                        <br />
+                                                                        @if (Model.ArticleTitle != null && Model.AbstractText != null)
+                                                                        {
+                                                                            <p>
+                                                                                @Model.MedlineTA &nbsp;@Model.DisplayDate,@Model.MedlinePgn PMID:@Model.PMID @Model.StatusDisplay
+                                                                            </p>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <p>
+                                                                                PMID:@Model.PMID
+                                                                            </p>
+                                                                        }
+                                                                        <br />
+                                                                        <div>
+                                                                            <br />
+                                                                          <p>  @Html.Raw(Model.AbstractText)</p>
+                                                                            <br>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+else if (Model.ThreadId != null && Model.PMID == 0)
+{    
+    <table width="100%">
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="floatright">
+                </div>
+                <div class="commonContent">
+
+                    <div class="floatleft">
+
+                        <div>
+                        </div>
+                        <div id="ECcits">
+                            <a href="#"></a><a href="#"></a><a href="#"></a>
+                        </div>
+                    </div>
+
+                    <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" class="editorsuls"></td>
+        </tr>
+
+        <tr>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                <div>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div>
+                                    <table border="1" cellpadding="7" cellspacing="0" bordercolor="#CCCCCC" width="1024" align="center">
+
+                                        <tr>
+                                            <td>
+                                                <table border="0" cellpadding="3" cellspacing="0" bgcolor="#f2f2f2" width="1024" align="center">
+                                                    <tr>
+                                                        <td>
+                                                            <span style="color: black" class="cit">
+                                                                <a name="#"></a><strong>EDITOR'S SELECTION</strong>
+                                                                <br>
+                                                                <br>
+                                                                <table cellpadding="5" cellspacing="0" border="0" width="1024">
+                                                                    <tr class="edComHeading">
+                                                                        <td width="20%"><strong>Date:</strong></td>
+                                                                        <td>@Html.Label(Model.originalpubdatewords)</td>
+                                                                    </tr>
+                                                                    <tr class="edComHeading">
+                                                                        <td><strong>Editor or Editors:</strong> </td>
+                                                                        <td>@Html.Raw(Model.ThreadEditors)</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="edComHeading" valign="top"><strong>Topic&nbsp;|&nbsp;SubTopic:</strong> </td>
+                                                                        <td>@Model.ThreadTopics</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="edComHeading" valign="top"><strong>Article: </strong></td>
+                                                                        <td>
+                                                                            @if (Model.ThreadCitations != null)
+                                                                            {
+                                                                                foreach (var thcit in Model.ThreadCitations)
+                                                                                {
+                                                                                    string temp;
+                                                                                    int ac;
+                                                                                    if (thcit.ArticleTitle != null)
+                                                                                    {
+                                                                                        ac = (thcit.ArticleTitle).Length;
+
+                                                                                        if (ac > 80)
+                                                                                        {
+                                                                                            temp = @thcit.ArticleTitle.Substring(0, 61) + "...";
+
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            temp = thcit.ArticleTitle;
+                                                                                        }
+                                                                                    
+                                                                                <strong>@Html.Raw(temp)</strong> <br />
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        @if (Model.GetecThreadComments != null)
+                                                                        {
+                                                                            foreach (var item in Model.GetecThreadComments)
+                                                                            {
+                                                                                if (item.IsEditor == false)
+                                                                                {
+                                                                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                                <tr>
+                                                                                    <td colspan="2">&nbsp;</td>
+                                                                                </tr>
+                                                                                <tr class="edComHeading">
+                                                                                    <td width="20%"><strong>Comment By:</strong></td>
+                                                                                    <td>
+                                                                                        <strong>@Html.Raw(item.Authors) </strong>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td colspan="2">
+                                                                                        <span style="color: navy;">@Html.Raw(item.Comment) </span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                                <tr>
+                                                                                    <td colspan="2">&nbsp;</td>
+                                                                                </tr>
+                                                                                <tr class="edComHeading">
+                                                                                    <td colspan="2">
+                                                                                        <span style="color: navy;">@Html.Raw(item.Comment) </span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>                                                                                      
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                </table>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> @if(Model.ThreadCitations != null)
+                                                                {
+                                                                    if (Model.ThreadCitations.Count > 1)
+                                                                    { 
+                                                                    <p style="font-weight: bold; text-align: left">CITATION</p>
+                                                                    }
+                                                                    if (Model.ThreadCitations.Count == 1)
+                                                                    {
+                                                                        if (Model.ThreadCitations[0].ArticleTitle != null && Model.ThreadCitations[0].AbstractText != null)
+                                                                        {
+                                                                    <p style="font-weight: bold; text-align: left">CITATION</p>
+                                                                        }
+                                                                    }
+                                                                }
+                                                           
+                                                            @if (Model.ThreadCitations != null)
+                                                            {
+                                                                foreach (var ThreadCit in Model.ThreadCitations)
+                                                                {
+                                                                <table border="0" cellpadding="10" cellspacing="3" align="center" width="1024">
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (ThreadCit.AuthorFullList != "")
+                                                                            {
+                                                                                @ThreadCit.AuthorFullList<br />
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                @ThreadCit.AuthorList<br />   
+                                                                            }
+                                                                            <strong>@ThreadCit.ArticleTitle</strong>
+                                                                            <br />
+                                                                            @if (ThreadCit.ArticleTitle != null && ThreadCit.AbstractText != null)
+                                                                            {
+                                                                                <p>
+                                                                                    @ThreadCit.MedlineTA &nbsp;@ThreadCit.DisplayDate,@ThreadCit.MedlinePgn PMID:@ThreadCit.PMID @ThreadCit.StatusDisplay
+                                                                                </p>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <p>
+                                                                                    PMID:@ThreadCit.PMID
+                                                                                </p>
+                                                                            }
+                                                                            <br />
+                                                                            <div>
+                                                                             <p>   @Html.Raw(ThreadCit.AbstractText)</p>
+                                                                                <br>
+                                                                            </div>
+                                                                            @if (Model.ThreadCitations.Count > 1)
+                                                                            {
+                                                                                if (Model.ThreadCitations.Last().PMID != ThreadCit.PMID)
+                                                                                {
+                                                                                <hr align="center" width="50%" style="height:1px;border-bottom:none">
+                                                                                }
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                }
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>    
+}
+else
+{
+    <table width="100%">
+
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="floatright">
+                </div>
+                <div class="commonContent">
+
+                    <div class="floatleft">
+
+                        <div>
+                        </div>
+
+                        <div id="ECcits">
+                            <a href="#"></a><a href="#"></a><a href="#"></a>
+                        </div>
+
+                    </div>
+
+
+                    <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" class="editorsuls"></td>
+        </tr>
+
+        <tr>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                <div>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div>
+                                    @if (Model.GetEditorSelection != null)
+                                    {
+                                        foreach (var Threads in Model.GetEditorSelection)
+                                        {
+                                        <table border="1" cellpadding="7" cellspacing="0" bordercolor="#CCCCCC" width="1024" align="center">
+
+                                            <tr>
+                                                <td>
+                                                    <table border="0" cellpadding="3" cellspacing="0" bgcolor="#f2f2f2" width="1024" align="center">
+                                                        <tr>
+                                                            <td>
+                                                                <span style="color: black" class="cit">
+                                                                    <a name="#"></a><strong>EDITOR'S SELECTION</strong>
+                                                                    <br>
+                                                                    <br>
+
+                                                                    <table cellpadding="5" cellspacing="0" border="0" width="1024">
+                                                                        <tr class="edComHeading">
+                                                                            <td width="20%"><b>Date:</b></td>
+                                                                            <td>@Html.Label(Threads.originalpubdatewords)</td>
+                                                                        </tr>
+                                                                        <tr class="edComHeading">
+                                                                            <td><b>Editor or Editors:</b></td>
+                                                                            <td>@Html.Raw(Threads.ThreadEditors)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="edComHeading" valign="top"><b>Topic&nbsp;|&nbsp;SubTopic:</b></td>
+                                                                            <td>@Html.Raw(Threads.ThreadTopics)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="edComHeading" valign="top"><b>Article:</b></td>
+                                                                            <td>
+                                                                                @if (Threads.ThreadCitations != null)
+                                                                                {
+                                                                                    foreach (var thcit in Threads.ThreadCitations)
+                                                                                    {
+                                                                                        string temp;
+                                                                                        int ac;
+                                                                                        if (thcit.ArticleTitle != null)
+                                                                                        {
+                                                                                            ac = (thcit.ArticleTitle).Length;
+
+                                                                                            if (ac > 80)
+                                                                                            {
+                                                                                                temp = thcit.ArticleTitle.Substring(0, 61) + "...";
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                temp = thcit.ArticleTitle;
+                                                                                            }
+                                                                                       
+                                                                                    <strong>@Html.Raw(temp)</strong> <br />
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            @foreach (var item in Threads.GetecThreadComments)
+                                                                            {
+                                                                                if (item.IsEditor == false)
+                                                                                {
+                                                                                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                                    <tr>
+                                                                                        <td colspan="2">&nbsp;</td>
+                                                                                    </tr>
+                                                                                    <tr class="edComHeading">
+                                                                                        <td width="20%"><strong>Comment By:</strong></td>
+                                                                                        <td>
+                                                                                            <strong>@Html.Raw(item.Authors) </strong>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="2">&nbsp;</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="2">
+                                                                                            <span style="color: navy;">@Html.Raw(item.Comment)</span>
+                                                                                            <br />
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                             
+                                                                                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                                    <tr class="edComHeading">
+                                                                                        <td colspan="2">
+                                                                                            <br />
+                                                                                            <span style="color: navy;">@Html.Raw(item.Comment)</span>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="2">&nbsp;</td>
+                                                                                    </tr>
+                                                                                </table>                                                                          
+                                                                                }
+                                                                            }
+                                                                        </tr>
+                                                                    </table>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @if (Threads.ThreadCitations != null)
+                                                                {
+                                                                    if (Threads.ThreadCitations.Count > 1)
+                                                                    { 
+                                                                    <p style="font-weight: bold; text-align: left">CITATION</p>
+                                                                    }
+                                                                    if (Threads.ThreadCitations.Count == 1)
+                                                                    {
+                                                                        if (Threads.ThreadCitations[0].ArticleTitle != null && Threads.ThreadCitations[0].AbstractText != null)
+                                                                        {
+                                                                    <p style="font-weight: bold; text-align: left">CITATION</p>
+                                                                        }
+                                                                    }
+                                                                }
+                                                                @if (Threads.ThreadCitations != null)
+                                                                {
+                                                                    foreach (var ThreadCit in Threads.ThreadCitations)
+                                                                    {
+                                                                    <table border="0" cellpadding="10" cellspacing="3" align="center" width="1024">
+                                                                        <tr>
+                                                                            <td>
+                                                                                @if (ThreadCit.AuthorFullList != "")
+                                                                                {
+                                                                                    @ThreadCit.AuthorFullList<br />
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    @ThreadCit.AuthorList<br />
+                                                                                }
+                                                                                <strong>@ThreadCit.ArticleTitle</strong>
+                                                                                <br />
+                                                                                @if (ThreadCit.ArticleTitle != null && ThreadCit.AbstractText != null)
+                                                                                {
+                                                                                    <p>
+                                                                                        @ThreadCit.MedlineTA &nbsp;@ThreadCit.DisplayDate,@ThreadCit.MedlinePgn PMID:@ThreadCit.PMID @ThreadCit.StatusDisplay
+                                                                                    </p>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <p>
+                                                                                        PMID:@ThreadCit.PMID
+                                                                                    </p>
+                                                                                }
+                                                                                <br />
+                                                                                <div>
+                                                                                  <p>  @Html.Raw(ThreadCit.AbstractText)</p>
+                                                                                    <br>
+                                                                                </div>
+                                                                                @if (Threads.ThreadCitations.Count > 1)
+                                                                                {
+                                                                                    if (Threads.ThreadCitations.Last().PMID != ThreadCit.PMID)
+                                                                                    {
+                                                                                    <hr align="center" width="50%" style="height:1px;border-bottom:none">
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    }
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table> 
+                                        <br />
+                                        }
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+
+<table width="1024" cellpadding="8" cellspacing="0" border="0">
+    <tbody>
+        <tr valign="top" height="85">
+            <td colspan="2" align="left"></td>
+            <td width="270" align="right" valign="top" style="text-align: right">
+                @Html.ActionLink("Back", "EditorsChoice", "User", new { id = Model.SpecialtyID }, null)
+                &nbsp;|&nbsp; 
+						<input type="submit" value="Print" onclick="window.print()">
+            </td>
+        </tr>
+    </tbody>
+</table>
+

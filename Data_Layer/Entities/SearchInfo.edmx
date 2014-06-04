@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SearchInfo.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="SearchInfoStoreContainer">
+          <EntitySet Name="SearchDetails" EntityType="SearchInfo.Store.SearchDetails" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SearchResults" EntityType="SearchInfo.Store.SearchResults" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SearchSummary" EntityType="SearchInfo.Store.SearchSummary" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserCitations" EntityType="SearchInfo.Store.UserCitations" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="SearchDetails">
+          <Key>
+            <PropertyRef Name="SearchID" />
+            <PropertyRef Name="Seq" />
+          </Key>
+          <Property Name="SearchID" Type="int" Nullable="false" />
+          <Property Name="Seq" Type="tinyint" Nullable="false" />
+          <Property Name="Op" Type="char" Nullable="false" MaxLength="3" />
+          <Property Name="Terms" Type="varchar" Nullable="false" MaxLength="400" />
+          <Property Name="Tab" Type="varchar" Nullable="false" MaxLength="35" />
+        </EntityType>
+        <EntityType Name="SearchResults">
+          <Key>
+            <PropertyRef Name="SearchID" />
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Name="SearchID" Type="int" Nullable="false" />
+          <Property Name="PMID" Type="int" Nullable="false" />
+          <Property Name="List" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SearchSummary">
+          <Key>
+            <PropertyRef Name="SearchID" />
+          </Key>
+          <Property Name="SearchID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="SearchName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="RunOriginal" Type="datetime" Nullable="false" />
+          <Property Name="FoundOriginal" Type="int" Nullable="false" />
+          <Property Name="RunLast" Type="datetime" Nullable="false" />
+          <Property Name="FoundLast" Type="int" Nullable="false" />
+          <Property Name="PublicationTypeMask" Type="smallint" Nullable="false" />
+          <Property Name="LanguageMask" Type="tinyint" Nullable="false" />
+          <Property Name="SpeciesMask" Type="tinyint" Nullable="false" />
+          <Property Name="GenderMask" Type="tinyint" Nullable="false" />
+          <Property Name="SubjectAgeMask" Type="smallint" Nullable="false" />
+          <Property Name="DateStart" Type="datetime" />
+          <Property Name="DateEnd" Type="datetime" />
+          <Property Name="AbstractMask" Type="tinyint" Nullable="false" />
+          <Property Name="PaperAge" Type="tinyint" Nullable="false" />
+          <Property Name="SearchSort" Type="tinyint" Nullable="false" />
+          <Property Name="FastFullText" Type="tinyint" Nullable="false" />
+          <Property Name="ShelfLife" Type="smallint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="LastAutorunHits" Type="int" Nullable="false" />
+          <Property Name="LimitToUserLibrary" Type="tinyint" Nullable="false" />
+          <Property Name="LastAutorunDate" Type="smalldatetime" />
+          <Property Name="ResultsFolder1" Type="int" Nullable="false" />
+          <Property Name="ResultsFolder2" Type="int" Nullable="false" />
+          <Property Name="Autosearch" Type="tinyint" Nullable="false" />
+          <Property Name="UserDB" Type="varchar" MaxLength="50" />
+          <Property Name="KeepDelete" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserCitations">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="SubTopicID" />
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="SubTopicID" Type="int" Nullable="false" />
+          <Property Name="PMID" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="IsAutoQueryCitation" Type="bit" Nullable="false" />
+          <Property Name="SearchID" Type="int" Nullable="false" />
+          <Property Name="ExpireDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="KeepDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <Function Name="lib_GetSearchCitationList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="SearchID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SearchQueryGet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="SearchName" Type="varchar" Mode="In" />
+          <Parameter Name="SearchID" Type="int" Mode="In" />
+        </Function>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SearchInfo" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SearchEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="UserCitations" EntityType="SearchInfo.UserCitation" />
+          <FunctionImport Name="ap_SearchQueryGet">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchName" Mode="In" Type="String" />
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SearchQueryGet" ReturnType="Collection(SearchInfo.SearchQueryGet_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchName" Mode="In" Type="String" />
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="SearchDetails" EntityType="SearchInfo.SearchDetail" />
+          <EntitySet Name="SearchResults" EntityType="SearchInfo.SearchResult" />
+          <FunctionImport Name="lib_GetSearchCitationList" ReturnType="Collection(SearchInfo.lib_GetSearchCitationList_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="SearchID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="SearchSummaries" EntityType="SearchInfo.SearchSummary" />
+        </EntityContainer>
+        <EntityType Name="UserCitation">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="SubTopicID" />
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="SubTopicID" Type="Int32" Nullable="false" />
+          <Property Name="PMID" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsAutoQueryCitation" Type="Boolean" Nullable="false" />
+          <Property Name="SearchID" Type="Int32" Nullable="false" />
+          <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="KeepDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="SearchQueryGet_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="String" Name="SearchName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="SearchID" Nullable="true" />
+          <Property Type="String" Name="Op1" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms1" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab1" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op2" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms2" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab2" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op3" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms3" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab3" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op4" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms4" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab4" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op5" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms5" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab5" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Op6" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Terms6" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Tab6" Nullable="true" MaxLength="35" />
+          <Property Type="Int16" Name="PublicationTypeMask" Nullable="true" />
+          <Property Type="Int16" Name="SubjectAgeMask" Nullable="true" />
+          <Property Type="Byte" Name="LanguageMask" Nullable="true" />
+          <Property Type="Byte" Name="SpeciesMask" Nullable="true" />
+          <Property Type="Byte" Name="GenderMask" Nullable="true" />
+          <Property Type="Byte" Name="AbstractMask" Nullable="true" />
+          <Property Type="Byte" Name="PaperAge" Nullable="true" />
+          <Property Type="Int16" Name="DateStart" Nullable="true" />
+          <Property Type="Int16" Name="DateEnd" Nullable="true" />
+          <Property Type="Byte" Name="SearchSort" Nullable="true" />
+          <Property Type="Byte" Name="AutoSearch" Nullable="true" />
+          <Property Type="Int16" Name="ShelfLife" Nullable="true" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="Byte" Name="LimitToUserLibrary" Nullable="true" />
+          <Property Type="Int32" Name="LastAutorunHits" Nullable="true" />
+          <Property Type="DateTime" Name="LastAutorunDate" Nullable="true" Precision="16" />
+          <Property Type="Int32" Name="ResultsFolder1" Nullable="true" />
+          <Property Type="Int32" Name="ResultsFolder2" Nullable="true" />
+          <Property Type="String" Name="UserDB" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="KeepDelete" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="SearchDetail">
+          <Key>
+            <PropertyRef Name="SearchID" />
+            <PropertyRef Name="Seq" />
+          </Key>
+          <Property Type="Int32" Name="SearchID" Nullable="false" />
+          <Property Type="Byte" Name="Seq" Nullable="false" />
+          <Property Type="String" Name="Op" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Terms" Nullable="false" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Tab" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SearchResult">
+          <Key>
+            <PropertyRef Name="SearchID" />
+            <PropertyRef Name="PMID" />
+          </Key>
+          <Property Type="Int32" Name="SearchID" Nullable="false" />
+          <Property Type="Int32" Name="PMID" Nullable="false" />
+          <Property Type="Int32" Name="List" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="lib_GetSearchCitationList_Result">
+          <Property Type="Int32" Name="pmid" Nullable="false" />
+          <Property Type="Int32" Name="status" Nullable="false" />
+          <Property Type="String" Name="nickname" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="comment" Nullable="true" MaxLength="1024" />
+          <Property Type="DateTime" Name="commentupdatedate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="searchid" Nullable="false" />
+          <Property Type="DateTime" Name="expiredate" Nullable="false" Precision="16" />
+          <Property Type="Boolean" Name="keepdelete" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="SearchSummary">
+          <Key>
+            <PropertyRef Name="SearchID" />
+          </Key>
+          <Property Type="Int32" Name="SearchID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="SearchName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="RunOriginal" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="FoundOriginal" Nullable="false" />
+          <Property Type="DateTime" Name="RunLast" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="FoundLast" Nullable="false" />
+          <Property Type="Int16" Name="PublicationTypeMask" Nullable="false" />
+          <Property Type="Byte" Name="LanguageMask" Nullable="false" />
+          <Property Type="Byte" Name="SpeciesMask" Nullable="false" />
+          <Property Type="Byte" Name="GenderMask" Nullable="false" />
+          <Property Type="Int16" Name="SubjectAgeMask" Nullable="false" />
+          <Property Type="DateTime" Name="DateStart" Precision="3" />
+          <Property Type="DateTime" Name="DateEnd" Precision="3" />
+          <Property Type="Byte" Name="AbstractMask" Nullable="false" />
+          <Property Type="Byte" Name="PaperAge" Nullable="false" />
+          <Property Type="Byte" Name="SearchSort" Nullable="false" />
+          <Property Type="Byte" Name="FastFullText" Nullable="false" />
+          <Property Type="Int16" Name="ShelfLife" Nullable="false" />
+          <Property Type="String" Name="Description" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="LastAutorunHits" Nullable="false" />
+          <Property Type="Byte" Name="LimitToUserLibrary" Nullable="false" />
+          <Property Type="DateTime" Name="LastAutorunDate" Precision="0" />
+          <Property Type="Int32" Name="ResultsFolder1" Nullable="false" />
+          <Property Type="Int32" Name="ResultsFolder2" Nullable="false" />
+          <Property Type="Byte" Name="Autosearch" Nullable="false" />
+          <Property Type="String" Name="UserDB" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Byte" Name="KeepDelete" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SearchInfoStoreContainer" CdmEntityContainer="SearchEntities">
+          <EntitySetMapping Name="UserCitations">
+            <EntityTypeMapping TypeName="SearchInfo.UserCitation">
+              <MappingFragment StoreEntitySet="UserCitations">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SubTopicID" ColumnName="SubTopicID" />
+                <ScalarProperty Name="PMID" ColumnName="PMID" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="IsAutoQueryCitation" ColumnName="IsAutoQueryCitation" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="KeepDelete" ColumnName="KeepDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SearchQueryGet" FunctionName="SearchInfo.Store.SearchQueryGet">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SearchInfo.SearchQueryGet_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SearchName" ColumnName="SearchName" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="Op1" ColumnName="Op1" />
+                <ScalarProperty Name="Terms1" ColumnName="Terms1" />
+                <ScalarProperty Name="Tab1" ColumnName="Tab1" />
+                <ScalarProperty Name="Op2" ColumnName="Op2" />
+                <ScalarProperty Name="Terms2" ColumnName="Terms2" />
+                <ScalarProperty Name="Tab2" ColumnName="Tab2" />
+                <ScalarProperty Name="Op3" ColumnName="Op3" />
+                <ScalarProperty Name="Terms3" ColumnName="Terms3" />
+                <ScalarProperty Name="Tab3" ColumnName="Tab3" />
+                <ScalarProperty Name="Op4" ColumnName="Op4" />
+                <ScalarProperty Name="Terms4" ColumnName="Terms4" />
+                <ScalarProperty Name="Tab4" ColumnName="Tab4" />
+                <ScalarProperty Name="Op5" ColumnName="Op5" />
+                <ScalarProperty Name="Terms5" ColumnName="Terms5" />
+                <ScalarProperty Name="Tab5" ColumnName="Tab5" />
+                <ScalarProperty Name="Op6" ColumnName="Op6" />
+                <ScalarProperty Name="Terms6" ColumnName="Terms6" />
+                <ScalarProperty Name="Tab6" ColumnName="Tab6" />
+                <ScalarProperty Name="PublicationTypeMask" ColumnName="PublicationTypeMask" />
+                <ScalarProperty Name="SubjectAgeMask" ColumnName="SubjectAgeMask" />
+                <ScalarProperty Name="LanguageMask" ColumnName="LanguageMask" />
+                <ScalarProperty Name="SpeciesMask" ColumnName="SpeciesMask" />
+                <ScalarProperty Name="GenderMask" ColumnName="GenderMask" />
+                <ScalarProperty Name="AbstractMask" ColumnName="AbstractMask" />
+                <ScalarProperty Name="PaperAge" ColumnName="PaperAge" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="SearchSort" ColumnName="SearchSort" />
+                <ScalarProperty Name="AutoSearch" ColumnName="AutoSearch" />
+                <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LimitToUserLibrary" ColumnName="LimitToUserLibrary" />
+                <ScalarProperty Name="LastAutorunHits" ColumnName="LastAutorunHits" />
+                <ScalarProperty Name="LastAutorunDate" ColumnName="LastAutorunDate" />
+                <ScalarProperty Name="ResultsFolder1" ColumnName="ResultsFolder1" />
+                <ScalarProperty Name="ResultsFolder2" ColumnName="ResultsFolder2" />
+                <ScalarProperty Name="UserDB" ColumnName="UserDB" />
+                <ScalarProperty Name="KeepDelete" ColumnName="KeepDelete" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="SearchDetails">
+            <EntityTypeMapping TypeName="SearchInfo.SearchDetail">
+              <MappingFragment StoreEntitySet="SearchDetails">
+                <ScalarProperty Name="Tab" ColumnName="Tab" />
+                <ScalarProperty Name="Terms" ColumnName="Terms" />
+                <ScalarProperty Name="Op" ColumnName="Op" />
+                <ScalarProperty Name="Seq" ColumnName="Seq" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SearchResults">
+            <EntityTypeMapping TypeName="SearchInfo.SearchResult">
+              <MappingFragment StoreEntitySet="SearchResults">
+                <ScalarProperty Name="List" ColumnName="List" />
+                <ScalarProperty Name="PMID" ColumnName="PMID" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="lib_GetSearchCitationList" FunctionName="SearchInfo.Store.lib_GetSearchCitationList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SearchInfo.lib_GetSearchCitationList_Result">
+                <ScalarProperty Name="pmid" ColumnName="pmid" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="nickname" ColumnName="nickname" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="commentupdatedate" ColumnName="commentupdatedate" />
+                <ScalarProperty Name="searchid" ColumnName="searchid" />
+                <ScalarProperty Name="expiredate" ColumnName="expiredate" />
+                <ScalarProperty Name="keepdelete" ColumnName="keepdelete" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="SearchSummaries">
+            <EntityTypeMapping TypeName="SearchInfo.SearchSummary">
+              <MappingFragment StoreEntitySet="SearchSummary">
+                <ScalarProperty Name="KeepDelete" ColumnName="KeepDelete" />
+                <ScalarProperty Name="UserDB" ColumnName="UserDB" />
+                <ScalarProperty Name="Autosearch" ColumnName="Autosearch" />
+                <ScalarProperty Name="ResultsFolder2" ColumnName="ResultsFolder2" />
+                <ScalarProperty Name="ResultsFolder1" ColumnName="ResultsFolder1" />
+                <ScalarProperty Name="LastAutorunDate" ColumnName="LastAutorunDate" />
+                <ScalarProperty Name="LimitToUserLibrary" ColumnName="LimitToUserLibrary" />
+                <ScalarProperty Name="LastAutorunHits" ColumnName="LastAutorunHits" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+                <ScalarProperty Name="FastFullText" ColumnName="FastFullText" />
+                <ScalarProperty Name="SearchSort" ColumnName="SearchSort" />
+                <ScalarProperty Name="PaperAge" ColumnName="PaperAge" />
+                <ScalarProperty Name="AbstractMask" ColumnName="AbstractMask" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="SubjectAgeMask" ColumnName="SubjectAgeMask" />
+                <ScalarProperty Name="GenderMask" ColumnName="GenderMask" />
+                <ScalarProperty Name="SpeciesMask" ColumnName="SpeciesMask" />
+                <ScalarProperty Name="LanguageMask" ColumnName="LanguageMask" />
+                <ScalarProperty Name="PublicationTypeMask" ColumnName="PublicationTypeMask" />
+                <ScalarProperty Name="FoundLast" ColumnName="FoundLast" />
+                <ScalarProperty Name="RunLast" ColumnName="RunLast" />
+                <ScalarProperty Name="FoundOriginal" ColumnName="FoundOriginal" />
+                <ScalarProperty Name="RunOriginal" ColumnName="RunOriginal" />
+                <ScalarProperty Name="SearchName" ColumnName="SearchName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

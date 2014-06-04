@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "PreviewHtml";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@model DAL.Models.Monthlyeditorsmail
+@*<a href="~/Admin/Composeplaintext">Back</a>*@
+@using (Html.BeginForm("PreviewHtml", "Admin", FormMethod.Post, new { @id = "form_previewhtml" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="clear"></div>
+    <table border="0" width="100%" style="background-color: #f4f4f4; border: 1px solid #ccc; margin: 10px;" cellpadding="5">
+        <tr>
+            <td style="width: 10%"></td>
+            <td style="width: 80%" class="mailPageHeading">HTML Preview</td>
+            <td style="width: 10%"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="border: solid 1px #ccc; font-family: Courier New; font-size: 10pt;">
+                @Html.HiddenFor(model => model.editionid) 
+                @Html.DisplayTextFor(model => model._htmlmesage)
+
+                @Html.HiddenFor(model => model._message)
+                @Html.HiddenFor(model => model._htmlmesage)
+                @Html.HiddenFor(model => model.SpecialtyID)
+                @Html.HiddenFor(model => model.Ishtml)
+                @Html.HiddenFor(model => model.senderaddres)
+                @Html.HiddenFor(model => model.sendername)
+                @Html.HiddenFor(model => model.subject)
+                @Html.HiddenFor(model => model.editionname)
+                @Html.HiddenFor(model => model.SpecialtyName)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td align="right">
+                <input type="submit" id="btnEdithtml" value="Edit" name="Command" />
+                <input type="submit" id="btnContnhtml" value="Continue" name="Command" />
+            </td>
+            <td></td>
+        </tr>
+    </table>  
+    
+    <script type="text/javascript">
+        // To disable browser back button
+        //function stopError() {
+        //    return true;
+        //}
+
+        //window.onerror = stopError;
+
+        //window.history.forward(1);
+        //window.onunload = function () {
+        //    if (window.event.clientX < 0 || window.event.clientX > 10000) {
+        //        document.location.href = "/ep/WindowUnloadServlet";
+        //    }
+        //}
+    </script>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery.cleditor")
+}

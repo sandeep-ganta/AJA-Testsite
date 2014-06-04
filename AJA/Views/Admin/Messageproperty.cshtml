@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Messageproperty";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+@model DAL.Models.Monthlyeditorsmail 
+@*<a href="~/Admin/CreateMailing" class="">Back</a>*@
+  
+@using (Html.BeginForm("Composeplaintext", "Admin", FormMethod.Post, new { @id = "form_mailproperty" }))
+{ 
+    @Html.ValidationSummary(true)
+   <div class="clear"></div>
+    <table border="0" cellpadding="10" cellspacing="0" width="100%" class="mptblstyls">
+        <tr>
+            <td align="center">
+                <table border="0" cellpadding="10" cellspacing="0" style="background-color: #F4F4F4; border: 1px solid #ccc" id="tblLayout">
+
+                    <tr>
+
+                        <td class="mailPageHeading" colspan="3"><b>Message Properties</b> </td>
+
+                    </tr>
+                    <tr>
+                        <td align="left" style="width: 20%">Sender Name:
+                        </td>
+                        <td style="width: 50%">
+                        @Html.HiddenFor(model => model.editionid, new { @id = "hdmsgid" })
+                        @Html.TextBoxFor(model => model.sendername, new { placeholder="Your Name Here", @id = "txtsendername", @style = "width:555px" })
+                        @Html.ValidationMessageFor(model => model.sendername)
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td align="left">Sender Address:
+                        </td>
+                        <td style="width: 50%">
+                        @Html.TextBoxFor(model => model.senderaddres, new { @id = "txtsenderaddr", @style = "width:555px" })
+                        @Html.ValidationMessageFor(model => model.senderaddres)
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td align="left">Subject:
+                        </td>
+                        <td style="width: 50%">
+                        @Html.TextBoxFor(model => model.subject, new { @id = "txtsubject", @style = "width:555px" })
+                        @Html.ValidationMessageFor(model => model.subject)
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td align="right"></td>
+                        <td style="width: 50%" align="left">
+                            @Html.CheckBoxFor(model => model.Ishtml, new { @id = "chkUseHTML", @checked = "checked" }) Use HTML
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td align="left">HTML Heading Template:
+                        </td>
+                        <td style="width: 50%">
+                        @Html.DropDownListFor(model => model.Headingtemp, Model.HeadingTemplist, "--Please Select--", new { @id = "ddl_headertemp" })
+                        @Html.ValidationMessageFor(model => model.Headingtemp)
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <input type="submit" id="btnmailprop" value="Save" name="Command" /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+        
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#txtsendername').placeholder();
+        });
+        //history.pushState(null, null, $(window).attr("href"));
+        //$(window).on("popstate", function (e) {
+        //    e.preventDefault();
+        //    alert("dashboard");
+        //    //load dashboard
+        //});
+        //$(window).on("popstate", function (e) { 
+        //    window.history.forward();
+        //});
+
+        // To disable browser back button
+        //function disablebck() {
+        //    window.history.forward(-1);
+        //}
+        //$(window).unload(function () { 
+        //});
+
+
+        //function stopError() {
+        //    return true;
+        //}
+
+        //window.onerror = stopError;
+
+        
+        //window.onunload = function () {
+        //    if (window.event.clientX < 0 || window.event.clientX > 10000) {
+        //        document.location.href = "/ep/WindowUnloadServlet";
+        //    }
+        //}
+
+        //function preventBack() { window.history.forward(); }
+        //setTimeout("preventBack()", 0);
+        //window.onunload = function () { null };
+
+        //function DisableBackButton() {
+        //    window.history.forward()
+        //}
+        //DisableBackButton();
+        //window.onload = DisableBackButton;
+        //window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        //window.onunload = function () { void (0) }
+    </script> 
+    
+    <script type="text/javascript">
+        $('#chkUseHTML').on("click", function () {
+
+            if ($(this).is(':checked')) {
+                $('#ddl_headertemp').removeAttr('disabled')
+            }
+            else {
+                $("#ddl_headertemp").attr('disabled', 'disabled');
+            }
+        }); 
+    </script> 
+    
+}
+ 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery_placeholder")
+}

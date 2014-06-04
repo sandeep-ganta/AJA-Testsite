@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="232aaf6546a1420c825134034653484b" Name="Diagram1" ZoomLevel="109">
+        <EntityTypeShape EntityType="AJAModel.AJA_tbl_FieldOptions" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAModel.AJA_tbl_FieldValues" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAModel.AJA_tbl_Roles" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AJAModel.AJA_tbl_UserFields" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <AssociationConnector Association="AJAModel.FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields" ManuallyRouted="false" />
+        <AssociationConnector Association="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions" ManuallyRouted="false" />
+        <AssociationConnector Association="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_Roles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AJAModel.AJA_tbl_FieldTypes" Width="1.5" PointX="11.125" PointY="7.5" />
+        <AssociationConnector Association="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes" />
+        <EntityTypeShape EntityType="AJAModel.Specialty" Width="1.5" PointX="7.75" PointY="10.75" />
+        <EntityTypeShape EntityType="AJAModel.AJA_tbl_Users" Width="1.5" PointX="2.875" PointY="7.625" />
+        <EntityTypeShape EntityType="AJAModel.Country" Width="1.5" PointX="5.625" PointY="10.875" />
+        <AssociationConnector Association="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_Users" />
+        <AssociationConnector Association="AJAModel.AJA_tbl_UserRoles" />
+        <EntityTypeShape EntityType="AJAModel.UserSpecialty" Width="1.5" PointX="7.875" PointY="13.375" />
+        <EntityTypeShape EntityType="AJAModel.SubTopic" Width="1.5" PointX="0.438601160626207" PointY="6.5645163089803029" />
+        <EntityTypeShape EntityType="AJAModel.Topic" Width="1.5" PointX="7.7612371201446457" PointY="21.701183493109973" />
+        <EntityTypeShape EntityType="AJAModel.TypePractice" Width="1.5" PointX="9.0879215305149188" PointY="3.2237858489266529" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

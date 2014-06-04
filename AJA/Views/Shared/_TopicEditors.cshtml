@@ -1,0 +1,63 @@
+﻿@model DAL.EditorsBL.EditorsdetValues
+
+@if (Model != null)
+{
+    using (@Html.BeginForm("UpdateTopicEditors", "Admin", FormMethod.Post, new { @id = "form_Edit_Editor" }))
+    {
+    @Html.ValidationSummary(true)   
+       
+    
+    <div>
+        <div class="udctnt">
+            <ol>
+                <li>
+                    @Html.HiddenFor(model => model.EditorID, new { @id = "txt_AuthorId" })
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.name)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.name, new { @id = "txt_UserName" })
+                        @Html.ValidationMessageFor(model => model.name)
+
+                    </div>
+                </li>
+                <li>Note: Names will not appear unless affiliation data is set.</li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.affiliations)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.affiliations, new { @id = "txt_affiliations" ,@class = "txtareacomment" })
+                        @Html.ValidationMessageFor(model => model.affiliations)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.email, new { @id = "txt_EmailId" })
+                        @Html.ValidationMessageFor(model => model.email)
+
+                    </div>
+                </li>              
+                
+
+            </ol>
+        </div>
+        <div>
+            <br />
+        </div>
+    </div>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <div class="ui-dialog-buttonset">
+            <input id="btn_Edit_Editor" type="submit" value="Save" role="button" aria-disabled="false" />
+        </div>
+    </div> 
+    }
+}
+
+

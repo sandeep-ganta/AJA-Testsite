@@ -1,0 +1,112 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+
+@{
+    ViewBag.Title = "ACRDocuments";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+
+<h2>ACR Documents</h2>
+
+<div id="div_ACRDocuments">
+    @{MVC4Grid.Grid modelgrid = @ViewBag.Grid;}
+    @Html.GridFor(modelgrid)
+</div>
+
+
+<div id="ACRDocuments_Add_dialog">
+</div>
+
+<div id="ACRDocuments_Edit_dialog">
+</div>
+
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+<link href="~/Content/GridView.css" rel="stylesheet" />
+@*<script type="text/javascript" src="~/Scripts/GridView.js"></script>*@
+
+<script type="text/javascript">
+    var AddDocument = function AddDocument() {
+        var url = '../Admin/AddDocumentwithID?&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#ACRDocuments_Add_dialog').html(html);
+            $.validator.unobtrusive.parse($("#ACRDocuments_Add_dialog"));
+            $('#ACRDocuments_Add_dialog').dialog({
+                modal: true,
+                title: "Add a New ACR Document",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_ACRDocumets_Content_Noofrows').change();
+                }
+            });
+        });
+    }
+
+    // for editng ACRDocument
+    var EditDocument = function EditDocument(DocId) {
+        var url = '../Admin/GetDocumentWithId?&Id=' + $(DocId).attr('keyid');
+        $.get(url, null, function (html) {
+            $('#ACRDocuments_Edit_dialog').html(html);
+            $.validator.unobtrusive.parse($("#ACRDocuments_Edit_dialog"));
+            $('#ACRDocuments_Edit_dialog').dialog({
+                modal: true,
+                title: "Edit ACR Document",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_ACRDocumets_Content_Noofrows').change();
+                }
+            });
+        });
+    }
+
+
+    //for deleting document
+
+    var DeleteDocument = function DeleteDocument(DocId) {
+
+        var confirmDelete = confirm("Are you sure to delete ACR Document?");
+        if (confirmDelete == true) {
+            var url = '../Admin/DeleteDocumentWithId?&docId=' + $(DocId).attr('keyid');
+            $.get(url, null, function (html) {
+                $(DocId).closest('tr').remove();
+
+            });
+        }
+        else {
+            return false;
+        }
+    }
+
+    //To Get Manage Relationship Grid
+
+    //var ManageRelationShip = function ManageRelationShip(DocId) {
+    //    var url = '../Admin/ManageRelationShipWithId?&docId=' + $(DocId).attr('keyid');
+    //    $.get(url, null, function (html) {            
+    //        $('#Div_DocumentRelation').html(html);
+    //    });
+    //}
+
+
+    function ManageRelationShip(ctrl) { 
+        var docId = $(ctrl).attr('keyid');
+        var url = '../Admin/ManageACRDocumentRelations?Doc_Id=' + docId;
+        window.location.href = url;
+    };
+
+
+
+</script>
+
+<style type="text/css">
+    .ui-dialog
+    {
+        z-index: 10000;
+    }
+</style>
+

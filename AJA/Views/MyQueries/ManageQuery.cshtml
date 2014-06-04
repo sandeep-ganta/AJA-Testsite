@@ -1,0 +1,226 @@
+﻿@model DAL.SearchBL.ManageQuery
+@{
+    ViewBag.Title = "Configure Saved Query";
+   
+}
+
+
+
+
+@using (Html.BeginForm("UpdateManageQuery", "MyQueries", FormMethod.Post))
+{ 
+   
+
+    <div align="center">
+
+        <div>
+
+
+            <div>
+                <table width="1170" align="center" style="margin:0 auto;">
+                    <tr>
+                        <td>
+                            <img src="~/Content/images/Subpage_banner-1170.jpg">
+                        </td>
+                    </tr>
+                </table>
+                <table width="1170" align="center">
+                    <tr>
+                        <td>
+                            <h2><a href="~/MyQueries/myqueries">My Queries</a> > Manage Query</h2>
+                        </td>
+                        <td align="right"><a href="/Search/save_query_help">Saved Query Help </a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">QUERY DETAILS :  @Html.DisplayFor(m => m.QueryDetails)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: none;" id="validationterm">
+                                Please specify a destination folder. 
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div style="background-color: #F2F2F2; border: 1px solid #CCCCCC; padding: 5px; line-height: 25px; margin-bottom: 7px;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            @Html.HiddenFor(m => m.SearchId)
+                                            @Html.Label("Title (required):")</td>
+                                        <td>@Html.Label("Description / notes:")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@Html.TextBoxFor(m => m.Name)
+                                            @Html.ValidationMessageFor(model => model.Name)
+                                        </td>
+                                        <td>@Html.TextBoxFor(m => m.Description)
+                                            @Html.ValidationMessageFor(model => model.Description)
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @if ((Model.FolderID == null || Model.FolderID <= 0) && Model.Autosearch == false)
+                                            {
+                                                <input id="btn_ConvertToAutoQuery" type="button" value="Convert to AutoQuery" role="button" aria-disabled="false" /> 
+                                        
+                                                <table id="AutoQuery" style="display: none;">
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            @*  <input type="checkbox" id='Chk_Autosearch' name="chkRole"  value="true" checked='checked' />*@
+                                                            @Html.CheckBoxFor(model => model.Autosearch, new { @id = "Chk_UpdateProfile" })
+                                                            @* @Html.CheckBox("Autosearch", true, new {id="Autosearch", name="Autosearch" })*@
+                                                            @Html.Label("Run this query weekly; save citations to library folder: ")</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            @Html.DropDownListFor(c => c.FolderID, Model.TopicsList, "--Select Topic--", new { @id = "SelectedTopic", style = "width:220px" })
+                                                            <select id="ddlUserSubTopic" name="ddlUserSubTopic" style="width: 220px"></select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td width="90">@Html.RadioButtonFor(model => model.KeepDelete, "1", true) Keep
+                                                            <br />
+                                                            @Html.RadioButtonFor(model => model.KeepDelete, "0", false) Delete
+                                                        </td>
+
+                                                        <td>citations after:                                 
+                               
+
+                                 @Html.DropDownListFor(m => m.ShelfLife, new SelectList(new DAL.SearchBL.ManageQuery().GetShelfLife(), "val", "Title"))
+                                                            @Html.ValidationMessageFor(model => model.ShelfLife)
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <table>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            @* <input type="checkbox" id='Chk_Autosearch' name="chkRole"  value="@Model.Autosearch" checked='@Model.Autosearch' />*@
+
+                                                            @Html.CheckBoxFor(model => model.Autosearch)
+                                                            Run this query weekly; save citations to library folder:</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="2">&nbsp;<strong> @Html.DisplayFor(m => m.DestinationFolder)</strong>
+                                                            @Html.HiddenFor(m => m.DestinationFolder)
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td width="90">@Html.RadioButtonFor(model => model.KeepDelete, "1", true) Keep
+                                                            <br />@Html.RadioButtonFor(model => model.KeepDelete, "0", false) Delete </td>
+                                                        <td>citations after:                                 
+                               
+
+                                 @Html.DropDownListFor(m => m.ShelfLife, new SelectList(new DAL.SearchBL.ManageQuery().GetShelfLife(), "val", "Title"))
+                                                            @Html.ValidationMessageFor(model => model.ShelfLife)
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+
+
+                            <div class="ui-dialog-buttonset anchorscls">
+                                <input id="btn_UpdateManageQuery" type="submit" value="Save" role="button" aria-disabled="false" />
+                                @Html.ActionLink("Make Copy", "Search", "Search", new { ddlValue = @Model.SearchId }, null)
+                                @Html.ActionLink("Cancel", "MyQueries", "MyQueries", new { FID = @Model.FolderID, searchid = @Model.SearchId, SearchName = @Model.Name }, null)
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+}
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+<script>
+    $("#btn_ConvertToAutoQuery").click(function () {
+        $("#AutoQuery").show();
+        $("#btn_ConvertToAutoQuery").hide();
+    });
+
+    $('#SelectedTopic').change(function () {
+        var sid = $(this).val();
+        $.ajax({
+            url: '/mylibrary/GetUserSubTopics?TopicId=' + sid,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            type: "GET",
+            error: function () {
+                alert("An error occurred.");
+            },
+            success: function (data) {
+                var items = "";
+                if (data != null) {
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+                    $("#ddlUserSubTopic").html(items);
+                }
+                else { $("#msg").html("No Related SubTopic exists") }
+            }
+        });
+    });
+
+
+    //$('#btn_UpdateManageQuery').click(function (event) {
+
+
+    //        if ($('#Chk_UpdateProfile').is(':checked') && ($('#SelectedTopic').val() == "" || $('ddlUserSubTopic').val() == 'undefined' || $('ddlUserSubTopic').val() == "")) {
+    //            alert('Please specify a destination folder.');
+
+    //        }
+
+    //    });
+
+</script>
+
+<style type="text/css">
+    .anchorscls a
+    {
+        background-color: #01657D;
+        border: 1px solid #01657D;
+        border-radius: 3px 3px 3px 3px;
+        color: #FFFFFF;
+        cursor: pointer;
+        padding: 3px 8px;
+    }
+
+        .anchorscls a:hover
+        {
+            background-color: #0888A6;
+            text-decoration: none;
+        }
+
+        .anchorscls a:active
+        {
+            background-color: #1797B5;
+        }
+</style>

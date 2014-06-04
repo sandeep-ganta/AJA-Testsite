@@ -1,0 +1,91 @@
+﻿@{ 
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@model DAL.Models.Monthlyeditorsmail
+
+@*@if (Model._htmlmesage != null)
+{
+    <a href="~/Admin/Composehtml">Back</a>}
+else
+{<a href="~/Admin/Composeplaintext">Back</a>}*@
+
+@using (Html.BeginForm("SendTest", "Admin", FormMethod.Post, new { @id = "form_testmail" }))
+{
+    <table width="100%" cellpadding="10">
+        <tr>
+            <td style="width: 20%"></td>
+            <td style="width: 29%"></td>
+            <td style="width: 20%"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="mailPageHeading" style="width: 29%; font-weight: bold">Send Test Email Message
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td align="left" style="width: 29%">
+                <table>
+                    <tr>
+                        <td>Send to name:</td>
+                        <td>@Html.TextBoxFor(model => model.testname, new { @id = "txttestname", Width = "295px", CssClass = "padglfttxt" })</td>
+                    </tr>
+                    <tr>
+                        <td>Send to SMTP address:
+                        </td>
+                        <td>@Html.TextBoxFor(model => model.testEmail, new { @id = "txttestemail", Width = "295px", CssClass = "padglfttxt" })</td>
+                    </tr>
+
+                </table>
+
+
+
+
+
+                @Html.ValidationMessageFor(model => model.testEmail)
+                @Html.HiddenFor(model => model._message)
+                @Html.HiddenFor(model => model._htmlmesage)
+                @Html.HiddenFor(model => model.SpecialtyID)
+                @Html.HiddenFor(model => model.Ishtml)
+                @Html.HiddenFor(model => model.senderaddres)
+                @Html.HiddenFor(model => model.sendername)
+                @Html.HiddenFor(model => model.subject)
+                @Html.HiddenFor(model => model.editionid)
+                @Html.HiddenFor(model => model.editionname)
+                @Html.HiddenFor(model => model.SpecialtyName)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td align="center" style="width: 29%">
+                <input type="submit" value="Skip Test" id="btnSkipTest" style="Width: 116px" name="Command" />
+                <input type="submit" value="Send Test Message" id="btnSend" name="Command" />
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="height: 18px"></td>
+            <td style="height: 18px; width: 29%;"></td>
+            <td style="height: 18px"></td>
+        </tr>
+    </table>
+    
+    <script type="text/javascript">
+        // To disable browser back button
+        //function stopError() {
+        //    return true;
+        //}
+
+        //window.onerror = stopError;
+
+        //window.history.forward(1);
+        //window.onunload = function () {
+        //    if (window.event.clientX < 0 || window.event.clientX > 10000) {
+        //        document.location.href = "/ep/WindowUnloadServlet";
+        //    }
+        //}
+    </script>
+}

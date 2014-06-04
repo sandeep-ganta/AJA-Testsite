@@ -1,0 +1,312 @@
+﻿@model DAL.Models.UserFieldModel
+
+@if (Model != null)
+{
+    using (@Html.BeginForm((Model.FieldID != 0) ? "UpdateField" : "CreateField", "User", FormMethod.Post, new { @id = "form_Edit_Fields" }))
+    {
+    @Html.ValidationSummary(true)
+    <div class="div-EditField-Controls">
+        <div class="udctnt">
+            <ol>
+                <li>
+                    @Html.HiddenFor(model => model.FieldID, new { @id = "hdFieldID" })
+                    @Html.HiddenFor(model => model.ShowOrder, new { @id = "hdShowOrder" })
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FieldName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FieldName, new { @id = "txtFieldName", @name = "FieldName" })
+                        @Html.ValidationMessageFor(model => model.FieldName)
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Role)
+                    </div>
+                    <div class="editor-field">
+                        @if (Model.RoleID != 0)
+                        {
+                            <select id="ddlRoleId">
+                                @foreach (var item in Model.Roles)
+                                {
+                                    if (item.Value == Model.RoleID.ToString())
+                                    {
+                                    <option value="@item.Value" selected="selected">@item.Text</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Role, Model.Roles, new { @id = "ddlRoleId" })
+                        }
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FieldType)
+                    </div>
+                    <div class="editor-field">
+                        @if (Model.TypeID != 0)
+                        {
+                            <select id="ddlFieldType" name="TypeID">
+                                @foreach (var item in Model.FieldTypes)
+                                {
+                                    if (item.Value == Model.TypeID.ToString())
+                                    {
+                                    <option value="@item.Value" selected="selected">@item.Text</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="@item.Value">@item.Text</option>
+                                    }
+
+                                }
+                            </select>
+                            
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.TypeID, Model.FieldTypes, new { @id = "ddlFieldType", @name = "TypeID" })
+                           
+                        }
+                        <label for='TypeID' class="error" style="display: none;">Options required</label>
+                        <span class="field-validation-error" data-valmsg-for="TypeID" data-valmsg-replace="true"></span>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div>
+            <br>
+        </div>
+        <div class="maincontr">
+            <div class="udctnt">
+                <div>
+                    <h3 style="float: left; line-height: 30px; padding-right: 5px">Options</h3>
+                    <input type="button" value="Add" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="AddOption(this)" />
+                </div>
+                <div id="divopttblbody">
+                    @for (int i = 0; i < Model.Options.Count; i++)
+                    {
+                        <div class="diveachoption" id="divopt_@i">
+                            <input class="txtedit txtoption" value="@Model.Options[i].OptionText" name="txtoption_@i" type="text" aria-labelledby="@Model.Options[i].OptionID" accesskey="@Model.Options[i].OptionID" />
+                            <input class="deleteoption" name="@Model.Options[i].OptionID" onclick="DeleteOption(this)" type="button" title="Delete"/>
+                            <label for='txtoption_@i' class="error" style="display: none;">Option text is required</label>
+                            <span class="field-validation-error" data-valmsg-for="txtoption_@i" data-valmsg-replace="true"></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div>
+            <br>
+        </div>
+        <div class="udctnt">
+            <table width="270px">
+                <tr>
+                    <td></td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.IsMandatory) &nbsp; @Html.CheckBoxFor(model => model.IsMandatory, new { @id = "chkIsMandatory" })
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.IsActive) &nbsp; @Html.CheckBoxFor(model => model.IsActive, new { @id = "chkIsActive" })
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="div-EditField-buttons">
+        <input type="submit" role="button" value="Save" id="btnSave" class="ui-button ui-widget ui-state-default ui-corner-all">
+        <input type="button" role="button" value="Cancel" id="btnCancel" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="Cancel();">
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            if ($("#ddlFieldType option:selected").val() > 2) {
+                $('.maincontr').show();
+            }
+
+            nextid = $('.txtoption').length;
+
+            $("#ddlFieldType").change(function () {
+                $('.maincontr').hide();
+                var n = $(this).val();
+                if (n > 2) {
+                    $('.maincontr').show();
+                }
+            });
+
+            $.validator.addMethod("MinimumOptions", function (value, element) {
+                if (parseInt(value) > 2) {
+                    if (($('.txtadd').length + $('.txtedit').length) > 1)
+                        return true;
+                    else
+                        return false;
+                }
+                else {
+                    return true;
+                }
+            }, "Must have alteast two options.");
+
+
+            $.validator.addMethod("PreviousOptions", function (value, element) {
+
+                var haveit = false;
+                var rtn = 0;
+
+
+                var orgval = $.trim(value).toUpperCase();
+
+                $('.txtoption').each(function (indx, elem) {
+                    if ($(elem).attr('name') != $(element).attr('name')) {
+                        //debugger;
+                        var tmpval = $.trim($(elem).val()).toUpperCase();
+                        if (tmpval == orgval) {
+                            //  debugger;
+                            //return true;
+                            haveit = true;
+                            rtn++;
+
+                        }
+                    }
+                });
+                if (haveit) { return false; } else { return true; }
+
+
+            }, "Option already exists");
+
+        });
+        var nextid;
+        var AddOption = function AddOption(cntrl) {
+            var newdiv = $('<div class="diveachoption" id="divopt_' + nextid + '">'
+                                + '<input class="txtadd txtoption" value="" name="txtoption_' + nextid + '" type="text" aria-labelledby="' + nextid + '" accesskey="' + nextid + '" />'
+                                + '<input class="deleteoption" name="' + nextid + '" onclick="DeleteOption(this)" type="button"/>'
+                                + '<label for="txtoption_' + nextid + '" class="error" style="display: none;">Option text is required</label>'
+                                + '<span class="field-validation-error" data-valmsg-for="txtoption_' + nextid + '" data-valmsg-replace="true"></span>'
+                            + '</div>');
+            $('#divopttblbody').append(newdiv);
+            nextid++;
+        }
+
+        var DeleteOption = function DeleteOption(btn) {
+            if ($("#hdFieldID").val() != "0") {
+                if ($(btn).hasClass('deleteoption')) {
+                    if ($(btn).parent().find('.txtoption').hasClass('txtedit')) {
+                        $(btn).parent().find('.txtoption').removeClass('txtedit').addClass('txtdelete').attr("disabled", "disabled");;
+                        $(btn).removeClass('deleteoption').addClass('undodeleteoption').prop('title', 'Undo');
+                        $(btn).parent().removeClass('diveachoption').addClass('divdeletedoption');
+                    }
+                    else { $(btn).parent().remove(); }
+                }
+                else {
+                    $(btn).parent().find('.txtoption').removeClass('txtdelete').addClass('txtedit').removeAttr("disabled");
+                    $(btn).removeClass('undodeleteoption').addClass('deleteoption').prop('title', 'Delete');
+                    $(btn).parent().removeClass('divdeletedoption').addClass('diveachoption');
+                }
+            }
+            else { $(btn).parent().remove(); }
+        }
+        $('#btnSave').button().click(function (event) {
+            //$('input[name="txtaddoption"]').rules("remove");
+
+            $('select[name="TypeID"]').rules("add", { MinimumOptions: true });
+
+            $('.txtadd').each(function (indx, element) {
+                $('input[name="' + $(element).attr('name') + '"]').rules("add", { required: true, minlength: 3, maxlength: 50, PreviousOptions: true, messages: { required: "Text cannot be null.", minlenth: "Minimum 3 characters.",maxlength: "Maximum 50 characteers.", PreviousOptions: "Option already exits." } });
+            });
+
+            $('.txtedit').each(function (indx, element) {
+                $('input[name="' + $(element).attr('name') + '"]').rules("add", { required: true, minlength: 3, maxlength: 50, PreviousOptions: true, messages: { required: "Text cannot be null.", minlenth: "Minimum 3 characters.", maxlength: "Maximum 50 characteers.", PreviousOptions: "Option already exits." } });
+            });
+
+
+            $('#form_Edit_Fields').validate({
+                onfocusout: false,
+                onkeyup: false
+            });
+
+            if ($('#form_Edit_Fields').valid()) {
+                if ($('#form_Edit_Fields').valid()) {
+
+                    if ($('#form_Edit_Fields').valid()) {
+                        var $form = $('#form_Edit_Fields');
+                        var url = $form.attr('action');
+                        var newfield = GetFieldJson();
+                        var val = JSON.stringify(newfield);
+                        var RequestType = $form.attr('method');
+                        $.ajax({
+                            type: RequestType,
+                            url: url,
+                            data: val,
+                            async: false,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (res) {
+                                if (res == true) {
+                                    var dail = $("#form_Edit_Fields").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                                    var dailogid = $(dail).attr('aria-describedby');
+                                    $('#' + dailogid).dialog('close');
+                                    alert("Field Saved");
+
+                                } else {
+                                    alert("Error in saving Field");
+                                }
+                            }
+                        }).done(function () { })
+                        .fail(function (E) { alert(E.msg); }).
+                        always(function () { });
+                    }
+                }
+            }
+            event.preventDefault();
+        });
+
+        var GetFieldJson = function GetFieldJson() {
+            var options = GetOptions();
+            var UserField = {
+                FieldID: $("#hdFieldID").val(),
+                RoleID: $('#ddlRoleId').val(),
+                TypeID: $('#ddlFieldType').val(),
+                FieldName: $("#txtFieldName").val(),
+                IsActive: $('#chkIsActive').is(':checked'),
+                IsMandatory: $('#chkIsMandatory').is(':checked'),
+                Options: options
+            };
+            return UserField;
+        }
+
+        var GetOptions = function GetOptions() {
+            var options = [];
+            $('.txtoption').each(function (indx, element) {
+                if ($(element).hasClass('txtadd')) {
+                    var Field = { OptionID: $(element).attr('aria-labelledby'), OptionText: $.trim(element.value), OptionValue: indx + 1, OptionType: 0 };
+                    options.push(Field);
+                }
+                else if ($(element).hasClass('txtedit')) {
+                    var Field = { OptionID: $(element).attr('aria-labelledby'), OptionText: $.trim(element.value), OptionValue: indx + 1, OptionType: 1 };
+                    options.push(Field);
+                }
+                else if ($(element).hasClass('txtdelete')) {
+                    var Field = { OptionID: $(element).attr('aria-labelledby'), OptionText: $.trim(element.value), OptionValue: indx + 1, OptionType: -1 };
+                    options.push(Field);
+                }
+            });
+
+            return options;
+        }
+
+        var Cancel = function Cancel() {
+            $('#divEditFields').dialog('close');
+        }
+    </script>
+    }
+}

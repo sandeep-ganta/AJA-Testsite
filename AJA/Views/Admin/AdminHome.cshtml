@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Admin Home";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="commonContent">
+    <table width="1170" border="0" cellspacing="0" cellpading="0">
+        <tr>
+            <td>
+                <table width="1170">
+                    <tr>
+                        <td>
+                            <h3>Administrative Home page </h3>
+                        </td>
+                        <td align="right">Welcome @AJA_Core.CurrentUser.FirstName &nbsp;@AJA_Core.CurrentUser.LastName</td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        
+        <tr>
+            <td valign="top">
+                <a onclick="ChangePassword();" href="#">Change your Password</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td>The current time is &nbsp;  @DateTime.Now.ToString("t")
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <em>note: display some relevant up to date statistics here, e.g. how many user sessions today</em>
+            </td>
+        </tr>
+
+    </table>
+    <div id="div_User_details"></div>
+</section>
+
+
+@*  Different Date Formats ---Added By RaviM
+
+Specifier	Description	    Output
+d	        Short Date	    08/04/2007
+D	        Long Date	        08 April 2007
+t	        Short Time	21:08
+T	        Long Time	21:08:59
+f	        Full date and time	08 April 2007 21:08
+F	        Full date and time (long)	08 April 2007 21:08:59
+g	        Default date and time	08/04/2007 21:08
+G	        Default date and time (long)	08/04/2007 21:08:59
+M	        Day / Month	08 April
+r	        RFC1123 date	Sun, 08 Apr 2007 21:08:59 GMT
+s	        Sortable date/time	2007-04-08T21:08:59
+u	        Universal time, local timezone	2007-04-08 21:08:59Z
+Y	        Month / Year	April 2007
+dd	        Day	08
+ddd	        Short Day Name	Sun
+dddd	    Full Day Name	Sunday
+hh	        2 digit hour	09
+HH	        2 digit hour (24 hour)	21
+mm	        2 digit minute	08
+MM	        Month	04
+MMM	        Short Month name	Apr
+MMMM	    Month name	April
+ss	        seconds	59
+tt	        AM/PM	PM
+yy	        2 digit year	07
+yyyy	    4 digit year	2007
+:	        seperator, e.g. {0:hh:mm:ss}	09:08:59
+/	        seperator, e.g. {0:dd/MM/yyyy}	08/04/2007
+
+
+*@
+<script type="text/javascript">
+    function ChangePassword() { 
+        var url = ServerURL + '/User/ChangePassword';
+        $.get(url, null, function (html) {
+            $('#div_User_details').html(html);
+            $.validator.unobtrusive.parse($("#div_User_details"));
+            $('#div_User_details').dialog({
+                modal: true,
+                title: "Change Password",
+                width: 470,
+                close: function (event, ui) {
+                    $(this).html("");
+
+                }
+            });
+        });
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+}

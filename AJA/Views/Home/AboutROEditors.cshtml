@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "AboutROEditors";
+}
+
+@model DAL.Models.AboutROEditors
+
+<div align="center">
+    <table width="1170" align="center" style="margin:0 auto;">
+        <tr>
+            <td align="left">
+                <img src="~/Content/images/Subpage_banner.jpg"></td>
+            <td align="right"><a href="@Url.Action("Register", "User")">
+                <img src="~/Content/images/Subpage_profilebgrnd.jpg">
+            </a></td>
+        </tr>
+    </table>
+    <table width="1170">
+        <tr>
+            <br>
+            <td width="325" valign="top">
+
+
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="right" valign="middle">
+                            <strong class="cit">Specialty:</strong> &nbsp;
+                            @Html.DropDownListFor(model => model.SpecialtyName, Model.Specialtylist, new { @id = "ddlSpecialty" })
+                        </td>
+                        <td align="left" valign="middle"></td>
+                    </tr>
+                </table>
+
+
+                <strong class="cit">ACR Journal Advisor @Html.DisplayFor(model => model.showspecialty)
+                    <br>
+                    Editors</strong><br>
+                <br>
+                @if (Model.GetRoTopics != null)
+                {
+                    foreach (var item in Model.GetRoTopics)
+                    {
+                    <a href="#@item.TopicName">@item.TopicName</a><br> 
+                    }
+                }
+                <a href="#AtLarge">At-large Editors</a>
+            </td>
+
+            <td valign="top" width="600">Editors' institutional affiliations and awards are listed for identification purposes only, and no
+endorsement of ACR Journal Advisor or the views expressed herein is implied.
+                <br />
+              
+                <div class="hrline"></div>
+                @if (Model.GetRoTopicEditors != null)
+                {
+                    {
+                        var prevTopic = "";var hrtopic="";
+                        
+                        foreach (var item in Model.GetRoTopicEditors)
+                        {
+                            if (!string.IsNullOrEmpty(@item.affiliations))
+                            {
+                                if (hrtopic != @item.TopicName)
+                                {
+                                    <hr /> <br />
+                                    hrtopic = @item.TopicName;
+                                }
+
+                                if (prevTopic != @item.TopicName)
+                                {
+                                
+                    <a name="@item.TopicName"></a>   
+                    <strong class="cit">@item.TopicName</strong><br> 
+                    <br>
+                                    prevTopic = @item.TopicName;
+                                } 
+                    <strong class="cit">@item.name</strong><br>  
+                    @Html.Raw(HttpUtility.HtmlDecode(@item.affiliations))
+                    <br />
+                    
+                            }
+                        }
+                    }
+                }
+
+                <!--- At-large Editors --->
+                <a name="AtLarge"></a>
+              <hr />
+                <p><strong class="cit">@Html.DisplayFor(model => model.showspecialty) At-large Editors</strong></p>
+                @if (Model.GetRoAtlargeeditors != null)
+                {
+                    foreach (var item in Model.GetRoAtlargeeditors)
+                    {
+                    <strong class="cit">@item.name</strong><br> 
+                    <span>@Html.Raw(HttpUtility.HtmlDecode(@item.affiliations))
+                    </span> 
+                    <br>
+                    <br />
+                    }
+                }
+                @if (Model.GetRoAtlargeeditors == null || Model.GetRoAtlargeeditors.Count() == 0)
+                {
+                    <span>No at-large editors for @Html.DisplayFor(model => model.showspecialty)</span>
+                 
+                }
+
+            </td>
+
+            <td valign="top" align="right" width="170" style="text-align: right"><a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                <img src="~/Content/images/160x600-ad.jpg"></a></td>
+
+
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $('#ddlSpecialty').change(function () {
+        window.location.href = ServerURL + '/Home/AboutROEditors?Specilatyid=' + $('#ddlSpecialty').val() + ''
+    });
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+}

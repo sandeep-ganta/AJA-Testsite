@@ -1,0 +1,208 @@
+﻿@model DAL.EditorsBL.NonMedlineCitations
+
+@if (Model != null)
+{
+    using (@Html.BeginForm("UpdateNonMedlineCitations", "Admin", FormMethod.Post, new { @id = "form_Edit_NonMedlineCitations" }))
+    {
+    @Html.ValidationSummary(true)   
+       
+    
+    <div>
+        <div class="udctnt">
+            <ol>
+                <li>
+                    <div class="editor-label">
+                        @Html.Label("PMID")
+                    </div>
+                    <div class="editor-field">
+                        @if (Model.PMID != null && Model.PMID != 0)
+                        {
+                            @Html.HiddenFor(model => model.PMID)
+                            @Html.DisplayFor(model => model.PMID)                        
+                        
+                        }
+                        else
+                        {   
+                            @Html.TextBoxFor(model => model.PMID, new { @id = "txt_PMID", Value = "" })
+                        
+                        }
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PMID)
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.Label("Article Title")
+                    </div>
+                    <div class="editor-field">
+
+                        @Html.TextBoxFor(model => model.ArticleTitle, new { @id = "txt_ArticleTitle" })
+                        @Html.ValidationMessageFor(model => model.ArticleTitle)
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AuthorList)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.AuthorList, new { @id = "txt_AuthorList" })
+                        @Html.ValidationMessageFor(model => model.AuthorList)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.MedlinePgn)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.MedlinePgn, new { @id = "txt_MedlinePgn" })
+                        @Html.ValidationMessageFor(model => model.MedlinePgn)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.MedlineTA)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.MedlineTA, new { @id = "txt_MedlineTA" })
+                        @Html.ValidationMessageFor(model => model.MedlineTA)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Abstract)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Abstract, new { @id = "txt_Abstract",@style="min-height:100px" })
+                        @Html.ValidationMessageFor(model => model.Abstract)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DisplayDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.DisplayDate, new { id = "DisplayDate" })
+                        @Html.ValidationMessageFor(model => model.DisplayDate)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.SearchID)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.SearchID, new { id = "SearchID" })
+                        @Html.ValidationMessageFor(model => model.SearchID)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DisplayNotes)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.DisplayNotes, new { @id = "txt_DisplayNotes" })
+                        @Html.ValidationMessageFor(model => model.DisplayNotes)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Status)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Status, new { @id = "txt_Status" })
+                        @Html.ValidationMessageFor(model => model.Status)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ExpireDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ExpireDate, new { @id = "txt_ExpireDate" })
+                        @Html.ValidationMessageFor(model => model.ExpireDate)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.StatusDisplay)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.StatusDisplay, new { @id = "txt_StatusDisplay" })
+                        @Html.ValidationMessageFor(model => model.StatusDisplay)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.KeepDelete)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.KeepDelete, new { @id = "txt_KeepDelete" })
+                        @Html.ValidationMessageFor(model => model.KeepDelete)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Nickname)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Nickname, new { @id = "txt_Nickname" })
+                        @Html.ValidationMessageFor(model => model.Nickname)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CitationDate)
+                    </div>
+                    <div class="editor-field">
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.CitationDate, new { id = "CitationDateDatedatepicker" })
+                            @Html.ValidationMessageFor(model => model.CitationDate)
+                        </div>
+
+                    </div>
+                </li>
+
+
+            </ol>
+        </div>
+        <div>
+            <br />
+        </div>
+    </div>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <div class="ui-dialog-buttonset">
+            <input id="btn_Save_LargeEditorDetails" type="submit" value="Save" role="button" aria-disabled="false" />
+        </div>
+    </div> 
+    }
+}
+
+<script type="text/javascript">
+
+    $(function () {
+        //$('#DisplayDate').datepicker({});
+        $("#txt_ExpireDate").datepicker({});
+        $("#CitationDateDatedatepicker").datepicker({});
+
+    });
+
+</script>
+

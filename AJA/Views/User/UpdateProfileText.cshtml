@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "UpdateProfileText";
+}
+
+@using (Html.BeginForm("LogOff", "User", FormMethod.Post))
+{
+    <table width="100%">
+        <tr>
+            <td>
+                <div class="commonContent">
+
+                    <div class="floatleft">
+                        <table width="1170">
+                            <tr>
+                                <td valign="top">
+                                    <div align="center" style="border: 1px solid #ccc; padding: 5px; margin: 0 auto; width: 1000px; background-color: #f5f5f5; vertical-align: middle; padding: 70px 0; line-height: 30px">
+                                        <span>
+                                            @{
+    //var name = @DAL.UserBL.GetFullNamewithID(Convert.ToInt32(Session["nameID"]));
+                                                <strong>Welcome @AJA_Core.CurrentUser.FirstName&nbsp;@AJA_Core.CurrentUser.LastName  </strong>
+                                                <br>
+                                            }
+
+                                            You are logged in.<br>
+                                            Please select an option from the Menu Bar above.<br>
+
+                                            <a class="register_btn" href="~/User/LogOff">Log in as a different User</a>
+
+                                        </span>
+
+                                    </div>
+
+                                    <div align="center"><span>Your profile was updated.</span></div>
+
+                                </td>
+                                <td>
+                                    <div class="floatright">
+                                        <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                                            <img src="~/Content/images/160x600-ad.jpg" /></a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    </table>
+}

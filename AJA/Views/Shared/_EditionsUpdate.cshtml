@@ -1,0 +1,144 @@
+﻿@model DAL.Models.Editionsmodel
+
+@if (Model != null)
+{
+    using (Html.BeginForm("UpdateEditions", "Admin", FormMethod.Post, new { @id = "form_Update_Editions" }))
+    { 
+    @Html.ValidationSummary(true)
+     
+    <div>
+        <ol>
+            <li>
+                @Html.HiddenFor(model => model.EditionId, new { @id = "hdEditionId" })
+            </li> 
+            <li>
+                <div class="editor-label">
+                    @Html.Label("Specialty")
+                </div>
+                <div class="editor-field">
+                    @if (Model.SpecialtyID != 0)
+                    {
+                        <select id="ddlSpecialty">
+                            @foreach (var item in Model.Specialtylist)
+                            {
+                                if (item.Value == Model.SpecialtyID.ToString())
+                                {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                                }
+                                else
+                                {
+                                <option value="@item.Value">@item.Text</option>
+                                }
+
+                            }
+                        </select>
+                        
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.SpecialtyName, Model.Specialtylist, "--Please Select--", new { @id = "ddlSpecialty" }) 
+                    }
+                    @Html.ValidationMessageFor(model => model.SpecialtyName)
+
+                </div>
+            </li>
+             <li>
+                <div class="editor-label">
+                    @Html.Label("Publish Date")
+                </div>
+                <div class="editor-field">
+                    @*<input type="text" name="pub_date" id="pub_date" />*@
+                    @Html.TextBoxFor(model => model.PubDate, "{0:MM/dd/yyyy}", new { @id = "pub_date" })
+                    @Html.ValidationMessageFor(model => model.PubDate)
+
+                </div>
+            </li>
+        </ol>
+        <br />
+        <button type="button" id="btnSaveedition" name="Command" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+          Save</button>
+
+        &nbsp; &nbsp;
+            <button type="button" id="btncancel" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Cancel();">
+                <span class="ui-button-text">Cancel</span></button>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () { 
+            $("#pub_date").datepicker({ dateFormat: "mm/dd/yy" });
+        });
+        $("#btnSaveedition").button().click(function () {
+            //  $("#pub_date").rules("add", { Checkpubdate: true });
+            if ($('#form_Update_Editions').valid()) {
+                if ($('#form_Update_Editions').valid()) {
+
+                    if ($('#form_Update_Editions').valid()) {
+                        var $form = $('#form_Update_Editions');
+                        var url = $form.attr('action');
+                        var newfield = GetFieldJson();
+                        var val = JSON.stringify(newfield);
+                        var RequestType = $form.attr('method');
+                        $.ajax({
+                            type: RequestType,
+                            url: url,
+                            data: val,
+                            async: false,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (res) {
+                                if (res == true) {
+                                    var dail = $("#form_Update_Editions").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                                    var dailogid = $(dail).attr('aria-describedby');
+                                    $('#' + dailogid).dialog('close');
+                                    alert("Edition Details Updated Successfully");
+                                    window.location.href = ServerURL + '/Admin/Editionschoice/'
+                                } else {
+                                    alert("Error in saving Field");
+                                }
+                            }
+                        }).done(function () { })
+                        .fail(function (E) { alert(E.msg); }).
+                        always(function () { });
+                    }
+                }
+            }
+        });
+
+        $.validator.addMethod("Checkpubdate", function (value, element) {
+            // checking whether the date entered is in correct format
+            var isValid = value.match(/^\d\d\?\/\d\d?\/\d\d\d\d$/);
+            if (isValid) {
+                var minDate = Date.parse("01/01/1900");
+                var today = new Date();
+                var DOB = $.datepicker.parseDate("dd/mm/yy", value);
+                // var DOB = Date.parse(value);
+                if ((DOB <= today)) {
+                    isValid = false;
+                }
+                return isValid;
+            }
+        }, "Enter Valid Date");
+
+        var Cancel = function Cancel() {
+            $('#Editions_Update_dialog').dialog('close');
+        }
+
+        //To get Edition details
+        var GetFieldJson = function GetFieldJson() {
+            var EditionField = {
+                EditionId: $("#hdEditionId").val(),
+                PubDate: $('#pub_date').val(),
+                SpecialtyID: $("#ddlSpecialty").val()
+            };
+            return EditionField;
+        }
+
+    </script>
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/Commonscript") 
+}

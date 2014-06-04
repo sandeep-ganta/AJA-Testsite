@@ -1,0 +1,323 @@
+﻿@model DAL.Models.PersonalizedGene
+@if (Model != null)
+{
+    using (Html.BeginForm("SaveGeneComments", "Admin", FormMethod.Post, new { @id = "form_Gene_Comment" }))
+    {
+    <ol>
+        <li>
+            @Html.HiddenFor(model => model.GeneID, new { @id = "hdgeneId" })
+            @Html.HiddenFor(model => model.commentid, new { @id = "hdcommentId" })
+            <div id="geneCommentForm">
+
+                <div class="udctnt">
+                    <ol>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label("Specialty(ies):")
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.SpecialtyName, Model.Specialtylist, "--Please Select--", new { @id = "ddl_Specialty" })
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label("Topic(s): ")
+                            </div>
+
+                            <div class="editor-field">
+                                <select id="ddl_Topic"></select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label(" SubTopic(s):")
+                            </div>
+                            <div class="editor-field">
+                                <select id="ddl_SubTopic"></select>
+                                &nbsp; &nbsp;
+                                <input value="Attach to Comment" type="button" onclick="add_combination_Gene();" />
+                            </div>
+                        </li>
+
+                        <li>
+                            <table class="commentAttachments" border="0" cellspacing="1" style="width: 100% !important">
+                                <tbody id="combination_table">
+                                    <tr valign="top">
+                                        <th width="90%">Attached Specialities</th>
+                                        <th align="center">
+                                            <input value="Remove All" type="button" onclick="delete_all_combo(this)" /></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div id="maingene_comment">
+                                @if (Model.Genecomentdetails != null)
+                                {
+                                    foreach (var data in Model.Genecomentdetails)
+                                    { 
+                                    <div class="div_genecomment" id="divgene">
+                                        <table width="100%">
+                                            <colgroup>
+                                                <col width="50%" />
+                                                <col width="" />
+                                            </colgroup>
+                                            <tr>
+                                                <td align="left" style="padding-right: 5px;">
+                                                    <label class="lbledit lblgene" aria-labelledby=@data.Specialtyid'_'@data.Topicid'_'@data.SubTopicid>@data.SpecialtyName --> @data.Topicname --> @data.Subtopicname </label>
+                                                </td>
+                                                <td>
+                                                    <input class="delete_attchspeclty" name="' + nextid + '" onclick="delete_attchspeclty(this)" type="button" value="Delete" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    }
+                                }
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label("  Author:")
+                            </div>
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.Authorsgene, Model.CommentAuthorslist, "--Please Select--", new { @id = "ddl_Author_gene" })<br />
+                                @Html.TextBoxFor(model => model.genecomnt_date, new { @id = "gene_date" })
+                                @Html.ValidationMessageFor(model => model.genecomnt_date, "Please Enter Correct Date!")
+                            </div>
+                        </li>
+                        <li>
+                            <div class="editor-label">
+                                @Html.Label(" Gene Comment:")
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => model.geneComment, new { @id = "gene_comment_form" ,@class = "txtareacomment"})
+                            </div>
+                        </li>
+
+                        @*                <div align="right">
+                    <input type="button" value="Add Gene Comment" onclick="add_gene_comment(this);" id="gene_comment_btn" />
+                </div>*@
+
+                    </ol>
+                </div>
+
+            </div>
+        </li>
+    </ol>
+        
+    <input type="button" id="btnSave_Comments" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" /> 
+    
+    <button type="button" id="btncancel" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Cancel();">
+        <span class="ui-button-text">Cancel</span></button>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ddl_Topic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+            $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+        });
+
+        var Cancel = function Cancel() {
+            $('#Gene_Comments').dialog('close');
+        }
+
+        $('#ddl_Specialty').change(function () {
+            if ($('#ddl_Specialty option:selected').text() != "--Please Select--") {
+                var sid = $(this).val();
+                $.ajax({
+                    url: ServerURL + '/Admin/GetTopics_Gene?specialty=' + sid + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "GET",
+                    error: function () {
+                        alert("An error occurred.");
+                    },
+                    success: function (data) {
+                        var items = ""; items = "<option value=''>" + '--Please Select--' + "</option>"
+                        if (data != null) {
+                            $.each(data, function (i, item) {
+                                items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                            });
+                            $("#ddl_Topic").html(items);
+                        }
+                    }
+                });
+            }
+            else {
+                $('#ddl_Topic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+                $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+            }
+        });
+
+        $('#ddl_Topic').change(function () {
+            if ($('#ddl_Topic option:selected').text() != "--Please Select--") {
+                var tid = $(this).val();
+                $.ajax({
+                    url: ServerURL + '/Admin/GetSubTopics_Gene?Topic=' + tid + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "GET",
+                    error: function () {
+                        alert("An error occurred.");
+                    },
+                    success: function (data) {
+                        var items = ""; items = "<option value=''>" + '--Please Select--' + "</option>"
+                        if (data != null) {
+                            $.each(data, function (i, item) {
+                                items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                            });
+                            $("#ddl_SubTopic").html(items);
+                        }
+                    }
+                });
+            }
+            else {
+                $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+            }
+        });
+
+        $(document).ready(function () {
+            $("#gene_date").datepicker();
+            $("#gene_date").datepicker('setDate', new Date());
+        });
+
+
+        function delete_all_combo(btn) { 
+            $($("#maingene_comment").children()).remove();
+        }
+        function deletegene_comnt(btn) {
+            $(btn).parents('.div_new_genecmnt').remove();
+        }
+
+        function delete_attchspeclty(btn) {
+            if (confirm("Are you sure to delete specialty/topic/subtopic for this Comment ?")) {
+                $(btn).parents('.div_genecomment').remove();
+            }
+        }
+
+
+        $('#btnSave_Comments').click(function (event) {
+
+            // if ($.trim($('#maingene_comment').html()) != '') {
+            if ($.trim($('#gene_comment_form').val()) != '') {
+                if ($('#ddl_Author_gene option:selected').text() != "--Please Select--") {
+                    var $form = $('#form_Gene_Comment');
+                    var newfield = GetFieldJson();
+                    var url = $form.attr('action');
+                    var val = JSON.stringify(newfield);
+                    var RequestType = $form.attr('method');
+                    $.ajax({
+                        type: RequestType,
+                        url: url,
+                        data: val,
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (res) {
+                            if (res == true) {
+                                var dail = $("#form_Gene_Comment").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                                var dailogid = $(dail).attr('aria-describedby');
+                                $('#' + dailogid).dialog('close');
+                                alert("Field Saved Successfully");
+                                $("#tbl_GeneComments .bt_grid_refresh").click();
+                            } else {
+                                alert("Error in saving Field");
+                            }
+                        }
+                    })
+                }
+                else {
+                    alert("Author is Required");
+                }
+            }
+            else {
+                alert("Comment is Required");
+            }
+            // }
+            //  else { alert("Please Add a Attachment"); }
+
+            event.preventDefault();
+        });
+
+        function GetFieldJson() {
+
+            var options = GetGeneComments();
+            var GeneField = {
+                GeneID: $('#hdgeneId').val(),
+                Authorid: $('#ddl_Author_gene').val(),
+                geneComment: $("#gene_comment_form").val(),
+                genecomnt_date: $('#gene_date').val(),
+                commentid: $('#hdcommentId').val(),
+                NewGeneComments: options,
+            };
+            return GeneField;
+        }
+
+        //To get added Gene Comments Data
+        var GetGeneComments = function GetGeneComments() {
+            var Genes = [];
+            $('.lblgene').each(function (index, element) {
+                if ($(element).hasClass('lbladd')) {
+                    var id = $(element).attr('aria-labelledby');
+                    var cmid = [];
+                    cmid = id.split('_');
+                    var Field = { SpecialtyId: cmid[0], Topicid: cmid[1], SubTopicid: cmid[2], GeneValue: index + 1 };
+                    Genes.push(Field);
+                }
+                else if ($(element).hasClass('lbledit')) {
+                    var uid = $(element).attr('aria-labelledby');
+                    var csmid = [];
+                    csmid = uid.split("'_'");
+                    var editField = { SpecialtyId: csmid[0], Topicid: csmid[1], SubTopicid: csmid[2], GeneValue: index + 1 };
+                    Genes.push(editField);
+                }
+            });
+            return Genes;
+        }
+
+
+        function add_combination_Gene(cntrl) {
+            if ($('select[id$=ddl_Specialty] :selected').val() != "" && $('select[id$=ddl_Specialty] :selected').val() != undefined) {
+                if ($('select[id$=ddl_Topic] :selected').val() != "" && $('select[id$=ddl_Topic] :selected').val() != undefined) {
+                    if ($('select[id$=ddl_SubTopic] :selected').val() != "" && $('select[id$=ddl_SubTopic] :selected').val() != undefined) {
+
+
+                        var speacilaty = $('select[id$=ddl_Specialty] :selected').text();
+                        var topic = $('select[id$=ddl_Topic] :selected').text();
+                        var subtopic = $('select[id$=ddl_SubTopic] :selected').text();
+                        var nextid = $('select[id$=ddl_Specialty] :selected').val() + '_' + $('select[id$=ddl_Topic] :selected').val() + '_' + $('select[id$=ddl_SubTopic] :selected').val();
+                        if (speacilaty != "--Please Select--") {
+
+                            if ($(".div_genecomment label").length == 0) {
+                                var newdiv = $('<div class="div_genecomment" id="divgene">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;"><label class="lbladd lblgene" aria-labelledby="' + nextid + '">' + speacilaty + '-->' + topic + '-->' + subtopic + '</label></td><td><input name="' + nextid + '" onclick="delete_attchspeclty(this)" type="button" value="Delete"/></td></tr></table>'
+                                  + '</div>');
+                                $('#maingene_comment').append(newdiv);
+                            }
+
+                            else {
+                                var exist = 0;
+                                for (var i = 0; i < $(".div_genecomment label").length; i++) {
+                                    if (nextid == $($(".div_genecomment label")[i]).attr('aria-labelledby')) {
+                                        exist = 1;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (exist == 0) {
+                                var newdiv = $('<div class="div_genecomment" id="divgene">' + '<table width="100%"><colgroup><col width="50%"/><col width=""/></colgroup><tr><td align="left" style="padding-right:5px;"><label class="lbladd lblgene" aria-labelledby="' + nextid + '">' + speacilaty + '-->' + topic + '-->' + subtopic + '</label></td><td><input  name="' + nextid + '" onclick="delete_attchspeclty(this)" type="button" value="Delete"/></td></tr></table>'
+                                  + '</div>');
+                                $('#maingene_comment').append(newdiv);
+                            }
+                            if (exist == 1) { alert("This combintation of specialty/topic/subtopic is already exists"); }
+                        }
+
+                    } else { alert("Please choose SubTopic:"); }
+
+                } else { alert("Please choose Topic:"); }
+            } else { alert("Please choose Specialty:"); }
+        }
+    </script>
+    }
+}

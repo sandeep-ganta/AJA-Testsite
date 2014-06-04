@@ -1,0 +1,156 @@
+﻿@model DAL.Models.TopicModels
+
+@if (Model != null)
+{
+    using (Html.BeginForm("CreateExistThread", "Admin", FormMethod.Post, new { @id = "form_update_Threads" }))
+    {
+    @Html.ValidationSummary(true)
+
+    <ol>
+
+        <li>
+            @if (Model.ThreadId != 0)
+            {
+                @Html.HiddenFor(model => model.ThreadId, new { @id = "hdThreadId" })
+            }
+            @Html.HiddenFor(model => model.TopicID)
+        </li>
+        <li>
+            <p>
+                Each editorial thread must have at least one sub-topic reference.
+                <br />
+                Please select the sub-topic below.
+            </p>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.TopicName)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.TopicName, Model.TopicList, "--Please Select--", new { @id = "ddl_Topic" })
+                @Html.ValidationMessageFor(model => model.TopicName)
+            </div>
+        </li>
+
+        <li>
+            @Html.HiddenFor(model => model.SubTopicID)
+        </li>
+        <li>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SubTopicName)
+            </div>
+            <div class="editor-field">
+                <select id="ddl_SubTopic"></select>
+                <span id="msg"></span>
+
+            </div>
+        </li>
+
+    </ol>
+    <input type="button" id="btnSave_Threads" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" /> 
+    
+    <button type="button" id="btncancel" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Cancel();">
+        <span class="ui-button-text">Cancel</span></button>
+    
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+        });
+
+        $('#ddl_Topic').change(function () {
+            if ($('#ddl_Topic option:selected').text() != "--Please Select--") {
+                var sid = $(this).val();
+                $.ajax({
+                    url: ServerURL + '/Admin/GetSubTopics?id=' + sid + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "GET",
+                    error: function () {
+                        alert("An error occurred.");
+                    },
+                    success: function (data) {
+                        var items = ""; items = "<option value=''>" + '--Please Select--' + "</option>"
+                        if (data != null) {
+                            $.each(data, function (i, item) {
+                                items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                            });
+                            $("#ddl_SubTopic").html(items);
+                        }
+                        else { $("#msg").html("No Related SubTopic exists") }
+                    }
+                });
+            }
+            else {
+                $('#ddl_SubTopic').empty().append($("<option>", { text: "--Please Select--", value: '' }));
+            }
+        });
+
+
+        var Cancel = function Cancel() {
+
+            var value = $("#hdThreadId").val();
+            if (value == null || value == 0) {
+                $('#Editions_Thread_dialog').dialog('close');
+            }
+            else if (value != null || value != 0) { $('#Editions_Thread_Subtopic').dialog('close'); }
+        }
+
+        $("#btnSave_Threads").button().click(function () {
+
+            if ($('#form_update_Threads').valid()) {
+                if ($('#form_update_Threads').valid()) {
+
+                    if ($('#form_update_Threads').valid()) {
+
+                        if ($('select[id$=ddl_SubTopic] :selected').val() != "" && $('select[id$=ddl_SubTopic] :selected').val() != undefined) {
+                            var $form = $('#form_update_Threads');
+                            var url = $form.attr('action');
+                            var newfield = Getdata();
+                            var val = JSON.stringify(newfield);
+                            var RequestType = $form.attr('method');
+                            $.ajax({
+                                type: RequestType,
+                                url: url,
+                                data: val,
+                                async: false,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (res) {
+                                    if (res == "true") {
+                                        var dail = $("#form_update_Threads").parents('div[class^="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable"]')[0];
+                                        var dailogid = $(dail).attr('aria-describedby');
+                                        $('#' + dailogid).dialog('close');
+                                        alert("Editorial Threads Created Successfully");
+                                        $("#tbl_Edition_Content .bt_grid_refresh").click();
+                                    } if (res == "false") {
+                                        alert("No Related SubTopic Exists");
+                                    }
+                                    if (res == "exists") { alert("SubTopic Already Exists"); }
+                                }
+                            }).done(function () { })
+                            .fail(function (E) { alert(E.msg); }).
+                            always(function () { });
+                        }
+                        else { alert("Please select Subtopic"); return false; }
+                    }
+                }
+            }
+        });
+
+        var Getdata = function Getdata() {
+            var Editorialfield = {
+                SubTopicID: $('#ddl_SubTopic').val(),
+                TopicID: $("#ddl_Topic").val(),
+                ThreadId: $("#hdThreadId").val()
+            };
+            return Editorialfield;
+        }
+
+    </script>
+    
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+}

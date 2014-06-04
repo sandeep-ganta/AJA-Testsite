@@ -1,0 +1,126 @@
+﻿@model DAL.EditorsBL.EditorsdetValues
+
+@if (Model != null)
+{
+    using (@Html.BeginForm("UpdateLargeEditors", "Admin", FormMethod.Post, new { @id = "form_Edit_Editor" }))
+    {
+    @Html.ValidationSummary(true)   
+       
+    
+    <div>
+        <div class="udctnt">
+            <ol>
+                <li>
+                    @Html.HiddenFor(model => model.EditorID, new { @id = "txt_AuthorId" })
+                </li>
+                 <li>
+                   <div class="editor-label">
+                        @Html.LabelFor(model => model.SpecialtyName) </div> 
+                      <div class="editor-field">                
+                            @if(Model.EditorID == 0)
+                        {
+                            @Html.DropDownListFor(c => c.SpecialityID, Model.SpecialityList, "--Please Select--")
+                                   
+                            }
+                           else
+                           {
+                                 @Html.DisplayFor(model => model.SpecialtyName)
+                            }
+
+                             
+                                    @Html.ValidationMessageFor(m => m.SpecialityID, "Select Speciality")</div>
+                           </li>
+                 
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.name)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.name, new { @id = "txt_UserName" })
+                        @Html.ValidationMessageFor(model => model.name)
+
+                    </div>
+                </li>
+                <li>Note: Names will not appear unless affiliation data is set.</li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.affiliations)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.affiliations, new { @id = "txt_affiliations" ,@class = "txtareacomment"})
+                        @Html.ValidationMessageFor(model => model.affiliations)
+
+                    </div>
+                </li>
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.email, new { @id = "txt_EmailId" })
+                        @Html.ValidationMessageFor(model => model.email)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.StartDate)
+                    </div>
+                    <div class="editor-field">
+                           @Html.TextBoxFor(model => model.StartDate, new { id = "StartDatedatepicker" })
+                        @Html.ValidationMessageFor(model => model.StartDate)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.RetireDate)
+                    </div>
+                    <div class="editor-field">
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.RetireDate, new {  id = "RetireDatedatepicker" })
+                            @Html.ValidationMessageFor(model => model.RetireDate)
+                        </div>
+
+                    </div>
+                </li>
+                
+
+            </ol>
+        </div>
+        <div>
+            <br />
+        </div>
+    </div>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <div class="ui-dialog-buttonset">
+            <input id="btn_Save_LargeEditorDetails" type="submit" value="Save" role="button" aria-disabled="false" />
+        </div>
+    </div> 
+    }
+}
+
+<script type="text/javascript">
+    
+    $(function () {
+
+        $("#StartDatedatepicker").datepicker({});
+        $("#RetireDatedatepicker").datepicker({});
+
+        //    jQuery.validator.addMethod("greaterThan", function (value, element, params) {
+
+        //        if (!/Invalid|NaN/.test(new Date(value))) {
+        //            return new Date(value) > new Date($(params).val());
+        //        }
+        //        return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
+        //    }, 'Must be greater than {0}.');
+
+        //});
+
+        //$("#RetireDatedatepicker").rules('add', { greaterThan: "#date" });
+
+    });
+</script>
+

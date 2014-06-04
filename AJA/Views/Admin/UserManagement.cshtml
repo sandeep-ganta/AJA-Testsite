@@ -1,0 +1,89 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{
+    ViewBag.Title = "UserManagement";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div id="div_AllUsers" class="commonContent">
+
+    @{ MVC4Grid.Grid modelgrid = @ViewBag.GridData;}
+    @Html.GridFor(modelgrid)
+
+</div>
+
+<div id="Edit_User_Dialog" title="Edit User">
+</div>
+<script type="text/javascript" src="~/Scripts/UserManagement.js"></script>
+
+<style type="text/css">
+    .ui-dialog
+    {
+        z-index: 10000;
+    }
+</style>
+<link href="~/Content/GridView.css" rel="stylesheet" />
+<script type="text/javascript">
+
+    function CreateUser() {
+      
+        var url = '../Admin/GetUserwithEmailID?uid=0' + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_User_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_User_Dialog"));
+            $('#Edit_User_Dialog').dialog({
+                modal: true,
+                title: "Create User",
+                show: { effect: 'drop', direction: 'up' },
+                width: 600,
+                height: 630,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_AllUsers_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    function DeleteUser(ctrl) {
+
+        var uid = $(ctrl).attr('keyid');
+
+        var NewDialog = $('<div id="MenuDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete User",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: "../Admin/DeleteUserwithEmailID/?Userid=" + uid,
+                                // data: JSON.stringify({ userid: uid }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data) {
+                                        alert("Deleted Successfully");
+                                        $("#tbl_AllUsers_Details .bt_grid_refresh").click();
+                                    }
+                                },
+                                error: function (msg) {
+                                    alert("Error while deleting user..");
+                                }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+</script>
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>

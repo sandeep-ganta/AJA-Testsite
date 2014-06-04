@@ -1,0 +1,45 @@
+﻿@* This Partial View is used to View or Edit the Topics.. Created By-------RaviK----------  *@
+
+@model DAL.Models.ManageTopics
+@if (Model != null)
+{
+    using (@Html.BeginForm("InsertTopic", "Admin", FormMethod.Post, new { @id = "form_Insertopics" }))
+    { 
+    @Html.ValidationSummary(true)
+
+    <div>
+        <ol>
+            <li>
+                @Html.HiddenFor(model => model.TopicID, new { @id = "txt_TopicID" })
+            </li>
+            @if (Model.TopicID == 0)
+            {
+                <li>
+                    <div class="editor-label">
+                        @Html.Label("Specialty ")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.SpecialityID, Model.SpecialityList, "--Please Select--")
+                        @Html.ValidationMessageFor(model => model.SpecialityID)
+                    </div>
+                </li>
+            }
+            <li>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.TopicName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.TopicName, new { @id = "txt_Topicname", @style = "width:350px" })
+                    @Html.ValidationMessageFor(model => model.TopicName)
+                </div>
+            </li>
+        </ol>
+    </div>
+    
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <div class="ui-dialog-buttonset">
+            <input id="btn_Save_topics" type="submit" value="Save" role="button" aria-disabled="false" />
+        </div>
+    </div> 
+    }
+}

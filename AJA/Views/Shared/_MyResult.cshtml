@@ -1,0 +1,30 @@
+﻿@model DAL.Models.MyResult
+
+@if (Model != null)
+{
+    <div id="div_result_dialog">
+        <span class='@Model.ClassName' style="float: left; margin: 0 7px 50px 0;"></span>
+
+        @Html.DisplayFor(model => model.Message)
+        @Html.HiddenFor(model => model.Tittle, new { @id = "res_tittle_id" })
+
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($('#div_result_dialog').length != 0) {
+
+            $("#div_result_dialog").dialog({
+                modal: true,
+               
+                title: $('#res_tittle_id').val(),
+                buttons: {
+                    Ok: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+    });
+</script>

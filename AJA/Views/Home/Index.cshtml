@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+}
+
+<section class="commonContent">
+    <table width="1170" border="0" cellspacing="0" cellpading="0">
+        <tr>
+            <td>
+                <table width="1170">
+                    <tr>
+                        <td colspan="3">
+                            <img src="Content/images/home_banner.png" />
+                        </td>
+                        <td colspan="3"><a href="@Url.Action("Register", "User")">
+                            <img src="Content/images/profile_bg.jpg" />
+                        </a>
+                        </td>
+                    </tr>
+                </table>
+                <div style="position: absolute; left: 0px; width: 100%; background: url('../Content/images/banner_shade.png') repeat-x; height: 15px;"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top">
+                <div style="margin-top: 15px;">
+                    <table width="100%">
+                        <tr>
+                            <td valign="top" style='width: 50%; padding: 5px;'>
+
+                                <h2>ACR Journal Advisor: More Than Research </h2>
+                                <p>Created by physicians and scientists, ACR Journal Advisor (formerly Cogent Medicine) provides access to compelling radiation oncology research and expert interpretation. </p>
+                                <p>And it’s easy to manage the information with a complimentary online medical library customizable to your interests and needs. So that critical piece of research or commentary from your favorite editor is where you want it, when you want it.</p>
+                                <p>As you <a href="/Home/Preview">preview</a> the site, which is built on a foundation of MEDLINE® data, you’ll find other helpful reference tools to organize interpretations from renowned radiation oncologists. </p>
+                                <p>
+                                    ACR Journal Advisor was created to aid in the clinical decisions you make every day. If you’re not already a subscriber, take the next step and @if (AJA_Core.CurrentUser.IsAuthenticated)
+                                                                                                                                                                                    {<span>register</span>}
+                                                                                                                                                                                    else
+                                                                                                                                                                                    {<a href="/User/Register">register</a>} to begin filling your research library with critical new publications and expert editorial commentary.
+                                </p>
+                                <p>These services are made possible by the generous contributions of the National Library of Medicine, our @Html.ActionLink("editorial board", "AboutROEditors", "Home"), the <a target="_blank" href="http://www.acr.org/">American College of Radiology (ACR)</a>, and our sponsors. Guided by its mission of service to the radiation oncology community, the ACR is working to increase the value of this resource with robust educational, technical, and organizational support.</p>
+
+                                <p>
+                                    Have questions or suggestions?
+                                    @Html.ActionLink("Contact Us", "Contact", "Home")
+                                </p>
+                            </td>
+                            <td valign="top" style='width: 35%'>
+
+                                <h2 style='margin-left: 25px'>Why Register?</h2>
+                                <ul style="line-height: 20px">
+                                    <li><strong>Ensure best practices.</strong> Experts offer their commentary on improving patient care in an evolving subspecialty.</li>
+                                    <li><strong>Save time.</strong> Set up autoqueries to have research on terms you set delivered straight to your library. </li>
+                                    <li><strong>Optimize quality and safety.</strong> Access integrated ACR Appropriateness Criteria<sup>®</sup> and other genomics data. </li>
+                                    <li><strong>Stay up-to-date.</strong> Receive monthly emails with special research hand-picked by trusted editors.</li>
+                                </ul>
+                                <div class="Testimonial">
+                                    “The site is superb and a real asset to my practice.”
+                                    <br />
+                                    George G. McCormack, MD
+                                    <br />
+                                    Sightline Health Cancer Centers 
+                                </div>
+
+                            </td>
+
+                            <td valign="top" style='width: 10%'><a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                                <img src="Content/images/160x600-ad.jpg">
+                            </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</section>
+

@@ -1,0 +1,93 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{
+    ViewBag.Title = "Editor Assignment";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div id="div_EditorAssignment" class="commonContent"> 
+
+     @{MVC4Grid.Grid modelgrid = @ViewBag.GridData;}
+  @Html.GridFor(modelgrid)
+</div>
+<div id="Edit_Editor_Dialog" title="Edit User">
+</div>
+
+
+<script type="text/javascript" >
+    var CreateEditor = function CreateEditor(Eid) {
+        var url = '../Admin/GetEditorTopicwithID?Eid=' + Eid + '&&topicId=0&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_Editor_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Editor_Dialog"));
+            $('#Edit_Editor_Dialog').dialog({
+                modal: true,
+                title: "Add Assignment",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_EditorAssignment_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+    function EditField(Eid, ctrl) {
+        var url = '../Admin/GetEditorTopicwithID?Eid=' + Eid + '&&topicId=' + $(ctrl).attr('keyid') + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#Edit_Editor_Dialog').html(html);
+            $.validator.unobtrusive.parse($("#Edit_Editor_Dialog"));
+            $('#Edit_Editor_Dialog').dialog({
+                modal: true,
+                title: "Edit Assignment",
+                width: 600,
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_EditorAssignment_Noofrows').change();
+                }
+            });
+        });
+
+    }
+
+
+    var DeleteEditorAssignment = function DeleteEditorAssignment(Eid, ctrl) {      
+
+        var topicId = $(ctrl).attr('keyid');
+        var NewDialog = $('<div id="MenuDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Assignment",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: "../Admin/DeleteEditorAssignment?Eid=' + Eid + '&&topicId=' + topicId + '&rand=' + randGenerator()",
+                                data: JSON.stringify({ Eid: Eid, topicId: topicId }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (msg) {
+                                    alert('Editor Assignment deleted successfully');                                    
+                                },
+                                error: function (msg) { alert('Error occured in deleting the Assignment'); }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+</script>
+
+@*<script type="text/javascript" src="~/Scripts/GridView.js"></script>*@
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+
+ <link href="~/Content/GridView.css" rel="stylesheet" />

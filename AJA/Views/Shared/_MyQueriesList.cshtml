@@ -1,0 +1,154 @@
+﻿@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+@model DAL.SearchBL.MyQueryForm
+
+<table>
+    <tr>
+        <td>
+            <h2>My Queries</h2>
+        </td>
+        @*<td style="align-items: flex-end;"><a href="/Search/save_query_help">Saved Query Help </a></td>*@
+    </tr>
+    <tr>
+        <td>
+
+            @{
+                var Title = "";
+                switch (CurrentUser.Title)
+                {
+                    case "D.O.":
+                    case "M.D.":
+                    case "Ph.D.":
+                    case "D.Sc.":
+                        Title = "Dr.";
+
+                        break;
+
+                    case "R.N.":
+                    case "N/A":
+                        Title = "";
+
+                        break;
+                    default:
+                        Title = CurrentUser.Title;
+
+                        break;
+                }
+            }
+            <h2><strong style="font-size: 12pt">@Title @CurrentUser.FirstName @CurrentUser.LastName's Saved Queries
+            </strong></h2>
+
+        </td>
+        
+    </tr>
+    <tr>
+        <td><span style="color: red;" class="cit">*</span><em>Query has pending citations.</em></td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <table>
+
+                <tr>
+                    <td colspan="2">
+
+                        <img src="~/Content/images/icon_savedsearch_active.gif" width="24" height="24" border="0" alt="Active AutoQueries">
+                        <b><span>Active AutoQueries</span></b>
+                    </td>
+
+                </tr>
+                @{ var Qno = false;}
+
+                @foreach (var item in Model.myQueriesList)
+                {
+
+                    if (item.FolderID > 0 && item.Autosearch > 0)
+                    {
+                    <tr>
+                        <td colspan="2">
+                            @Html.ActionLink(@item.FolderName, "MyQueries", "MyQueries", new { FID = item.FolderID, searchid = item.SearchID, SearchName = item.FolderName, start = 1 }, null)
+
+                            
+                            @if (item.CitCount > 0)
+                            {<span style="color: red" class="cit">*</span>}
+                        </td>
+                    </tr> 
+                            Qno = true;
+                    }
+
+                }
+                @if (Qno == false)
+                {
+                    <tr>
+                        <td>None</td>
+                    </tr>
+                                       
+                }
+                @{ Qno = false;}
+                <tr>
+                    <td colspan="2">
+
+                        <img src="~/Content/images/icon_savedsearch_inactive.gif" width="24" height="24" border="0" alt="Active AutoQueries">
+                        <b><span>Inactive AutoQueries</span></b>
+                    </td>
+
+                </tr>
+                @foreach (var item in Model.myQueriesList)
+                {
+
+                    if (item.FolderID > 0 && item.Autosearch == 0)
+                    {
+                    <tr>
+                        <td>@Html.ActionLink(@item.FolderName, "MyQueries", "MyQueries", new { FID = item.FolderID, searchid = item.SearchID, SearchName = item.FolderName }, null)
+                            <br />
+                        </td>
+                    </tr> 
+                        Qno = true;
+                    }
+
+                }
+                @if (Qno == false)
+                {
+                    <tr>
+                        <td>None</td>
+                    </tr>
+                                       
+                }
+                @{ Qno = false;}
+                <tr>
+                    <td>
+
+                        <img src="~/Content/images/icon_savedsearch.gif" width="24" height="24" border="0" alt="Active AutoQueries">
+                        <b><span>Saved AdHocQueries</span></b>
+                    </td>
+
+                </tr>
+                @foreach (var item in Model.myQueriesList)
+                {
+
+                    if (item.FolderID <= 0 && item.Autosearch == 0)
+                    {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(@item.FolderName, "MyQueries", "MyQueries", new { FID = item.FolderID, searchid = item.SearchID, SearchName = item.FolderName }, null)
+                            <br />
+
+                        </td>
+                    </tr> 
+                        Qno = true;
+                    }
+
+                }
+                @if (Qno == false)
+                {
+                    <tr>
+                        <td>None</td>
+                    </tr>
+                                       
+                }
+
+            </table>
+        </td>
+    </tr>
+</table>

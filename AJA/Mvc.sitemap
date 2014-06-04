@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Admin" action="AdminHome">
+
+    <mvcSiteMapNode title="Web Site Administration" controller="" action="" clickable="false">
+      <mvcSiteMapNode title="Users" controller="User" action="UserManagement"/>
+      <mvcSiteMapNode title="Library Topics" controller="Admin" action="AddManageTopics"/>
+      <mvcSiteMapNode title="Specialty Management" controller="" action="" clickable="false"/>
+    </mvcSiteMapNode>
+
+    <mvcSiteMapNode title="Content Management" controller="" action="" clickable="false">
+      <mvcSiteMapNode title="Editions" controller="Admin" action="Editionschoice">
+        <mvcSiteMapNode title="Threads" controller="Admin" action="EditionThreads"/>
+        <mvcSiteMapNode title="Thread Content" controller="Admin" action="ThreadContents"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Monthly Editors Choice Announcement" controller="Admin" action="CreateMailing">
+        <mvcSiteMapNode title="New Mailing" controller="Admin" action="CreateMailing"/>
+        <mvcSiteMapNode title="Message Properties" controller="Admin" action="Messageproperty"/>
+        <mvcSiteMapNode title="Compose Plaintext" controller="Admin" action="Composeplaintext">
+          <mvcSiteMapNode title="Preview Plaintext" controller="Admin" action="PreviewPlaintext"/>
+        </mvcSiteMapNode>
+        <mvcSiteMapNode title="Compose HTML" controller="Admin" action="Composehtml">
+          <mvcSiteMapNode title="Preview HTML" controller="Admin" action="PreviewHtml"/>
+        </mvcSiteMapNode>
+         <mvcSiteMapNode title="SendMail" controller="" action="" clickable="false">
+        <mvcSiteMapNode title="TEST" controller="Admin" action="SendTest"/>
+        <mvcSiteMapNode title="Select Recipients" controller="Admin" action="SelectRecipients" key="Recipients"/>
+        <mvcSiteMapNode title="Status" controller="Admin" action="Sendstatus"/>
+       </mvcSiteMapNode>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Non-Medline Citations" controller="Admin" action="NonMedlineCitations"/>
+      <mvcSiteMapNode title="ACR Documents" controller="Admin" action="ACRDocuments"/>
+    </mvcSiteMapNode>
+
+    <mvcSiteMapNode title="ACR JournalAdvisor Administration" controller="" action="" clickable="false">
+      <mvcSiteMapNode title="Topic Editors" controller="Admin" action="TopicEditors"/>
+      <mvcSiteMapNode title="At-large Editors" controller="Admin" action="AtlargeEditors"/>
+    </mvcSiteMapNode>
+
+    <mvcSiteMapNode title="Personalized Medicine" controller="" action="" clickable="false">
+      <mvcSiteMapNode title="TEST" controller="Admin" action="Test"/>
+      <mvcSiteMapNode title="GENE" controller="Admin" action="Gene"/>
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+</mvcSiteMap>

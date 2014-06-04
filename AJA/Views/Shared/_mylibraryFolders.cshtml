@@ -1,0 +1,258 @@
+﻿@using DAL;
+@using DAL.Models;
+@model DAL.Models.MyLibraryModel
+
+
+<script src="~/Scripts/jquery.cookie.js"></script>
+<script src="~/Scripts/jquery.treeview.js"></script>
+<script src="~/Scripts/demo.js"></script>
+
+<link href="~/Content/jquery.treeview.css" rel="stylesheet" />
+
+<div>
+    @{
+        var Tilte = "";
+        switch (CurrentUser.Title)
+        {
+            case "D.O.":
+            case "M.D.":
+            case "Ph.D.":
+            case "D.Sc.":
+                Tilte = "Dr.";
+                break;
+
+            case "R.N.":
+            case "N/A":
+                Tilte = "";
+                break;
+            default:
+                Tilte = CurrentUser.Title;
+                break;
+        }
+    }
+    <h2>@Tilte @CurrentUser.FirstName @CurrentUser.LastName's Library</h2>
+
+
+    @Html.ActionLink("[Close All Containers]", "index") &nbsp; 
+                        @Html.ActionLink("[Edit Library]", "EditLibrary")
+    <br />
+    <br />
+
+    <em><span style="color: red" class="cit">*</span> Folder Contains New Editors Choice Citations</em>
+    <br />
+    <br />
+</div>
+
+<ul id="browser" class="filetree">
+
+    @{
+        List<SelectListItem> Items = new List<SelectListItem>();
+    }
+
+    @foreach (var item in @Model.AllUserSpecialities)
+    {
+
+        int? OrgNameTemp = -1;
+
+        string LiClass = "";
+
+        if (!string.IsNullOrEmpty(Request.QueryString["specid"]))
+        {
+            if (Request.QueryString["specid"] == item.SpecialityId.ToString())
+            {
+                LiClass = "open";
+            }
+        }
+        else if (ViewBag.PrimarySpecialityId == item.SpecialityId)
+        {
+            LiClass = "open";
+        }
+        else
+        {
+            LiClass = "";
+        }        
+        <li class="@LiClass">
+            @{
+        MyLibraryModel MainMyLibraryModel = new MyLibraryModel();
+        MainMyLibraryModel.AllUserFolders = MyLibraryBL.GetUserFolderList(item.SpecialityId, CurrentUser.UserId);
+        MainMyLibraryModel.FolderECList = MyLibraryBL.GetFolderECComments(item.SpecialityId);
+            }
+            <span class="folder" style="font-weight: bold;">@item.SpecialityName
+                @if (MainMyLibraryModel.FolderECList.Count > 0)
+                {
+                    <span style="color: red;"><b>*</b></span>
+                }
+                @{
+                //SelectListItem ddlSpecialty = new SelectListItem();
+                //ddlSpecialty.Text = "---- " + item.SpecialityName + " ----";
+                //ddlSpecialty.Value = item.SpecialityName;
+                Items.Add(new SelectListItem { Text = "---- " + item.SpecialityName + " ----", Value = "-2" });
+                }
+            </span>
+            <ul>
+
+                @foreach (var OrgName in MainMyLibraryModel.AllUserFolders)
+                {
+                    if (OrgName.OrgFolderId != OrgNameTemp)
+                    {
+                        string orgclass = "";
+
+                        switch (OrgName.OrgType)
+                        {
+                            case 1:
+                                orgclass = "folderorg";
+                                break;
+
+                            case 2:
+                                orgclass = "folderorguser";
+                                break;
+
+                            case 3:
+                                orgclass = "folderorgsponsor";
+                                break;
+                        }
+
+                        string LiClassTopic = "";
+
+                        if (!string.IsNullOrEmpty(Request.QueryString["oid"]))
+                        {
+                            if (Request.QueryString["oid"] == OrgName.OrgFolderId.ToString())
+                            {
+                                LiClassTopic = "open";
+                            }
+                        }
+                        else
+                        {
+                            LiClassTopic = "";
+                        }         
+                        
+                        
+                                            
+                    <li class="@LiClassTopic"><span class=@orgclass id=@OrgName.OrgFolderId>@Html.Raw(OrgName.OrgFolderName)
+                        @if (MainMyLibraryModel.FolderECList.Any(c => c.oid == OrgName.OrgFolderId))
+                        {
+                            <span style="color: red;"><b>*</b></span>
+                        }
+                        @{
+                        Items.Add(new SelectListItem { Text = OrgName.OrgFolderName, Value = OrgName.OrgFolderId.ToString() });
+                        }
+                    </span>
+                        <ul>
+                            @foreach (var FuncName in MainMyLibraryModel.AllUserFolders)
+                            {
+                                if (@OrgName.OrgFolderId == @FuncName.OrgFolderId)
+                                {
+
+                                    string funcclass = "";
+
+                                    switch (FuncName.FunType)
+                                    {
+                                        case 1:
+                                            funcclass = "folderfunc";
+                                            break;
+
+                                        case 2:
+                                            funcclass = "folderfuncuser";
+                                            break;
+
+                                        case 3:
+                                            funcclass = "folderfuncsponsor";
+                                            break;
+                                    }
+
+                                    string LiClassSubTopic = "";
+
+                                    if (!string.IsNullOrEmpty(Request.QueryString["fid"]))
+                                    {
+                                        if (Request.QueryString["fid"] == FuncName.FunFolderId.ToString())
+                                        {
+                                            LiClassSubTopic = "open";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        LiClassSubTopic = "";
+                                    }                              
+                                                        
+                                <li class="@LiClassSubTopic"><span class=@funcclass id=@FuncName.FunFolderId>@FuncName.FunFolderName
+                                    @if (MainMyLibraryModel.FolderECList.Any(c => c.fid == FuncName.FunFolderId))
+                                    {
+                                        <span style="color: red;"><b>*</b></span>
+                                    }
+                                </span>
+                                    <ul>
+                                        @if (FuncName.FunType == 1)
+                                        {
+                                            <li><span class="folderchoice">@Html.ActionLink("Seminal Citations", "index", new { specid = item.SpecialityId, oid = FuncName.OrgFolderId, fid = FuncName.FunFolderId, selaction = "seminal", start = 1 })</span></li>
+                                            <li><span class="folderchoice">@Html.ActionLink("Editors Choice", "index", new { specid = item.SpecialityId, oid = FuncName.OrgFolderId, fid = FuncName.FunFolderId, selaction = "editor", start = 1 })
+                                                @if (MainMyLibraryModel.FolderECList.Any(c => c.fid == FuncName.FunFolderId))
+                                                {
+                                                    <span style="color: red;"><b>*</b></span>
+                                                }
+                                            </span></li>
+                                            <li><span class="foldersaved">@Html.ActionLink("My Saved Citations", "index", new { specid = item.SpecialityId, oid = FuncName.OrgFolderId, fid = FuncName.FunFolderId, selaction = "saved", start = 1 })</span></li>
+                                                if (FuncName.doccount > 0)
+                                                {
+                                            <li><span class="folderacr">@Html.ActionLink("ACR Appropriateness Criteria ®", "index", new { specid = item.SpecialityId, oid = FuncName.OrgFolderId, fid = FuncName.FunFolderId, selaction = "acr" })</span></li> 
+                                                }
+                                        }
+                                        else if (FuncName.FunType == 2)
+                                        {
+                                            <li><span class="foldersaved">@Html.ActionLink("My Saved Citations", "index", new { specid = item.SpecialityId, oid = FuncName.OrgFolderId, fid = FuncName.FunFolderId, selaction = "saved", start = 1 })</span></li>
+                                        }
+                                        else if (FuncName.FunType == 3)
+                                        {
+                                            <li><span class="folderchoicesponsor">@Html.ActionLink("Seminal Citations", "index", new { specid = item.SpecialityId, oid = FuncName.OrgFolderId, fid = FuncName.FunFolderId, selaction = "sponsor", start = 1 })</span></li>
+                                            <li><span class="foldersaved">@Html.ActionLink("My Saved Citations", "index", new { specid = item.SpecialityId, oid = FuncName.OrgFolderId, fid = FuncName.FunFolderId, selaction = "saved", start = 1 })</span></li>
+                                        }
+                                    </ul>
+
+
+                                </li>
+                                }
+                                OrgNameTemp = @OrgName.OrgFolderId;
+                            }
+                        </ul>
+                    </li>                    
+                    }
+                }
+
+                @*@if (ViewBag.PrimarySpecialityId == 1 && item.SpecialityId == 1)
+                {
+                    var CheckForUserHasCalypso = MyLibraryBL.CheckForUserSponsorFolder(19, CurrentUser.UserId);
+
+                    if (CheckForUserHasCalypso != 0)
+                    {
+                    <li><span class="folderorgsponsor">@Html.ActionLink("Create an Organ Motion library topic", "CreateSposorFolder", new { sponsorFolderId = CheckForUserHasCalypso }, new { onclick = "return AlertAddFolder(19)" })</span></li>
+                    }
+
+                    var CheckForUserHasEUSA = MyLibraryBL.CheckForUserSponsorFolder(20, CurrentUser.UserId);
+
+                    if (CheckForUserHasEUSA != 0)
+                    {
+                    <li><span class="folderorgsponsor">@Html.ActionLink("Create an EUSA library topic", "CreateSposorFolder", new { sponsorFolderId = CheckForUserHasEUSA }, new { onclick = "return AlertAddFolder(20)" })</span></li>
+                    }
+                }*@
+
+
+            </ul>
+        </li>                        
+    }
+    @{Session["ddlInfo"] = Items;}
+</ul>
+
+<script type="text/javascript">
+
+    function AlertAddFolder(id)
+    {
+        if (id == 19) {
+            var a = confirm('Would you like to add an Organ Motion Topic to your library? If you select Yes, a cabinet prepopulated with seminal citations, courtesy of Calypso Medical Technologies, will be created; you will be able to add your own citations as well.');
+            return a;
+        }
+        else {
+            var a = confirm('Would you like to monitor MEDLINE citations relevant to Caphosol, Quadramet, and ProstaScint? If you select Yes, a folder and an AutoQuery will be created in your library; you will be able to edit these items.	');
+            return a;
+        }
+    }
+
+</script>

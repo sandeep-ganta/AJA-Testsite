@@ -1,0 +1,932 @@
+﻿@{
+    ViewBag.Title = "Bios";
+}
+
+<style type="text/css">
+    .mncntnr
+    {
+        width: 980px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+    }
+
+        .mncntnr h3
+        {
+            font-size: 16px;
+            color: #333333;
+        }
+
+    .edtrcntnr
+    {
+        float: left;
+        margin-bottom: 30px;
+        margin-left: 30px;
+        width: 27%;
+    }
+
+        .edtrcntnr a
+        {
+            text-decoration: none;
+            color: #3399CC;
+            font-weight: bold;
+        }
+
+            .edtrcntnr a:hover
+            {
+                color: #0066FF;
+            }
+
+        .edtrcntnr img
+        {
+            border: 1px solid #ccc;
+            padding: 2px;
+        }
+
+        .edtrcntnr .infoarrow
+        {
+            color: #FF9900;
+            font-size: 10px;
+            font-family: comic sans ms;
+        }
+
+        .edtrcntnr .txttable
+        {
+            height: 119px;
+            width: 155px;
+            padding-left: 5px;
+        }
+
+    .txttable p
+    {
+        text-align: left;
+    }
+</style>
+
+@if (AJA_Core.CurrentUser.IsAuthenticated)
+{
+    if (!AJA_Core.CurrentUser.IsAdmin)
+    {
+    <table width="100%">
+        <tr>
+            <td>
+                <table width="1170" align="center" style="margin: 0 auto;">
+                    <tr>
+                        <td align="left">
+                            @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                            {
+                                <img src="/Content/images/Subpage_banner-1170.jpg" />
+                            }
+                            else
+                            {
+                                <img src="/Content/images/Subpage_bannerBig.jpg" />
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div align="center" class="commonContent">
+                    <div class="floatleft">
+                        <div class="mncntnr">
+                            <h1>ACR Journal Advisor Editors</h1>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/1.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Goldsmith">Brian J. Goldsmith,
+                                                    <br />
+                                                        MD, FACR</a>
+                                                        <p>Managing Editor</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Goldsmith"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/2.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Bauman">Glenn S. Bauman, 
+                                                    <br />
+                                                        MD, FRCP(C)</a>
+                                                        <p>Editor, Central Nervous System</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Bauman"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/3.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Gaffney">David K. Gaffney, 
+                                                    <br />
+                                                        MD, PhD, FACR</a>
+                                                        <p>Co-Editor, Gynecological</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Gaffney"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/4.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Hoppe">Richard T. Hoppe, 
+                                                    <br />
+                                                        MD, FACR, FASTRO</a>
+                                                        <p>Editor, Lymphoma and Leukemia</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Hoppe"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/5.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Lawton">Colleen A. Lawton, 
+                                                    <br />
+                                                        MD, FACR, FASTRO</a>
+                                                        <p>Editor, Genitourinary</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Lawton"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/6.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Mendenhall">William Mendenhall, 
+                                                    <br />
+                                                        MD, FACR</a>
+                                                        <p>Editor, Head and Neck/Skin</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Mendenhall"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/7.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Recht">Abram Recht,
+                                                    <br />
+                                                        MD, FASTRO</a>
+                                                        <p>Editor, Breast</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Recht"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/8.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Russell">Anthony H. Russell,
+                                                    <br />
+                                                        MD</a>
+                                                        <p>Co-Editor, Gynecological</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Russell"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/9.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Sher">David J. Sher,
+                                                    <br />
+                                                        MD, MPH</a>
+                                                        <p>Editor, Health Services Research</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Sher"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/10.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Tepper">Joel E. Tepper,
+                                                    <br />
+                                                        MD, FASTRO</a>
+                                                        <p>Editor, Gastrointestinal and Soft-Tissue Sarcoma</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Tepper"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/11.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Turrisi">Andrew T. Turrisi III,
+                                                    <br />
+                                                        MD</a>
+                                                        <p>Editor, Lung and Mediastinum</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Turrisi"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/12.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Donaldson">Sarah S. Donaldson,
+                                                    <br />
+                                                        MD, FACR, FASTRO</a>
+                                                        <p>Editor, Pediatrics</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Donaldson"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/13.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Salter">Bill J. Salter,<br />
+                                                        PhD</a>
+                                                        <p>Editor, Radiation Biophysics</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Salter"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/14.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Koong">Albert C. Koong,
+                                                    <br />
+                                                        MD, PhD</a>
+                                                        <p>Editor, Radiobiology</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Koong"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="floatright">
+                        <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                            <img src="/Content/images/160x600-ad.jpg" /></a>
+                    </div>
+
+                    <div class="clear"></div>
+
+
+                </div>
+            </td>
+
+        </tr>
+
+    </table>
+    }
+}
+
+else
+{
+    <table width="100%">
+        <tr>
+            <td>
+                <table width="1170" align="center" style="margin: 0 auto;">
+                    <tr>
+                        <td align="left">
+                            <img src="/Content/images/Subpage_banner.jpg"></td>
+                        <td align="right"><a href="/User/Register">
+                            <img src="/Content/images/Subpage_profilebgrnd.jpg"></a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        @*<tr>
+            <td class="shdwContr"></td>
+        </tr>*@
+
+        <tr>
+            <td>
+                <div align="center" class="commonContent">
+                    <div class="floatleft">
+                        <div class="mncntnr">
+                            <h1>ACR Journal Advisor Editors</h1>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/1.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Goldsmith">Brian J. Goldsmith,
+                                                    <br />
+                                                        MD, FACR</a>
+                                                        <p>Managing Editor</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Goldsmith"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/2.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Bauman">Glenn S. Bauman, 
+                                                    <br />
+                                                        MD, FRCP(C)</a>
+                                                        <p>Editor, Central Nervous System</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Bauman"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/3.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Gaffney">David K. Gaffney, 
+                                                    <br />
+                                                        MD, PhD, FACR</a>
+                                                        <p>Co-Editor, Gynecological</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Gaffney"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/4.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Hoppe">Richard T. Hoppe, 
+                                                    <br />
+                                                        MD, FACR, FASTRO</a>
+                                                        <p>Editor, Lymphoma and Leukemia</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Hoppe"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/5.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Lawton">Colleen A. Lawton, 
+                                                    <br />
+                                                        MD, FACR, FASTRO</a>
+                                                        <p>Editor, Genitourinary</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Lawton"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/6.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Mendenhall">William Mendenhall, 
+                                                    <br />
+                                                        MD, FACR</a>
+                                                        <p>Editor, Head and Neck/Skin</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Mendenhall"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/7.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Recht">Abram Recht,
+                                                    <br />
+                                                        MD, FASTRO</a>
+                                                        <p>Editor, Breast</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Recht"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/8.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Russell">Anthony H. Russell,
+                                                    <br />
+                                                        MD</a>
+                                                        <p>Co-Editor, Gynecological</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Russell"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/9.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Sher">David J. Sher,
+                                                    <br />
+                                                        MD, MPH</a>
+                                                        <p>Editor, Health Services Research</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Sher"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/10.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Tepper">Joel E. Tepper,
+                                                    <br />
+                                                        MD, FASTRO</a>
+                                                        <p>Editor, Gastrointestinal and Soft-Tissue Sarcoma</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Tepper"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/11.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Turrisi">Andrew T. Turrisi III,
+                                                    <br />
+                                                        MD</a>
+                                                        <p>Editor, Lung and Mediastinum</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Turrisi"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/12.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Donaldson">Sarah S. Donaldson,
+                                                    <br />
+                                                        MD, FACR, FASTRO</a>
+                                                        <p>Editor, Pediatrics</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Donaldson"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/13.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Salter">Bill J. Salter,<br />
+                                                        PhD</a>
+                                                        <p>Editor, Radiation Biophysics</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Salter"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <div class="edtrcntnr">
+                                <table width="100%" border="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="/content/images/14.jpg" alt="1" /></td>
+                                        <td align="left" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="txttable">
+                                                <tr>
+                                                    <td valign="top"><a href="/Home/Biosdetailed?info=Koong">Albert C. Koong,
+                                                    <br />
+                                                        MD, PhD</a>
+                                                        <p>Editor, Radiobiology</p>
+
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+    <td valign="bottom"><a href="/Home/Biosdetailed?info=Koong"> View Biography <span class="infoarrow">&gt; </span> </a></td>
+  </tr>-->
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="floatright">
+                        <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                            <img src="/Content/images/160x600-ad.jpg" /></a>
+                    </div>
+
+                    <div class="clear"></div>
+
+
+                </div>
+            </td>
+
+        </tr>
+
+    </table>
+}

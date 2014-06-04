@@ -1,0 +1,57 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{
+    ViewBag.Title = "Sendstatus";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@*<a href="~/Admin/SelectRecipients">Back</a>*@
+
+<table border="0" width="100%">
+
+    <tr>
+        <td></td>
+        <td>
+            <div id="div_Mailsent" class="hidebtngrd">
+                @{MVC4Grid.Grid Mailgrid = @ViewBag.Mailgrid;}
+                @Html.GridFor(Mailgrid)
+            </div>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td style="height: 33px"></td>
+        <td align="right" style="height: 33px">
+            <input type="button" value="Done with Mailing" id="btnHome" />
+            <input type="button" value="Select Recipients" id="btnSelectRecipients" />
+            <input type="button" value="Refresh Status List" id="btnRefresh" />
+        </td>
+        <td style="height: 33px"></td>
+    </tr>
+</table>
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+<script type="text/javascript">
+    $('#btnHome').click(function () { 
+        window.location.href = ServerURL + '/Admin/AdminHome/';
+    });
+    $('#btnSelectRecipients').click(function () {
+        window.location.href = ServerURL + '/Admin/SelectRecipients/';
+    });
+    $('#btnRefresh').click(function () {
+        window.location.href = ServerURL + '/Admin/Sendstatus/';
+    });
+</script>
+
+<style type="text/css">
+    .ui-dialog
+    {
+        z-index: 10000;
+    }
+</style>
+
+<link href="~/Content/GridView.css" rel="stylesheet" />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/Commonscript") 
+}

@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "FieldManagement";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<div id="div_UserFields" class="commonContent">
+    @{DAL.Models.Grid_old modelgrid = @ViewBag.GridData;}
+    @Html.Partial("GridView", modelgrid)
+</div>
+<div id="divEditFields" class="divEditFields"></div>
+<script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+<script type="text/javascript">
+
+    var CreateField = function CreateField() {
+        var url = '../User/GetNewField?rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#divEditFields').html(html);
+            $.validator.unobtrusive.parse($("#form_Edit_Fields"));
+            $('#divEditFields').dialog({
+                modal: true,
+                width: 600,
+                title: "Create New Field",
+                position: [380, 28],
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_UserFields_Pager').change();
+                }
+
+            });
+        });
+
+    }
+
+    var EditField = function EditField(ctrl) {
+        var fid = $(ctrl).attr('keyid');
+        var url = '../User/GetExistingField?fieldid=' + fid + '&rand=' + randGenerator();
+        $.get(url, null, function (html) {
+            $('#divEditFields').html(html);
+            $.validator.unobtrusive.parse($("#form_Edit_Fields"));
+            $('#divEditFields').dialog({
+                modal: true,
+                title: "Edit Field",
+                width: 600,
+                position: [380, 28],
+                close: function (event, ui) {
+                    $(this).html("");
+                    $('#tbl_UserFields_Pager').change();
+                }
+
+            });
+
+
+        });
+    };
+
+    var DeleteField = function DeleteField(ctrl) {
+        var fid = $(ctrl).attr('keyid');
+
+
+        var NewDialog = $('<div id="MenuDialog">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+        NewDialog.dialog({
+            modal: true,
+            title: "Delete Field",
+            buttons: [
+                {
+                    text: "OK", click: function () {
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: "../User/DeleteField",
+                                data: JSON.stringify({ fieldid: fid }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (msg) { alert('Field deleted successfully'); $('#tbl_UserFields_Pager').change(); },
+                                error: function (msg) { alert('Error occured in deleting the Field'); }
+
+                            });
+                        $(this).dialog("close");
+                    }
+                },
+                { text: "Cancel", click: function () { $(this).dialog("close") } }
+            ]
+        });
+    }
+
+    var randGenerator = function randGenerator() {
+        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+        var string_length = 32;
+        var myrnd = [], pos;
+
+        // loop as long as string_length is > 0
+        while (string_length--) {
+            // get a random number between 0 and chars.length 
+            pos = Math.floor(Math.random() * chars.length);
+            // add the character from the base string to the array
+            myrnd.push(chars.substr(pos, 1));
+        }
+
+        // join the array using '' as the separator, which gives us back a string
+        var rnd = myrnd.join(''); // e.g "6DMIG9SP1KDEFB4JK5KWMNSI3UMQSSNT" 
+        return rnd;
+    }
+
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

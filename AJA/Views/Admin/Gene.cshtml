@@ -1,0 +1,992 @@
+﻿@using MVC4Grid;
+@using MVC4Grid.HtmlHelpers;
+@{ 
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@model DAL.Models.PersonalizedGene
+@if (Model != null)
+{  
+    @Html.HiddenFor(model => model.GeneID, new { @id = "hdgeneId" })
+    
+    <div align="center">
+        <div id="base">
+            <div class="admintitleBar">
+                <div class="admintitleHolder">Gene Selector</div>
+                <div class="adminexpanderHolder">
+                    <span class="ex-col minusicon">Collapse</span>
+                </div>
+            </div>
+            <div class="contentcntnr">
+                <p id="test_selector">Select a Gene from the list and click the Find button. The details of the Gene are displayed below and can be managed. NOTE: when deleting a Gene, the one shown in the Select Gene dropdown will be deleted, not necessarily the one whose details are displayed.</p>
+            </div>
+            <div class="testcontentctr">
+                <div class="searchHolder">
+                    <div class="col1Admin">
+                        <div class="searchLabel">Edit Gene:</div>
+                        @Html.HiddenFor(model => model.GeneID)
+                        @Html.DropDownListFor(model => model.Name, Model.Genenameslist, "--Please Select--", new { @id = "ddl_genenames" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                        <input id="findgene" type="button" value="Find" onclick="find_gene();" class="standalone" />&nbsp;<input type="button" value="Delete" onclick="    delete_gene();" class="standalone" />
+                    </div>
+
+                    <div class="col2Admin">
+                        <div class="searchLabel">Add Gene:</div>
+                        @* @using (Html.BeginForm(null, "Admin", new { @id = "form_newgene" }))
+                    {*@
+                        @Html.TextBoxFor(model => model.Newgene, new { @id = "txtaddgene", @class = "textLine" })
+                        @*  @Html.ValidationMessageFor(model => model.Newgene)*@
+                        <input type="button" value="Add" class="standalone" id="btn_addnewgene" onclick="add_gene();" />
+                        <input type="button" onclick="clear_gene();" value="Clear" class="standalone" />
+
+                    </div>
+
+                </div>
+                <div class="cleaner"></div>
+                <div class="spacer"></div>
+                @if (Model.GeneID != 0)
+                { 
+                    <div id="details_section">
+                        <div class="admintitleBar">
+                            <div class="admintitleHolder" id="gene_name">@Html.DisplayFor(model => model.FullName) - Details</div>
+                            <div class="adminexpanderHolder">
+                                <span class="ex-col minusicon">Collapse</span>
+                            </div>
+                        </div>
+                        <div class="contentcntnr">
+                            <div id="gene_details">
+                                <div class="subTitleBar">
+                                    <img src="~/Content/images/minus.gif" title="Collapse Section" width="11" height="11" border="0" class="expand_gene" alt="collapse" />Gene Citations
+                                </div>
+                                <div id="gene_section">
+                                    <div class="traceForm">
+                                        <a href="javascript:void(0);" class="ex-col2">Show Add Form</a>
+                                    </div>
+                                    <div class="contentcntnr2">
+
+                                        <div class="formHolder" id="geneCitationForm" style="display: none">
+                                            <div class="c1">Gene Citation:</div>
+                                            <div class="c2">
+                                                @*  @using (Html.BeginForm(null, "Admin", new { @id = "form_Genecitations" }))
+                                    {*@
+                                                @Html.TextBoxFor(model => model.Genecitations, new { placeholder = "Enter Citaton Pmid", @id = "txt_gene_citation", @class = "textLine" })
+                                                @*  @Html.ValidationMessageFor(model => model.Genecitations)*@
+                                                <input type="button" id="btn_addcitation" value="Add" class="standalone" onclick="add_citation_to_gene();" />
+
+                                            </div>
+                                            <div class="cleaner">
+                                            </div>
+                                        </div>
+                                        <div class="subSectionHolder" id="related_citations">
+                                            <div class="subSectionExpander ">Related Citations</div>
+                                            @if (Model.Gene_citationslist != null)
+                                            {
+                                                <div class="divgenecitation" id="div_gene_citation">
+                                                    @*<input class="txtedit txtauthor" value="@item.name" name="txtauthor_@item.id" type="text" aria-labelledby="@item.id" accesskey="@item.id" />*@
+                                                    <table>
+                                                        @foreach (var item in Model.Gene_citationslist)
+                                                        { 
+                                               
+                                                            <tr>
+                                                                <td>
+                                                                    @*  <label for="lblarticle_@item.Pmid" aria-labelledby="@item.GeneID">@item.ArticleTitle.Substring(0, 40)</label>*@
+                                                                    @if (@item.ArticleTitle != null)
+                                                                    {
+                                                                        if (@item.ArticleTitle.Length >= 40)
+                                                                        {
+                                                                        <a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid">@item.ArticleTitle.Substring(0, 40)..</a>
+                                                                        }
+                                                                        else
+                                                                        {<a target="_blank" href="/Search/SearchDetails?PMID=@item.Pmid">@item.ArticleTitle</a>}
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @if (@item.AuthorList != null)
+                                                                    {
+                                                                        <label for="lblauthor_@item.Pmid" aria-labelledby="@item.GeneID">@item.AuthorList</label>}
+                                                                    else
+                                                                    {@Html.Label("Not Available")}
+                                                                </td>
+                                                                <td>@item.Displaydate</td>
+                                                                <td>
+                                                                    <input class="deletegenecitation" name="@item.Pmid" onclick="Deletegenecitation(this)" type="button" value="delete"/></td>
+                                                            </tr>
+                                                   
+                                                        }
+                                                    </table>
+                                                </div>
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="subTitleBar">
+                                    <img src="~/Content/images/minus.gif" title="Collapse Section" width="11" height="11" border="0" class="expand_gene" alt="collapse" />Gene Comments
+                                </div>
+                                <div id="gene_comments_section">
+                                    <div class="traceForm">
+                                        <a href="javascript:void(0);" id="gene_comment_a" class="ex-col2">Show Add Form</a>
+                                    </div>
+
+                                    <div class="contentcntnr2">
+                                        <div class="formHolder" style="display: none">
+                                            <div id="div_GeneComment">
+                                                @{MVC4Grid.Grid commentgrid = @ViewBag.CommentGrid;}
+                                                @Html.GridFor(commentgrid)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- EDITORS CHOICE COMMENTS -->
+                                <div class="subTitleBar">
+                                    <img src="~/Content/images/minus.gif" title="Collapse Section" width="11" height="11" border="0" class="expand_gene" alt="collapse" />Related Editors Choice Comments
+                                </div>
+                                <div id="gene_editors_comments">
+                                    <div class="traceForm">
+                                        <a href="javascript:void(0);" class="ex-col2">Show Add Form</a>
+                                    </div>
+
+                                    <div class="contentcntnr2">
+                                        @*  <div class="formHolder" id="formHolder_editorcommemnt" >*@
+                                        <div class="formCol" id="editorCommentForm" style="display: none">
+                                            <div class="c1">Related Editors Choice Comment:</div>
+                                            <div class="c2">
+                                                @Html.TextBoxFor(model => model.Editorscommentid, new { placeholder = "Enter Citaton Pmid", @id = "txt_citationpmid", @class = "textLine" })
+                                                <input type="button" value="Find" class="standalone" onclick="find_possible_comments();" />
+                                            </div>
+                                            <div class="cleaner">
+                                            </div>
+                                        </div>
+                                        <div id="div_genecitions">
+                                            @if (Model.GenePmidCitations != null)
+                                            {
+                                                foreach (var item in Model.GenePmidCitations)
+                                                {
+                                                <div class="div_genecitation" id="divgenecit_@item.GeneID">
+                                                    <table>
+                                                        <tr>
+                                                            @* @Html.CheckBoxFor(model => model.checkgenecitation, new { @id = "chkgenecitaiton_"+@item.Editorscommentid+"", @class = ""+@item.Editorscommentid+""}) @item.Editorschoicecomment*@
+                                                            @if (!string.IsNullOrEmpty(@item.Editorschoicecomment))
+                                                            {
+                                                                
+                                                                <td class="c2" colspan="3">
+                                                                    <input class="chkbxalgnmnt" id="chkgenecitaiton_@item.Editorscommentid" type="checkbox" name="chkgenecitaiton" value="@item.Editorscommentid'_'@item.Pmid" />
+                                                                    <div id="comment_short_@item.Editorscommentid" >
+
+                                                                        @if (@item.Editorschoicecomment.Length > 160)
+                                                                        {
+                                                                            string Editorschoicecommenttext = item.Editorschoicecomment.Substring(0, 160);
+                                                                            string Editorschoicecomments = Editorschoicecommenttext + "..";
+                                                            
+                                                                            <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(Editorschoicecomments))</label>
+                                                                            <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('comment_long_@item.Editorscommentid').style.display='block';" class="moreLink">more</a></span>
+                                                                        }
+                                                                        else
+                                                                        {   <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(@item.Editorschoicecomment))</label>}
+                                                                    </div>
+
+
+
+                                                                    <div id="comment_long_@item.Editorscommentid" style="display: none;margin-left:19px;">
+                                                                        <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(@item.Editorschoicecomment))</label>
+                                                                        <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('comment_short_@item.Editorscommentid').style.display='';" class="moreLink">less</a></span>
+                                                                    </div>
+                                                                    <br />
+
+                                                                </td>
+                                                            }
+                                                                
+@*   <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(@item.Editorschoicecomment))</label> *@
+                                                        </tr>
+                                                        @if (Model.GetArticles != null)
+                                                        {
+                                                            foreach (var data in Model.GetArticles)
+                                                            { 
+                                                            <tr>
+                                                                <td>
+                                                                    @if (@data.ArticleTitle != null)
+                                                                    {
+                                                                        if (@data.ArticleTitle.Length >= 40)
+                                                                        {
+                                                                        <a target="_blank" href="/Search/SearchDetails?PMID=@data.Pmid">@data.ArticleTitle.Substring(0, 40)..</a>
+                                                                        }
+                                                                        else
+                                                                        {  <a target="_blank" href="/Search/SearchDetails?PMID=@data.Pmid">@data.ArticleTitle</a>}
+                                                                    }
+                                                                </td>
+                                                                @*  <label for="lblcitatarticle_@data.Pmid" aria-labelledby="@data.Pmid">@data.ArticleTitle.Substring(0, 40)</label></td>*@
+                                                                <td>
+                                                                    @if (@data.AuthorList != null)
+                                                                    {
+                                                                        <label for="lblauthor_@data.Pmid" aria-labelledby="@data.Pmid">@data.AuthorList</label>
+                                                                    }
+                                                                    else
+                                                                    {@Html.Label("Not Available")}
+                                                                </td>
+
+                                                                <td>
+                                                                    @if (@data.Displaydate != null)
+                                                                    {
+                                                                        if (@data.Displaydate.Length >= 4)
+                                                                        {
+                                                                        @data.Displaydate.Substring(0, 4)}
+                                                                        else
+                                                                        { @data.Displaydate}
+                                                                    }
+                                                                </td>
+
+                                                            </tr>
+                                                            }
+                                                        }
+                                                    </table>
+                                                </div> 
+                                                }
+                                            }
+                                        </div>
+
+                                        <div align="right">
+                                            @if (Model.GenePmidCitations.Count() != 0)
+                                            { 
+                                                <input type="button" onclick="add_possible_comments()" value="Add Selected Comments" />  
+                                            }
+                                        </div>
+
+                                        <div class="subSectionHolder" id="editor_comments">
+                                            <div class="subSectionExpander">Related Editors Choice Comments</div>
+                                            <div id="div_EditorComments">
+                                                @if (Model.GetAddedEditorComment != null)
+                                                {
+                                                    <div id="divnewgenecit" class="div_addedgenecmnt">
+                                                        <table>
+                                                            @foreach (var item in Model.GetAddedEditorComment)
+                                                            { 
+                                                                <tr>
+                                                                    @if (!string.IsNullOrEmpty(@item.Editorschoicecomment))
+                                                                    {
+                                                                        <td id="summary_short_@item.Editorscommentid" class="c2">
+                                                                            @if (@item.Editorschoicecomment.Length > 160)
+                                                                            {
+                                                                                string Editorschoicetext = item.Editorschoicecomment.Substring(0, 160);
+                                                                                string Editorschoice = Editorschoicetext + "..";
+                                                            
+                                                                                <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(Editorschoice))</label>
+                                                                                <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('summary_long_@item.Editorscommentid').style.display='';" class="moreLink">more</a></span>
+                                                                            }
+                                                                            else
+                                                                            {  <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(@item.Editorschoicecomment))</label>}
+                                                                        </td>
+                                                                        <td id="summary_no" class="c2" style="display: none;"></td>
+                                                                        <td class="c2" id="summary_long_@item.Editorscommentid" style="display: none;">
+
+                                                                            <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(@item.Editorschoicecomment))</label>
+                                                                            <span class="morelink"><a href="javascript:void(0);" onclick="this.parentNode.parentNode.style.display='none'; document.getElementById('summary_short_@item.Editorscommentid').style.display='';" class="moreLink">less</a></span>
+
+                                                                        </td>
+                                                                    }
+@* <td>
+                                                        <label class="udlbltxt" for='chkRole_@item.Editorscommentid'>@Html.Raw(HttpUtility.HtmlDecode(@item.Editorschoicecomment))</label>
+
+                                                    </td>*@
+                                                                    <td>
+                                                                        <input class="removecomment" name="@item.GeneID'_'@item.Editorscommentid" onclick="RemoveComment(this)" type="button" value="remove comment from this gene"/>
+                                                                    </td>
+                                                                </tr>
+                                                                    if (Model.GetAddedArticle != null)
+                                                                    {
+                                                                        foreach (var data in Model.GetAddedArticle)
+                                                                        {
+                                                                            if (@item.Newpmid.Contains(@data.Pmid))
+                                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @if (@data.ArticleTitle != null)
+                                                                        {
+                                                                            if (@data.ArticleTitle.Length >= 40)
+                                                                            {
+                                                                            <a target="_blank" href="/Search/SearchDetails?PMID=@data.Pmid">@data.ArticleTitle.Substring(0, 40)..</a>
+                                                                            }
+                                                                            else
+                                                                            { <a target="_blank" href="/Search/SearchDetails?PMID=@data.Pmid">@data.ArticleTitle</a>}
+                                                                        }
+                                                                    </td>
+                                                                    @* <label for="lblnewcitatarticle_@data.Pmid" aria-labelledby="@data.Pmid">@data.ArticleTitle.Substring(0, 40)</label></td>*@
+                                                                    <td>
+                                                                        @if (@data.AuthorList != null)
+                                                                        {
+                                                                            <label for="lblnewauthor_@data.Pmid" aria-labelledby="@data.Pmid">@data.AuthorList</label>}
+                                                                        else
+                                                                        {@Html.Label("Not Available")}
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (@data.Displaydate != null)
+                                                                        {
+                                                                            if (@data.Displaydate.Length >= 4)
+                                                                            {
+                                                                            @data.Displaydate.Substring(0, 4)}
+                                                                            else
+                                                                            { @data.Displaydate}
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                            }
+                                                        </table>
+                                                    </div>  
+                                                }
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- SCREENING RECOURCES LINKS -->
+                                <div class="subTitleBar">
+                                    <img src="~/Content/images/minus.gif" title="Collapse Section" width="11" height="11" border="0" class="expand_gene" alt="collapse" />Screening Resources Links
+                                </div>
+                                <div id="gene_sclinks">
+                                    <div class="traceForm">
+                                        <a href="javascript:void(0);" class="ex-col2">Show Add Form</a>
+                                    </div>
+
+                                    <div class="contentcntnr2">
+                                        <div class="formHolder" id="linksForm" style="display: none">
+                                            <div class="formCol">
+                                                <div class="c1">Resource Link:</div>
+                                                <div class="c2">
+                                                    @*  @using (Html.BeginForm(null, "Admin", new { @id = "form_sclink" }))
+                                        {*@
+                                                    @Html.TextBoxFor(model => model.Sclink, new { @id = "txt_sclink", @name = "" })
+                                                    @*  @Html.ValidationMessageFor(model => model.Sclink) *@
+                                                    <input type="button" value="Add" class="standalone" id="addsclink" onclick="add_sclink();" />
+
+                                                    <input type="button" value="Update" onclick="update_sclink();" class="standalone" id="updatesclink" style="display: none" />
+                                                    <input type="button" value="Cancel" onclick="cancel_sclink();" class="standalone" id="cancelsclink" style="display: none" />
+
+                                                </div>
+                                                <div class="cleaner">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="subSectionHolder" id="gene_sclinks_div">
+                                            <div class="subSectionExpander"></div>
+                                            <div id="div_sclink" class="lnktablwdth">
+                                                <table>
+                                                    @if (Model.Getlinks != null)
+                                                    {
+                                                        foreach (var data in Model.Getlinks)
+                                                        { 
+                                                        <tr>
+                                                            <td>
+                                                                @if (@data.sclink != null)
+                                                                {
+                                                                    if (@data.sclink.Contains("http") || @data.sclink.Contains("https"))
+                                                                    {
+                                                                    <a href="@data.sclink" target="_blank">@data.sclink</a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                    <a href="http://@data.sclink" target="_blank">@data.sclink</a>
+                                                                    }
+                                                                }
+
+                                                            </td>
+                                                            @*   <label for="lblsclink_@data.geneid" aria-labelledby="@data.geneid'_'@data.Linkid" id="lbl_sclinkbind">@data.sclink</label></td>*@
+                                                            <td>
+                                                                <input class="editsclink" name="@data.geneid'_'@data.Linkid" type="button" value="Edit"/>
+                                                            </td>
+                                                            <td>
+                                                                <input class="deletesclink" name="@data.geneid'_'@data.Linkid" onclick="Deletesclink(this)" type="button" value="Delete"/></td>
+
+                                                        </tr>
+                                                        }
+                                                    }
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- /SCREENING RECOURCES LINKS -->
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div id="load" style="display: none;" align="center">
+
+            <img id="loading" src="/Content/images/Loading_icon.GIF" alt="Loading ..." />
+
+        </div>
+    </div>
+     
+    <img src="~/Content/images/ajax-loader.gif" alt="Loading Records..." style="display: none" id="loadingimage" /> 
+    <div id="Gene_Comments">
+    </div>
+    
+    <script type="text/javascript" src="~/Scripts/GridView_New.js"></script>
+    <script type="text/javascript">
+        // To collapse/ Expand 
+        $('.ex-col').on('click', function () {
+            $(this).parent().parent('div').next('div.contentcntnr').slideToggle('');
+
+            $(this).toggleClass('plusicon');
+            if ($(this).text() == 'Expand') {
+                $(this).text('Collapse');
+
+            } else {
+                $(this).text('Expand');
+            }
+
+        });
+
+        // For Show Add Form
+        $('.ex-col2').on('click', function () {
+
+            $(this).parent('div').next('div.contentcntnr2').children(":first").slideToggle('');
+            if ($(this).text() == 'Show Add Form') {
+                $(this).text('Hide Add Form');
+            }
+            else {
+                $(this).text('Show Add Form');
+            }
+        });
+
+        // To Expand / Collapse on Image click
+        $('.expand_gene').on('click', function () {
+            var getaltattr = $(this).attr('alt');
+            if (getaltattr == "collapse") {
+                $(this).parent('div').next('div').slideToggle(''); $(this).attr('src', '/Content/images/plus.gif'); $(this).attr('alt', 'expand')
+            }
+            else { $(this).parent('div').next('div').slideToggle(''); $(this).attr('src', '/Content/images/minus.gif'); $(this).attr('alt', 'collapse') }
+        });
+
+        // To create New GeneComment
+        function CreateGeneComment(Cid) {
+
+            var url = ServerURL + '/Admin/CreateGeneCommentwithId?crtgeneid=' + Cid + '&rand=' + randGenerator();
+            $.get(url, null, function (html) {
+                $('#Gene_Comments').html(html);
+                $.validator.unobtrusive.parse($("#form_Gene_Comment"));
+                $('#Gene_Comments').dialog({
+                    modal: true,
+                    title: "Add Gene Comment",
+                    show: { effect: 'drop', direction: 'up' },
+                    width: 600,
+                    close: function (event, ui) {
+                        $(this).html("");
+                    }
+                });
+            });
+        }
+
+        // To Edit/Update New GeneComment
+        function EditGeneComment(ctrl) {
+            var Eid = $(ctrl).attr('keyid');
+            var url = ServerURL + '/Admin/EditGeneCommentwithId?Comentid=' + Eid + '&rand=' + randGenerator();
+            $.get(url, null, function (html) {
+                $('#Gene_Comments').html(html);
+                $.validator.unobtrusive.parse($("#form_Gene_Comment"));
+                $('#Gene_Comments').dialog({
+                    modal: true,
+                    title: "Edit Gene Comments",
+                    show: { effect: 'drop', direction: 'up' },
+                    width: 600,
+                    close: function (event, ui) {
+                        $(this).html("");
+                    }
+                });
+            });
+        }
+
+        // To Delete New GeneComment
+        function DeleteGeneComment(ctrl) {
+
+            var tid = $(ctrl).attr('keyid');
+
+            var NewDialog = $('<div id="DeleteComment">\
+                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>&nbsp;&nbsp;Are you sure? </p>\
+                      </div>');
+            NewDialog.dialog({
+                modal: true,
+                title: "Delete Gene Comment",
+                buttons: [
+                    {
+                        text: "OK", click: function () {
+                            $.ajax(
+                                {
+                                    type: "POST",
+                                    url: ServerURL + "/Admin/DeleteGeneCommentwithId/?delcmntgene=" + tid,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (data) {
+                                            alert("Deleted Successfully");
+                                            $("#tbl_GeneComments .bt_grid_refresh").click();
+                                        }
+                                    },
+                                    error: function (msg) {
+                                        alert("Error while deleting GeneComments");
+                                    }
+
+                                });
+                            $(this).dialog("close");
+                        }
+                    },
+                    { text: "Cancel", click: function () { $(this).dialog("close") } }
+                ]
+            });
+        }
+    </script>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#txt_gene_citation').placeholder();
+            $('#txt_citationpmid').placeholder();
+        });
+
+        $('#ddl_genenames').change(function () {
+            if ($('#ddl_genenames option:selected').text() == "--Please Select--") {
+                window.location.href = ServerURL + '/Admin/Gene'
+            }
+            // else { window.location.href = ServerURL + '/Admin/Gene?geneid=' + $('#ddl_genenames').val() + '' }
+        });
+
+        function find_gene() {
+            if ($('#ddl_genenames option:selected').text() != "--Please Select--") {
+                window.location.href = ServerURL + '/Admin/Gene?geneid=' + $('#ddl_genenames').val() + ''
+            }
+            else { alert("Please Choose Gene"); }
+        }
+
+        // To delete Gene From Dropdownlist
+        function delete_gene() {
+            if ($('#ddl_genenames option:selected').text() != "--Please Select--") {
+                if (confirm("Are you sure to delete this Gene ?")) {
+                    if (confirm("This will remove all associated citations and comments. Are you really sure you want to proceed ?")) {
+                        $('#load').show();
+                        $('#base').hide();
+                        $.ajax({
+                            url: ServerURL + '/Admin/DeleteGene?delgeneid=' + $('#ddl_genenames').val() + '',
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            type: "POST",
+                            error: function () {
+                                alert("An error occurred."); $('#load').hide(), $('#base').show();
+                            },
+                            success: function (data) {
+                                window.location.href = ServerURL + '/Admin/Gene'
+                            }
+                        });
+                        // window.location.href = ServerURL + '/Admin/DeleteGene?geneid=' + $('#ddl_genenames').val() + ''
+                    }
+                }
+            }
+            else { alert("Please Choose Gene!"); }
+        }
+
+        // To find Edition Comments based on Pmid entered
+        function find_possible_comments() {
+            if ($('#ddl_genenames option:selected').text() != "--Please Select--") {
+                if ($('#txt_citationpmid').val() != "") {
+
+                    if (! /^[0-9]+$/.test($('#txt_citationpmid').val())) {
+                        alert("You should enter valid Pmid");
+                        return false;
+                    }
+                    $('#load').show();
+                    $('#base').hide();
+                    var e = {
+                        GeneID: $('#ddl_genenames').val(),
+                        Pmid: $('#txt_citationpmid').val(),
+                    };
+                    var val = JSON.stringify(e);
+                    $.ajax({
+                        url: ServerURL + '/Admin/findposiblegenecomments/',
+                        dataType: "json",
+                        data: val,
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST",
+                        error: function () {
+                            alert("An error occurred."); $('#load').hide(), $('#base').show();
+                        },
+                        success: function (res) {
+                            res == true ? window.location.href = ServerURL + '/Admin/Gene?geneid=' + $('#ddl_genenames').val() + "&Pmid=" + $('#txt_citationpmid').val() + '' : alert("No Editor Comment found for that PMID"), $('#load').hide(), $('#base').show();
+                        }
+                    });
+                }
+                else { alert("Please Enter Citation Pmid"); }
+
+            }
+            else { alert("Please Choose Gene!"); }
+        }
+
+        // To add New Gene
+        function add_gene() {
+
+            if ($.trim($('#txtaddgene').val()) != '') {
+                if (! /^[0-9]+$/.test($('#txtaddgene').val())) {
+                    alert("Enter only digits, please");
+                    return false;
+                }
+                if (confirm("Please make sure you have entered the GeneID correctly and write down its Official Symbol in case you have to find this gene in the list. Add?")) {
+                    $('#load').show();
+                    $('#base').hide();
+                    $.ajax({
+                        url: ServerURL + '/Admin/AddNewGene?newgene=' + $('#txtaddgene').val() + '',
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST",
+                        error: function () {
+                            alert("An error occurred."); $('#load').hide(), $('#base').show();
+                        },
+                        success: function (res) {
+                            if (res == "AddedGene") {
+                                alert("New Gene Added Successfully");
+                                window.location.href = ServerURL + '/Admin/Gene'
+                            } if (res == "exists") {
+                                alert("Gene Already Exists"); $('#load').hide(), $('#base').show();
+                            }
+                            if (res == "inexist") { alert("There is No Gene existed related to GeneId Entered"); $('#load').hide(), $('#base').show(); }
+                        }
+                    });
+                }
+            }
+
+            else {
+                alert("GeneId is Required");
+            }
+        }
+
+        // To add Comments TO Gene
+        function add_possible_comments() {
+            if ($('#ddl_genenames option:selected').text() != "--Please Select--") {
+                if ($.trim($('#div_genecitions').html()) != '') {
+                    //$('input[name="chkgenecitaiton"]').each(function () { 
+                    if ($('input[name="chkgenecitaiton"]').is(':checked')) {
+                        $('#load').show();
+                        $('#base').hide();
+                        var newfield = GetPmidCitations();
+                        var val = JSON.stringify(newfield);
+                        $.ajax({
+                            type: 'POST',
+                            url: ServerURL + '/Admin/AddSelectedComment/',
+                            data: val,
+                            async: false,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                if (data == "false") {
+                                    alert("Error in saving Field");
+                                    $('#load').hide();
+                                    $('#base').show();
+                                }
+                                if (data == "exists") {
+                                    alert("Gene Citation Already Exists");
+                                    $('#load').hide();
+                                    $('#base').show();
+                                } else {
+                                    window.location.href = ServerURL + '/Admin/Gene?geneid=' + data + ''
+                                }
+                            }
+                        })
+                    }
+                    else { alert("Choose comments to be added, please"); }
+                    //});
+                }
+                else { alert("Please Find Comments related to Citations to Add"); }
+            }
+            else { alert("Please Choose Gene!"); }
+        }
+
+        function GetPmidCitations() {
+            var options = Getdata();
+            var CommentField = {
+                GeneID: $('#ddl_genenames').val(),
+                Getcheckedcomments: options,
+            };
+            return CommentField;
+        }
+
+        function Getdata() {
+            var chid = [];
+            $('input[name="chkgenecitaiton"]').each(function () {
+                if ($(this).is(':checked')) {
+                    var uid = [];
+                    var id = $(this).val();
+                    uid = id.split("'_'");
+                    var Field = { Editorscommentid: uid[0], Editorpmid: uid[1] };
+                    chid.push(Field);
+                }
+            });
+            return chid;
+        }
+
+        //To add citation to Gene with Pmid
+        function add_citation_to_gene() {
+
+            if ($.trim($('#txt_gene_citation').val()) != '') {
+                if (! /^[0-9]+$/.test($('#txt_gene_citation').val())) {
+                    alert("Enter only digits, please");
+                    return false;
+                }
+
+                $('#load').show();
+                $('#base').hide();
+                var f;
+                f = {
+                    GeneID: $('#ddl_genenames').val(),
+                    Pmid: $('#txt_gene_citation').val(),
+                }
+                var val = JSON.stringify(f);
+                $.ajax({
+                    type: 'POST',
+                    url: ServerURL + '/Admin/Gene_Citations/',
+                    data: val,
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+
+                        if (res.checkexists == "Addednewcit") {
+                            // alert("GeneCitation Added Successfully");
+                            window.location.href = ServerURL + '/Admin/Gene?geneid=' + res.GeneID + ''
+                        } if (res == "exists") {
+                            alert("Citation Pmid already exists"); $('#load').hide();
+                            $('#base').show();
+                        }
+                        if (res == "inexist") {
+                            alert("There is No Citation Pmid to Add"); $('#load').hide();
+                            $('#base').show();
+                        }
+                    }
+                })
+                //  ServerURL + '/Admin/Gene_Citations?geneid=' + $('#ddl_genenames').val() + "&Citationpmid=" + $('#txt_gene_citation').val() + '',
+
+            }
+            else {
+                alert("Citation Pmid is Required");
+            }
+        }
+
+        function RemoveComment(cntrl) {
+
+            var uid = $(cntrl).attr('name');
+            var cid = [];
+            cid = uid.split("'_'");
+            if (confirm("Remove this Editor Comment?")) {
+                $('#load').show();
+                $('#base').hide();
+                $.ajax({
+                    url: ServerURL + '/Admin/DeleteEditorComment?ge_cmnt=' + cid[0] + "&Commentid=" + cid[1] + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    error: function () {
+                        alert("An error occurred."); $('#load').hide(), $('#base').show();
+                    },
+                    success: function (data) {
+                        window.location.href = ServerURL + '/Admin/Gene?geneid=' + data + ''
+                    }
+                });
+                //  $(cntrl).parents('.div_addedgenecmnt').remove();
+            }
+        }
+
+        function Deletegenecitation(cntrl) {
+
+            var uid = $(cntrl).attr('name');
+            if (confirm("Are you sure to delete this citation ?")) {
+                $('#load').show();
+                $('#base').hide();
+                $.ajax({
+                    url: ServerURL + '/Admin/DeleteCitationGENE?ge_cit=' + $('#ddl_genenames').val() + "&Citationpmid=" + uid + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    error: function () {
+                        alert("An error occurred."); $('#load').hide(), $('#base').show();
+                    },
+                    success: function (data) {
+                        window.location.href = ServerURL + '/Admin/Gene?geneid=' + data + ''
+                    }
+                });
+                // $(cntrl).parents('.divgenecitation').remove();
+            }
+        }
+
+        var Getcitations = function Getcitations() {
+            var citations = [];
+            $('.lblgene').each(function (index, element) {
+                if ($(element).hasClass('lbladd')) {
+                    var id = $(element).attr('aria-labelledby');
+                    var cmid = [];
+                    cmid = id.split('_');
+                    var Field = { SpecialtyId: cmid[0], Topicid: cmid[1], SubTopicid: cmid[2], GeneValue: index + 1 };
+                    citations.push(Field);
+                }
+                else if ($(element).hasClass('lbledit')) {
+                    var uid = $(element).attr('aria-labelledby');
+                    var csmid = [];
+                    csmid = uid.split('_');
+                    var editField = { SpecialtyId: csmid[0], Topicid: csmid[1], SubTopicid: csmid[2], GeneValue: index + 1 };
+                    citations.push(editField);
+                }
+            });
+            return citations;
+        }
+
+        //To add Screen RESOURCE Links
+        function add_sclink() {
+
+            if ($('#ddl_genenames option:selected').text() != "--Please Select--") {
+                if ($.trim($('#txt_sclink').val()) != '') {
+                    var regurl = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)");
+                    if (!regurl.test($('#txt_sclink').val())) {
+                        alert("Enter Url, please");
+                        return false;
+                    }
+                    $('#load').show();
+                    $('#base').hide();
+                    var e;
+                    e = {
+                        GeneID: $('#ddl_genenames').val(),
+                        Sclink: $('#txt_sclink').val(),
+                    }
+                    var val = JSON.stringify(e);
+                    $.ajax({
+                        url: ServerURL + '/Admin/ScreenResourceLinks/',
+                        dataType: "json",
+                        data: val,
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST",
+                        error: function () {
+                            alert("An error occurred."); $('#load').hide(), $('#base').show();
+                        },
+                        success: function (data) {
+                            window.location.href = ServerURL + '/Admin/Gene?geneid=' + data + ''
+                        }
+                    });
+                    //window.location.href = ServerURL + '/Admin/Gene?geneid=' + $('#ddl_genenames').val() + "&ScLink=" + $('#txt_sclink').val() + '' 
+                }
+                else { alert('Please Enter Screen ResourceLink'); }
+            }
+            else { alert("Please Choose Gene!"); }
+        }
+
+        //To edit Screen RESOURCE Links
+        $('.editsclink').click(function () {
+            var uid = $(this).attr('name');
+            var linkinfo = [];
+            linkinfo = uid.split("'_'");
+            var linkdid = linkinfo[1];
+            var txt = $($($($(this).parent()).prev()).children()).text();
+            $('#txt_sclink').val(txt);
+            $('#txt_sclink').attr("name", linkdid);
+            $('#linksForm').show();
+            $('#addsclink').hide();
+            $('#updatesclink').show();
+            $('#cancelsclink').show();
+        });
+
+        //To update Screen RESOURCE Links
+        function update_sclink() {
+
+            if ($.trim($('#txt_sclink').val()) != '') {
+                var regurl = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)");
+                if (!regurl.test($('#txt_sclink').val())) {
+                    alert("Enter Url, please");
+                    return false;
+                }
+                $('#load').show();
+                $('#base').hide();
+                var linkid = $('#txt_sclink').attr('name');
+                $('#addsclink').show();
+                $('#updatesclink').hide();
+                $('#cancelsclink').hide();
+                var newfield = GetUpdatelinks(linkid);
+                var val = JSON.stringify(newfield);
+                $.ajax({
+                    type: 'POST',
+                    url: ServerURL + '/Admin/ScreenResourceLinks/',
+                    data: val,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        window.location.href = ServerURL + '/Admin/Gene?geneid=' + data + ''
+                    }
+                })
+            }
+            else { alert('Please Enter Screen ResourceLink to Update'); }
+
+        }
+
+        function GetUpdatelinks(linkid) {
+            var Field = {
+                GeneID: $('#ddl_genenames').val(),
+                Sclink: $('#txt_sclink').val(),
+                Linkid: linkid
+            };
+            return Field;
+        }
+
+        function cancel_sclink() {
+            $('#addsclink').show();
+            $('#updatesclink').hide();
+            $('#cancelsclink').hide();
+            $('#txt_sclink').val('');
+        }
+
+        //To Delete Screen RESOURCE Links
+        function Deletesclink(cntrl) {
+            var uid = $(cntrl).attr('name');
+            var cid = [];
+            cid = uid.split("'_'");
+            if (confirm("Are you sure to unlink this url from this gene ?")) {
+                $('#load').show();
+                $('#base').hide();
+                $.ajax({
+                    url: ServerURL + '/Admin/DeleteSclink?ge_sclnk=' + cid[0] + "&Linkid=" + cid[1] + '',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    error: function () {
+                        alert("An error occurred."); $('#load').hide(), $('#base').show();
+                    },
+                    success: function (data) {
+                        window.location.href = ServerURL + '/Admin/Gene?geneid=' + data + ''
+                    }
+                });
+
+            }
+
+        }
+
+        //To clear whole Gene page
+        function clear_gene() {
+            $('#details_section').hide().empty();
+            $("#ddl_genenames option:eq(0)").val(0).attr("selected", true);
+            $("#txtaddgene").val('').empty();
+        }
+    </script>
+
+    //}
+}
+
+<style type="text/css">
+    .ui-dialog {
+        z-index: 10000;
+    }
+</style>
+
+<link href="~/Content/GridView.css" rel="stylesheet" />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/Commonscript")
+    @Scripts.Render("~/bundles/jquery_placeholder")
+}

@@ -1,0 +1,718 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AJAModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AJAModelStoreContainer">
+          <EntitySet Name="AJA_tbl_FieldOptions" EntityType="AJAModel.Store.AJA_tbl_FieldOptions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AJA_tbl_FieldTypes" EntityType="AJAModel.Store.AJA_tbl_FieldTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AJA_tbl_FieldValues" EntityType="AJAModel.Store.AJA_tbl_FieldValues" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AJA_tbl_Roles" EntityType="AJAModel.Store.AJA_tbl_Roles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AJA_tbl_UserFields" EntityType="AJAModel.Store.AJA_tbl_UserFields" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AJA_tbl_UserRoles" EntityType="AJAModel.Store.AJA_tbl_UserRoles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AJA_tbl_Users" EntityType="AJAModel.Store.AJA_tbl_Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Countries" EntityType="AJAModel.Store.Countries" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Specialties" EntityType="AJAModel.Store.Specialties" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SubTopics" EntityType="AJAModel.Store.SubTopics" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Topics" EntityType="AJAModel.Store.Topics" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TypePractice" EntityType="AJAModel.Store.TypePractice" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserSpecialties" EntityType="AJAModel.Store.UserSpecialties" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields" Association="AJAModel.Store.FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields">
+            <End Role="AJA_tbl_UserFields" EntitySet="AJA_tbl_UserFields" />
+            <End Role="AJA_tbl_FieldOptions" EntitySet="AJA_tbl_FieldOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions" Association="AJAModel.Store.FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions">
+            <End Role="AJA_tbl_FieldOptions" EntitySet="AJA_tbl_FieldOptions" />
+            <End Role="AJA_tbl_FieldValues" EntitySet="AJA_tbl_FieldValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_FieldValues_AJA_tbl_Users" Association="AJAModel.Store.FK_AJA_tbl_FieldValues_AJA_tbl_Users">
+            <End Role="AJA_tbl_Users" EntitySet="AJA_tbl_Users" />
+            <End Role="AJA_tbl_FieldValues" EntitySet="AJA_tbl_FieldValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes" Association="AJAModel.Store.FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes">
+            <End Role="AJA_tbl_FieldTypes" EntitySet="AJA_tbl_FieldTypes" />
+            <End Role="AJA_tbl_UserFields" EntitySet="AJA_tbl_UserFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_UserFields_AJA_tbl_Roles" Association="AJAModel.Store.FK_AJA_tbl_UserFields_AJA_tbl_Roles">
+            <End Role="AJA_tbl_Roles" EntitySet="AJA_tbl_Roles" />
+            <End Role="AJA_tbl_UserFields" EntitySet="AJA_tbl_UserFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_UserRoles_AJA_tbl_Roles" Association="AJAModel.Store.FK_AJA_tbl_UserRoles_AJA_tbl_Roles">
+            <End Role="AJA_tbl_Roles" EntitySet="AJA_tbl_Roles" />
+            <End Role="AJA_tbl_UserRoles" EntitySet="AJA_tbl_UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_UserRoles_AJA_tbl_Users" Association="AJAModel.Store.FK_AJA_tbl_UserRoles_AJA_tbl_Users">
+            <End Role="AJA_tbl_Users" EntitySet="AJA_tbl_Users" />
+            <End Role="AJA_tbl_UserRoles" EntitySet="AJA_tbl_UserRoles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AJA_tbl_FieldOptions">
+          <Key>
+            <PropertyRef Name="OptionID" />
+          </Key>
+          <Property Name="OptionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserFieldID" Type="int" Nullable="false" />
+          <Property Name="OptionText" Type="varchar" MaxLength="50" />
+          <Property Name="OptionValue" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_FieldTypes">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TypeName" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_FieldValues">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="OptionID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="OptionID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="varchar(max)" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="varchar" Nullable="false" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_UserFields">
+          <Key>
+            <PropertyRef Name="UserFieldID" />
+          </Key>
+          <Property Name="UserFieldID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="FieldName" Type="varchar" MaxLength="150" />
+          <Property Name="TypeID" Type="int" />
+          <Property Name="ShowOrder" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsMandatory" Type="bit" />
+          <Property Name="DisplayYN" Type="bit" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_UserRoles">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmailID" Type="varchar" MaxLength="150" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="Activated" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="Fname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Lname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Pincode" Type="nvarchar" MaxLength="50" />
+          <Property Name="specialtyID" Type="int" />
+          <Property Name="CountryID" Type="int" />
+          <Property Name="graduationYear" Type="int" />
+          <Property Name="profession" Type="nvarchar" MaxLength="50" />
+          <Property Name="typePracticeID" Type="int" />
+          <Property Name="UserTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="IseditorEmaiSend" Type="bit" Nullable="false" />
+          <Property Name="IsSavedAqemaisend" Type="bit" />
+          <Property Name="deleted_ind" Type="nvarchar" MaxLength="1" />
+          <Property Name="surveyValidated" Type="bit" />
+          <Property Name="userType" Type="nvarchar" MaxLength="50" />
+          <Property Name="yrsPractice" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="countryID" />
+          </Key>
+          <Property Name="countryID" Type="int" Nullable="false" />
+          <Property Name="countryName" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Specialties">
+          <Key>
+            <PropertyRef Name="SpecialtyID" />
+          </Key>
+          <Property Name="SpecialtyID" Type="int" Nullable="false" />
+          <Property Name="SpecialtyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="isInUse" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubTopics">
+          <Key>
+            <PropertyRef Name="SubTopicID" />
+          </Key>
+          <Property Name="SubTopicID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TopicID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="SubTopicName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="createtime" Type="datetime" Nullable="false" />
+          <Property Name="LegacyID" Type="int" />
+          <Property Name="Priority" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Topics">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SpecialtyID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="TopicName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="createtime" Type="datetime" Nullable="false" />
+          <Property Name="LegacyID" Type="int" />
+        </EntityType>
+        <EntityType Name="TypePractice">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="TypePractice" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserSpecialties">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="SpecialtyID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="SpecialtyID" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields">
+          <End Role="AJA_tbl_UserFields" Type="AJAModel.Store.AJA_tbl_UserFields" Multiplicity="1" />
+          <End Role="AJA_tbl_FieldOptions" Type="AJAModel.Store.AJA_tbl_FieldOptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_UserFields">
+              <PropertyRef Name="UserFieldID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_FieldOptions">
+              <PropertyRef Name="UserFieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions">
+          <End Role="AJA_tbl_FieldOptions" Type="AJAModel.Store.AJA_tbl_FieldOptions" Multiplicity="1" />
+          <End Role="AJA_tbl_FieldValues" Type="AJAModel.Store.AJA_tbl_FieldValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_FieldOptions">
+              <PropertyRef Name="OptionID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_FieldValues">
+              <PropertyRef Name="OptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_FieldValues_AJA_tbl_Users">
+          <End Role="AJA_tbl_Users" Type="AJAModel.Store.AJA_tbl_Users" Multiplicity="1" />
+          <End Role="AJA_tbl_FieldValues" Type="AJAModel.Store.AJA_tbl_FieldValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_FieldValues">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes">
+          <End Role="AJA_tbl_FieldTypes" Type="AJAModel.Store.AJA_tbl_FieldTypes" Multiplicity="0..1" />
+          <End Role="AJA_tbl_UserFields" Type="AJAModel.Store.AJA_tbl_UserFields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_FieldTypes">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_UserFields">
+              <PropertyRef Name="TypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_UserFields_AJA_tbl_Roles">
+          <End Role="AJA_tbl_Roles" Type="AJAModel.Store.AJA_tbl_Roles" Multiplicity="1" />
+          <End Role="AJA_tbl_UserFields" Type="AJAModel.Store.AJA_tbl_UserFields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_UserFields">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_UserRoles_AJA_tbl_Roles">
+          <End Role="AJA_tbl_Roles" Type="AJAModel.Store.AJA_tbl_Roles" Multiplicity="1" />
+          <End Role="AJA_tbl_UserRoles" Type="AJAModel.Store.AJA_tbl_UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_UserRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_UserRoles_AJA_tbl_Users">
+          <End Role="AJA_tbl_Users" Type="AJAModel.Store.AJA_tbl_Users" Multiplicity="1" />
+          <End Role="AJA_tbl_UserRoles" Type="AJAModel.Store.AJA_tbl_UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_UserRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AJAModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AJA_UserEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="AJA_tbl_FieldOptions" EntityType="AJAModel.AJA_tbl_FieldOptions" />
+          <EntitySet Name="AJA_tbl_FieldValues" EntityType="AJAModel.AJA_tbl_FieldValues" />
+          <EntitySet Name="AJA_tbl_Roles" EntityType="AJAModel.AJA_tbl_Roles" />
+          <EntitySet Name="AJA_tbl_UserFields" EntityType="AJAModel.AJA_tbl_UserFields" />
+          <AssociationSet Name="FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields" Association="AJAModel.FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields">
+            <End Role="AJA_tbl_UserFields" EntitySet="AJA_tbl_UserFields" />
+            <End Role="AJA_tbl_FieldOptions" EntitySet="AJA_tbl_FieldOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions" Association="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions">
+            <End Role="AJA_tbl_FieldOptions" EntitySet="AJA_tbl_FieldOptions" />
+            <End Role="AJA_tbl_FieldValues" EntitySet="AJA_tbl_FieldValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AJA_tbl_UserFields_AJA_tbl_Roles" Association="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_Roles">
+            <End Role="AJA_tbl_Roles" EntitySet="AJA_tbl_Roles" />
+            <End Role="AJA_tbl_UserFields" EntitySet="AJA_tbl_UserFields" />
+          </AssociationSet>
+          <EntitySet Name="AJA_tbl_FieldTypes" EntityType="AJAModel.AJA_tbl_FieldTypes" />
+          <AssociationSet Name="FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes" Association="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes">
+            <End Role="AJA_tbl_FieldTypes" EntitySet="AJA_tbl_FieldTypes" />
+            <End Role="AJA_tbl_UserFields" EntitySet="AJA_tbl_UserFields" />
+          </AssociationSet>
+          <EntitySet Name="Specialties" EntityType="AJAModel.Specialty" />
+          <EntitySet Name="AJA_tbl_Users" EntityType="AJAModel.AJA_tbl_Users" />
+          <EntitySet Name="Countries" EntityType="AJAModel.Country" />
+          <AssociationSet Name="FK_AJA_tbl_FieldValues_AJA_tbl_Users" Association="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_Users">
+            <End Role="AJA_tbl_Users" EntitySet="AJA_tbl_Users" />
+            <End Role="AJA_tbl_FieldValues" EntitySet="AJA_tbl_FieldValues" />
+          </AssociationSet>
+          <AssociationSet Name="AJA_tbl_UserRoles" Association="AJAModel.AJA_tbl_UserRoles">
+            <End Role="AJA_tbl_Roles" EntitySet="AJA_tbl_Roles" />
+            <End Role="AJA_tbl_Users" EntitySet="AJA_tbl_Users" />
+          </AssociationSet>
+          <EntitySet Name="UserSpecialties" EntityType="AJAModel.UserSpecialty" />
+          <EntitySet Name="SubTopics" EntityType="AJAModel.SubTopic" />
+          <EntitySet Name="Topics" EntityType="AJAModel.Topic" />
+          <EntitySet Name="TypePractices" EntityType="AJAModel.TypePractice" />
+        </EntityContainer>
+        <EntityType Name="AJA_tbl_FieldOptions">
+          <Key>
+            <PropertyRef Name="OptionID" />
+          </Key>
+          <Property Name="OptionID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserFieldID" Type="Int32" Nullable="false" />
+          <Property Name="OptionText" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="OptionValue" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="AJA_tbl_UserFields" Relationship="AJAModel.FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields" FromRole="AJA_tbl_FieldOptions" ToRole="AJA_tbl_UserFields" />
+          <NavigationProperty Name="AJA_tbl_FieldValues" Relationship="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions" FromRole="AJA_tbl_FieldOptions" ToRole="AJA_tbl_FieldValues" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_FieldValues">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="OptionID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="OptionID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="AJA_tbl_FieldOptions" Relationship="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions" FromRole="AJA_tbl_FieldValues" ToRole="AJA_tbl_FieldOptions" />
+          <NavigationProperty Name="AJA_tbl_Users" Relationship="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_Users" FromRole="AJA_tbl_FieldValues" ToRole="AJA_tbl_Users" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="AJA_tbl_UserFields" Relationship="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_Roles" FromRole="AJA_tbl_Roles" ToRole="AJA_tbl_UserFields" />
+          <NavigationProperty Name="AJA_tbl_Users" Relationship="AJAModel.AJA_tbl_UserRoles" FromRole="AJA_tbl_Roles" ToRole="AJA_tbl_Users" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_UserFields">
+          <Key>
+            <PropertyRef Name="UserFieldID" />
+          </Key>
+          <Property Name="UserFieldID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="FieldName" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="TypeID" Type="Int32" />
+          <Property Name="ShowOrder" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsMandatory" Type="Boolean" />
+          <Property Name="DisplayYN" Type="Boolean" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="AJA_tbl_FieldOptions" Relationship="AJAModel.FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields" FromRole="AJA_tbl_UserFields" ToRole="AJA_tbl_FieldOptions" />
+          <NavigationProperty Name="AJA_tbl_Roles" Relationship="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_Roles" FromRole="AJA_tbl_UserFields" ToRole="AJA_tbl_Roles" />
+          <NavigationProperty Name="AJA_tbl_FieldTypes" Relationship="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes" FromRole="AJA_tbl_UserFields" ToRole="AJA_tbl_FieldTypes" />
+        </EntityType>
+        <Association Name="FK_AJA_tbl_FieldOptions_AJA_tbl_UserFields">
+          <End Role="AJA_tbl_UserFields" Type="AJAModel.AJA_tbl_UserFields" Multiplicity="1" />
+          <End Role="AJA_tbl_FieldOptions" Type="AJAModel.AJA_tbl_FieldOptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_UserFields">
+              <PropertyRef Name="UserFieldID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_FieldOptions">
+              <PropertyRef Name="UserFieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_FieldValues_AJA_tbl_FieldOptions">
+          <End Role="AJA_tbl_FieldOptions" Type="AJAModel.AJA_tbl_FieldOptions" Multiplicity="1" />
+          <End Role="AJA_tbl_FieldValues" Type="AJAModel.AJA_tbl_FieldValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_FieldOptions">
+              <PropertyRef Name="OptionID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_FieldValues">
+              <PropertyRef Name="OptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AJA_tbl_UserFields_AJA_tbl_Roles">
+          <End Role="AJA_tbl_Roles" Type="AJAModel.AJA_tbl_Roles" Multiplicity="1" />
+          <End Role="AJA_tbl_UserFields" Type="AJAModel.AJA_tbl_UserFields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_UserFields">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AJA_tbl_FieldTypes">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Type="Int32" Name="TypeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="TypeName" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="UpdatedBy" />
+          <Property Type="DateTime" Name="UpdatedDate" Precision="3" />
+          <NavigationProperty Name="AJA_tbl_UserFields" Relationship="AJAModel.FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes" FromRole="AJA_tbl_FieldTypes" ToRole="AJA_tbl_UserFields" />
+        </EntityType>
+        <Association Name="FK_AJA_tbl_UserFields_AJA_tbl_FieldTypes">
+          <End Type="AJAModel.AJA_tbl_FieldTypes" Role="AJA_tbl_FieldTypes" Multiplicity="0..1" />
+          <End Type="AJAModel.AJA_tbl_UserFields" Role="AJA_tbl_UserFields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_FieldTypes">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_UserFields">
+              <PropertyRef Name="TypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Specialty">
+          <Key>
+            <PropertyRef Name="SpecialtyID" />
+          </Key>
+          <Property Type="Int32" Name="SpecialtyID" Nullable="false" />
+          <Property Type="String" Name="SpecialtyName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="isInUse" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AJA_tbl_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="Int32" Name="UserID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="EmailID" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Activated" />
+          <Property Type="DateTime" Name="CreatedDate" Precision="3" />
+          <Property Type="DateTime" Name="UpdatedDate" Precision="3" />
+          <Property Type="Int32" Name="UpdatedBy" />
+          <Property Type="String" Name="Fname" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Lname" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Pincode" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Type="Int32" Name="specialtyID" />
+          <Property Type="Int32" Name="CountryID" />
+          <Property Type="Int32" Name="graduationYear" />
+          <Property Type="String" Name="profession" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="typePracticeID" />
+          <Property Type="String" Name="UserTitle" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AJA_tbl_FieldValues" Relationship="AJAModel.FK_AJA_tbl_FieldValues_AJA_tbl_Users" FromRole="AJA_tbl_Users" ToRole="AJA_tbl_FieldValues" />
+          <NavigationProperty Name="AJA_tbl_Roles" Relationship="AJAModel.AJA_tbl_UserRoles" FromRole="AJA_tbl_Users" ToRole="AJA_tbl_Roles" />
+          <Property Type="Boolean" Name="IseditorEmaiSend" Nullable="false" />
+          <Property Type="Boolean" Name="IsSavedAqemaisend" />
+          <Property Type="String" Name="deleted_ind" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="surveyValidated" />
+          <Property Type="String" Name="userType" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="yrsPractice" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="countryID" />
+          </Key>
+          <Property Type="Int32" Name="countryID" Nullable="false" />
+          <Property Type="String" Name="countryName" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_AJA_tbl_FieldValues_AJA_tbl_Users">
+          <End Type="AJAModel.AJA_tbl_Users" Role="AJA_tbl_Users" Multiplicity="1" />
+          <End Type="AJAModel.AJA_tbl_FieldValues" Role="AJA_tbl_FieldValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AJA_tbl_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AJA_tbl_FieldValues">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AJA_tbl_UserRoles">
+          <End Type="AJAModel.AJA_tbl_Roles" Role="AJA_tbl_Roles" Multiplicity="*" />
+          <End Type="AJAModel.AJA_tbl_Users" Role="AJA_tbl_Users" Multiplicity="*" />
+        </Association>
+        <EntityType Name="UserSpecialty">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="SpecialtyID" />
+          </Key>
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="Int32" Name="SpecialtyID" Nullable="false" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SubTopic">
+          <Key>
+            <PropertyRef Name="SubTopicID" />
+          </Key>
+          <Property Type="Int32" Name="SubTopicID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="TopicID" Nullable="false" />
+          <Property Type="Byte" Name="Type" Nullable="false" />
+          <Property Type="Int32" Name="UserID" />
+          <Property Type="String" Name="SubTopicName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="createtime" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="LegacyID" />
+          <Property Type="Byte" Name="Priority" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Topic">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Type="Int32" Name="TopicID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="SpecialtyID" Nullable="false" />
+          <Property Type="Byte" Name="Type" Nullable="false" />
+          <Property Type="Int32" Name="UserID" />
+          <Property Type="String" Name="TopicName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="createtime" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="LegacyID" />
+        </EntityType>
+        <EntityType Name="TypePractice">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="TypePractice1" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AJAModelStoreContainer" CdmEntityContainer="AJA_UserEntities">
+          <EntitySetMapping Name="AJA_tbl_FieldOptions">
+            <EntityTypeMapping TypeName="AJAModel.AJA_tbl_FieldOptions">
+              <MappingFragment StoreEntitySet="AJA_tbl_FieldOptions">
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="UserFieldID" ColumnName="UserFieldID" />
+                <ScalarProperty Name="OptionText" ColumnName="OptionText" />
+                <ScalarProperty Name="OptionValue" ColumnName="OptionValue" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AJA_tbl_FieldValues">
+            <EntityTypeMapping TypeName="AJAModel.AJA_tbl_FieldValues">
+              <MappingFragment StoreEntitySet="AJA_tbl_FieldValues">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AJA_tbl_Roles">
+            <EntityTypeMapping TypeName="AJAModel.AJA_tbl_Roles">
+              <MappingFragment StoreEntitySet="AJA_tbl_Roles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AJA_tbl_UserFields">
+            <EntityTypeMapping TypeName="AJAModel.AJA_tbl_UserFields">
+              <MappingFragment StoreEntitySet="AJA_tbl_UserFields">
+                <ScalarProperty Name="UserFieldID" ColumnName="UserFieldID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="ShowOrder" ColumnName="ShowOrder" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsMandatory" ColumnName="IsMandatory" />
+                <ScalarProperty Name="DisplayYN" ColumnName="DisplayYN" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AJA_tbl_FieldTypes">
+            <EntityTypeMapping TypeName="AJAModel.AJA_tbl_FieldTypes">
+              <MappingFragment StoreEntitySet="AJA_tbl_FieldTypes">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Specialties">
+            <EntityTypeMapping TypeName="AJAModel.Specialty">
+              <MappingFragment StoreEntitySet="Specialties">
+                <ScalarProperty Name="isInUse" ColumnName="isInUse" />
+                <ScalarProperty Name="SpecialtyName" ColumnName="SpecialtyName" />
+                <ScalarProperty Name="SpecialtyID" ColumnName="SpecialtyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AJA_tbl_Users">
+            <EntityTypeMapping TypeName="AJAModel.AJA_tbl_Users">
+              <MappingFragment StoreEntitySet="AJA_tbl_Users">
+                <ScalarProperty Name="yrsPractice" ColumnName="yrsPractice" />
+                <ScalarProperty Name="userType" ColumnName="userType" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="surveyValidated" ColumnName="surveyValidated" />
+                <ScalarProperty Name="deleted_ind" ColumnName="deleted_ind" />
+                <ScalarProperty Name="IsSavedAqemaisend" ColumnName="IsSavedAqemaisend" />
+                <ScalarProperty Name="IseditorEmaiSend" ColumnName="IseditorEmaiSend" />
+                <ScalarProperty Name="UserTitle" ColumnName="UserTitle" />
+                <ScalarProperty Name="typePracticeID" ColumnName="typePracticeID" />
+                <ScalarProperty Name="profession" ColumnName="profession" />
+                <ScalarProperty Name="graduationYear" ColumnName="graduationYear" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="specialtyID" ColumnName="specialtyID" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Activated" ColumnName="Activated" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="AJAModel.Country">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="countryName" ColumnName="countryName" />
+                <ScalarProperty Name="countryID" ColumnName="countryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AJA_tbl_UserRoles" TypeName="AJAModel.AJA_tbl_UserRoles" StoreEntitySet="AJA_tbl_UserRoles">
+            <EndProperty Name="AJA_tbl_Users">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+            <EndProperty Name="AJA_tbl_Roles">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="UserSpecialties">
+            <EntityTypeMapping TypeName="AJAModel.UserSpecialty">
+              <MappingFragment StoreEntitySet="UserSpecialties">
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="SpecialtyID" ColumnName="SpecialtyID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubTopics">
+            <EntityTypeMapping TypeName="AJAModel.SubTopic">
+              <MappingFragment StoreEntitySet="SubTopics">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="createtime" ColumnName="createtime" />
+                <ScalarProperty Name="SubTopicName" ColumnName="SubTopicName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="SubTopicID" ColumnName="SubTopicID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Topics">
+            <EntityTypeMapping TypeName="AJAModel.Topic">
+              <MappingFragment StoreEntitySet="Topics">
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="createtime" ColumnName="createtime" />
+                <ScalarProperty Name="TopicName" ColumnName="TopicName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="SpecialtyID" ColumnName="SpecialtyID" />
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypePractices">
+            <EntityTypeMapping TypeName="AJAModel.TypePractice">
+              <MappingFragment StoreEntitySet="TypePractice">
+                <ScalarProperty Name="TypePractice1" ColumnName="TypePractice" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

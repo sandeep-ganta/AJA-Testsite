@@ -1,0 +1,297 @@
+﻿@using DAL;
+@using DAL.Models;
+@model DAL.Models.MyLibraryModel
+
+@{
+    Layout = "";
+    ViewBag.Title = "Abstract";
+    CitationDetailsModel AbstractCitation = new CitationDetailsModel();
+    AbstractCitation = Model.CitationDetails.FirstOrDefault();
+}
+
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/jquery")
+
+<link href="~/Content/ajastyle.css" rel="stylesheet" />
+<link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" /> 
+
+<style type="text/css">
+    td
+    {
+        text-align: left;
+    }
+</style>
+
+<div align="left">
+
+    <table width="1000" cellpadding="8" cellspacing="0" border="0" class="headerContr">
+        <tr valign="top" height="85">
+            <td colspan="2" align="left">
+                <img src="/Content/images/Logo.fw.png" width="310" height="83">
+            </td>
+
+            <td width="270" align="right" valign="bottom" style="text-align: right;">
+                <form action="#" method="post">
+                    <input type="submit" value="Print" onclick="window.print()">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+
+    <table width="1000" cellpadding="8" cellspacing="0" border="0">
+
+        <tr>
+            <td align="center" width="100%" valign="top">
+
+                <!-- <form action="addsearch.cfm" method="post" name="jerry">	-->
+                <table border="0" width="100%">
+                    <!-- Citation header and abstract text. -->
+
+
+                    @if (Model.UserComment != null)
+                    {
+                        <tr>
+                            <td>&nbsp;</td>
+                            @if (!string.IsNullOrEmpty((Model.UserComment.nickname ?? "").Trim()))
+                            {
+                                <td valign="top" align="right"><strong>Nickname</strong></td>
+                                <td valign="top"><i>@Model.UserComment.nickname</i></td>
+                            }
+                        </tr>                                        
+                    }
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td valign="top" align="right"><strong>PMID</strong></td>
+                        <td valign="top">
+                            @if (int.Parse(Request.QueryString["MID"]) > 0)
+                            {
+                                @Request.QueryString["MID"] @: 
+                                @AbstractCitation.StatusDisplay
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td valign="top" align="right"><strong>Title</strong></td>
+                        <td valign="top">@Html.Raw(HttpUtility.HtmlDecode(AbstractCitation.ArticleTitle))
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td valign="top" align="right"><strong>Author</strong></td>
+                        <td>@AbstractCitation.AuthorList
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td valign="top" align="right"><strong>Source</strong></td>
+                        <td valign="top">
+                            @if (!string.IsNullOrEmpty(AbstractCitation.MedlineTA))
+                            { @AbstractCitation.MedlineTA;
+                            }
+                            @if (!string.IsNullOrEmpty(AbstractCitation.DisplayDate))
+                            { @AbstractCitation.DisplayDate;
+                            }
+                            @if (!string.IsNullOrEmpty(AbstractCitation.MedlinePgn))
+                            { @AbstractCitation.MedlinePgn;
+                            }
+
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td valign="top" align="right"><strong>Abstract</strong></td>
+                        <td valign="top">@Html.Raw(HttpUtility.HtmlDecode(AbstractCitation.AbstractText))</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <br />
+                        </td>
+                    </tr>
+
+                    <!--- Editors Choice 2.0 comment display --->
+
+                    @foreach (var AbstractComment in Model.AbstractCommentsECList)
+                    {
+                        bool EditorShown = false;
+
+                        Model.CommentContext = MyLibraryBL.GetCommentContext(int.Parse(Request.QueryString["oid"]), AbstractComment.ThreadId, int.Parse(Request.QueryString["MID"]), AbstractComment.CommentId);
+                                                              
+                                        
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="" bgcolor="#ccccff" valign="top">
+                                <table border="1" cellpadding="8" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td>
+                                            <table cellpadding="0" cellspacing="0" border="0" width="90%">
+                                                <tr class="edComHeading" style="font-weight: bold">
+                                                    <td align="center" colspan="2">Editor Comment</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left"></td>
+                                                </tr>
+                                                <tr class="edComHeading" style="font-weight: bold">
+                                                    <td width="20%">Date:
+                                                    </td>
+                                                    <td width="80%">
+                                                        @AbstractComment.OriginalPubDate.ToString("MM/dd/yyy")
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">&nbsp;
+                                                    </td>
+                                                </tr>
+
+                                                @if (!EditorShown)
+                                                { 
+                                                    <tr class="edComHeading">
+                                                        @if (Model.CommentContext.EditorsDetails.MultipleEditors)
+                                                        {
+                                                            <td valign="top">Editors:</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>Editor:</td>
+                                                        }
+                                                        <td>@Model.CommentContext.EditorsDetails.Editors</td>
+                                                    </tr>
+                                                        bool firstRelated = true;
+                                                        foreach (var RelatedCitation in Model.CommentContext.RelatedCitations)
+                                                        {
+                                                            if (firstRelated)
+                                                            {
+                                                    @: <tr>
+@:     <td class="edComHeading">Related Citations:
+                                                                            @:     </td>
+                                                                            @:    <td>
+                                                                                                                                          firstRelated = false;
+                                                            }
+                                                            else
+                                                            {
+                                                                            @:,
+                                                                        }
+                                                                            @Html.ActionLink(RelatedCitation.PMID.ToString(), "abstract", new { specid = Request.QueryString["specid"], oid = RelatedCitation.TopicId, fid = RelatedCitation.SubTopicId, MID = RelatedCitation.PMID })
+                                                        }
+
+                                                        if (firstRelated == false)
+                                                        {
+                                                                        @:</td>
+                                                                        @:</tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        EditorShown = true;
+                                                        }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td colspan="2">&nbsp;</td>
+                                                    </tr>
+                                                    Model.CommentContext.EditorsDetails.EditorIsAuthor = false;
+                                                }
+
+                                                @if (!Model.CommentContext.EditorsDetails.EditorIsAuthor)
+                                                {
+                                                    <tr class="edComHeading">
+                                                        <td>Comment By:</td>
+                                                        <td>@Model.CommentContext.EditorsDetails.Authors</td>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td colspan="2">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">@Html.Raw(HttpUtility.HtmlDecode(AbstractComment.Comment))</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <br />
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>  
+                        <tr>
+                            <td>
+                                <br />
+                            </td>
+                        </tr>    
+                                                     
+                    }
+
+
+                    <!-- Spacer -->
+                    <tr>
+                        <td>
+                            <br />
+                        </td>
+                    </tr>
+
+                    <!--- User comment, if any --->
+                    @if (Model.UserComment != null)
+                    {
+                        if (!string.IsNullOrEmpty(Model.UserComment.comment))
+                        {	
+                            	
+                        <tr>
+                            <td></td>
+                            <td valign="top" align="right"></td>
+                            <td valign="top">
+                                <table border="1" cellpadding="8" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td valign="top" bgcolor="#FFFFE0">
+                                            <img src="/content/images/button-paper-editor.gif" width="16" height="19" alt="" border="0">
+                                            <strong style="font-size: 9pt">@CurrentUser.FirstName @CurrentUser.LastName's Comment</strong> - 
+									<em style="font-size: 9pt">
+                                        @if (Model.UserComment.updatedate != null)
+                                        { 
+                                            @Model.UserComment.updatedate.Value
+                                        }
+
+                                    </em>
+                                            <br>
+                                            @Html.Raw(HttpUtility.HtmlDecode(Model.UserComment.comment))
+                                            <br />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        }
+                    }
+
+                    <!-- Back & Print buttons -->
+                    <tr>
+
+                        <td></td>
+
+                        <td></td>
+
+                        <td>
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <!-- Back & Print button -->
+                                    <td align="right" valign="center" colspan="2" style="text-align: right;">
+                                        <form action="#" method="post">
+                                            <input type="submit" value="Print" onclick="window.print()">
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+ 

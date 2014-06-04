@@ -1,0 +1,233 @@
+﻿@using DAL;
+@using DAL.Models;
+@model DAL.Models.MyLibraryModel
+
+@{
+    ViewBag.Title = "Linkout";
+}
+
+
+<table width="100%">
+    <tr>
+        <td>
+            <table width="1170" align="center" style="margin:0 auto">
+                <tr>
+                    <td>
+                        <img src="~/Content/images/Subpage_banner-1170.jpg">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr> 
+
+    <tr>
+        <td>
+            <div class="commonContent">
+                <table width="1170">
+                    <tr>
+                        <td width="400" align="left" valign="top">
+                            @Html.Partial("_mylibraryFolders", Model)
+                        </td>
+                        <td valign="top" align="left">
+
+                            <table width="650" cellpadding="8" cellspacing="0" border="0" align="Center">
+                                <tr>
+                                    <td align="right">
+                                        @Html.ActionLink("Back", "abstract", "mylibrary", new { specid = Request.QueryString["SpecialityID"], oid = Request.QueryString["oid"], fid = Request.QueryString["fid"], MID = Request.QueryString["PMID"] }, null)
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="center" width="500">
+                                        <table border="0" cellpadding="4" cellspacing="0" width="100%" style="BACKGROUND-COLOR: whitesmoke">
+
+                                            <tr id="LinkOutHeading">
+                                                <td colspan="3">
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width=" " valign="middle"><a href="http://www.ncbi.nlm.nih.gov/entrez/linkout/" title="About the LinkOut service" target="_blank">About LinkOut</a></td>
+                                                                <td width=" ">Full-text LinkOut Information for PMID @Model.LinkoutModelVar.PMID</td>
+                                                                <td width=" " align="right" valign="middle"><a href="http://www.ncbi.nlm.nih.gov/About/disclaimer.html" title="Disclaimer and Copyright Notice" target="_blank">NCBI Disclaimer</a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td width="24">&nbsp;</td>
+                                                <td width="57" align="right" valign="top"><strong>PMID</strong></td>
+                                                <td width="389" valign="top">@Model.LinkoutModelVar.PMID PubMed - indexed for MEDLINE</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td valign="top" align="right"><strong>Title</strong></td>
+                                                <td valign="top">@Model.LinkoutModelVar.ArticleTitle</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td valign="top" align="right"><strong>Author</strong></td>
+                                                <td>@Model.LinkoutModelVar.AuthorFullList</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td valign="top" align="right"><strong>Source</strong></td>
+                                                <td valign="top">@Model.LinkoutModelVar.MedlineTA &nbsp;@Model.LinkoutModelVar.DisplayDate,@Model.LinkoutModelVar.MedlinePgn @*PMID:@Model.LinkoutModelVar.PMID @Model.LinkoutModelVar.StatusDisplay*@
+                                            </tr>
+
+                                            <tr>
+                                                <td class="LinkOutLibraries" colspan="3">
+
+                                                    @*@if ((Model.LinkoutModelVar.Libraries != null && Model.LinkoutModelVar.Aggregator != null && Model.LinkoutModelVar.ProviderPublis != null))
+                        {
+                            *@
+
+                                                    <table>
+
+                                                        <tbody>
+                                                            @if (Model.LinkoutModelVar.ProviderPublis != null)
+                                                            {
+                                                                if (Model.LinkoutModelVar.ProviderPublis.Count > 0)
+                                                                {
+                                        
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <h3>Publishers</h3>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td width="10px">&nbsp;</td>
+
+                                                                    <td>
+                                                                        @foreach (var ProvLinks in Model.LinkoutModelVar.ProviderPublis)
+                                                                        {
+                                                                            <a target="_blank" href=@ProvLinks.URLS>@ProvLinks.ProviderName</a>
+                                                                            <br>
+                                                                            <a></a>
+                                                                            <label>Provided by:</label> <a target="_blank" href=@ProvLinks.URLS>@ProvLinks.ProviderName</a><br>
+                                           
+                                                                            <ul>
+
+                                                                                <li>full-text online 
+                                                                                </li>
+                                                                                <li>publisher of information in url 
+                                                                                </li>
+                                                                                <li>subscription/membership/fee required 
+                                                                                </li>
+                                                                            </ul>
+                                            
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+
+                                                                }
+                                                            }
+
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <h3>Libraries</h3>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td width="650px" colspan="2">
+                                                                    @foreach (var item in Model.LinkoutModelVar.linklist)
+                                                                    {
+                                                                        <p nowrap><a target="_blank" href="@item.URLS">@item.ProviderName </a></p>
+                                                                    }
+
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+
+                                                            @if (Model.LinkoutModelVar.Aggregator != null)
+                                                            {
+                                                                if (Model.LinkoutModelVar.Aggregator.Count > 0)
+                                                                {
+                                        
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <h3>Aggregators</h3>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td width="10px">&nbsp;</td>
+
+                                                                    <td>
+                                                                        @foreach (var aggreg in Model.LinkoutModelVar.Aggregator)
+                                                                        {
+                                                                            <a target="_blank" href=@aggreg.URLS>@aggreg.ProviderName</a>
+                                                                            <br>
+                                                                            <a></a>
+                                                                            <label>Provided by:</label> <a target="_blank" href=@aggreg.URLS>@aggreg.ProviderName</a><br>
+                                           
+                                                                            <ul>
+                                                                                <li>full-text online 
+                                                                                </li>
+                                                                                <li>subscription/membership/fee required 
+                                                                                </li>
+                                                                            </ul>
+                                            
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+
+                                                                }
+                                                            }
+                                                        </tbody>
+
+                                                    </table>
+
+                                                    @*
+                        }
+
+                        else
+                        {
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label>We're sorry, the <a href="http://www.ncbi.nlm.nih.gov/entrez/linkout/" target="_blank">LinkOut Server</a> is busy.</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }*@
+
+                                                </td>
+
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+
+
+                        </td>
+
+                        <td width="170" valign="top" align="right" style="text-align: right">
+                            <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                                <img src="~/Content/images/160x600-ad.jpg" /></a>
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+

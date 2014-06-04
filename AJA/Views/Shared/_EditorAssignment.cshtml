@@ -1,0 +1,104 @@
+﻿@model DAL.EditorsBL.EditorTopics
+
+@if (Model != null)
+{
+    using (@Html.BeginForm("UpdateEditorAssignment", "Admin", FormMethod.Post, new { @id = "form_Edit_EditorAssignment" }))
+    {
+    @Html.ValidationSummary(true)         
+    
+    <div>
+        <div class="udctnt">
+            <ol>
+                <li>
+                    @Html.HiddenFor(model => model.EditorID, new { @id = "txt_EditorId" })
+                </li>
+                <li>
+                    @if (Model.EditorID != 0 && Model.TopicID != 0)
+                    {
+                        @Html.HiddenFor(model => model.TopicID, new { @id = "txt_TopicId" })
+                    }
+                </li>
+                <li>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TopicName)
+                    </div>
+                    <div class="editor-field">
+                        @if (Model.EditorID != 0 && Model.TopicID == 0)
+                        {
+                            @Html.DropDownListFor(m => m.TopicID, Model.TopicList, "--Please Select--", new { id = "topicnameddl" })                          
+                            @Html.ValidationMessageFor(m => m.TopicID)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.TopicName)
+                        }
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.StartDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.StartDate, new { id = "StartDatedatepicker" })
+                        @Html.ValidationMessageFor(model => model.StartDate)
+
+                    </div>
+                </li>
+
+                <li>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.RetireDate)
+                    </div>
+                    <div class="editor-field">
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.RetireDate, new { id = "RetireDatedatepicker" })
+                            @Html.ValidationMessageFor(model => model.RetireDate)
+                        </div>
+
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div>
+            <br />
+        </div>
+    </div>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <div class="ui-dialog-buttonset">
+            <input id="btn_Save_EditorAssignment" type="submit" value="Save" aria-disabled="false" />
+        </div>
+    </div> 
+    }
+}
+<script type="text/javascript">
+
+    $(function () {
+        $("#StartDatedatepicker").datepicker({});
+        $("#RetireDatedatepicker").datepicker({});
+
+    });
+
+
+    //$('#btn_Save_EditorAssignment').click(function (event) {
+    //    var topicname = $("#topicnameddl").val();
+    //    var startdate = $("#StartDatedatepicker").val();
+    //    var endate = $("#RetireDatedatepicker").val();
+    //    if (topicname == null) {
+    //        alert("hi");
+    //        return false;
+    //    }
+    //    if (startdate == null) {
+    //        alert("start date required");
+    //        return false;
+    //    }
+    //    if (endate == null) {
+    //        alert("End date required");
+    //        return false;
+    //    }
+    //});
+
+</script>
+

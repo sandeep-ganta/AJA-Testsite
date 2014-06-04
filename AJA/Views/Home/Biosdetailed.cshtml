@@ -1,0 +1,377 @@
+﻿@{
+    ViewBag.Title = "Biosdetailed";
+}
+
+<style type="text/css">
+    .mncntnr {
+        width: 980px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+    }
+
+        .mncntnr h3 {
+            font-size: 16px;
+            color: #333333;
+        }
+
+    .edtrpiccntrn img {
+        float: left;
+        margin: 0 10px 0 0;
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+
+    .spcontentcntnr {
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 10px;
+    }
+
+        .spcontentcntnr h3 {
+            color: #006699;
+        }
+
+    .mncntnr em {
+        font-weight: bold;
+    }
+</style>
+
+<table width="100%">
+    <tr>
+        <td>
+            <table width="1170" align="center" style="margin: 0 auto;">
+
+                @if (!CurrentUser.IsAuthenticated)
+                {               
+                    <tr>
+                        <td align="left">
+                            <img src="/Content/images/Subpage_banner.jpg"></td>
+                        <td align="right"><a href="/User/Register">
+                            <img src="/Content/images/Subpage_profilebgrnd.jpg"></a></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+
+                            <img src="/Content/images/Subpage_bannerBig.jpg" />
+
+                        </td>
+                    </tr>
+                }
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="shdwContr"></td>
+    </tr>
+
+    <tr>
+        <td>
+            <div align="center" class="commonContent">
+                <div class="floatleft">
+
+
+                    <div class="mncntnr">
+                        <h1>ACR JOURNAL ADVISOR EDITORS   </h1>
+
+                        @{
+                            try
+                            {
+                                string urlValue = Request.QueryString["info"];
+
+
+                                switch (urlValue)
+                                {
+                                    case "Goldsmith":
+                            <div class="spcontentcntnr">
+                                <h3>Brian J. Goldsmith, MD, FACR</h3>
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/1.jpg" />
+                                </div>
+                                <p><em>Managing Editor</em></p>
+
+                                <p>Dr. Goldsmith practices radiation oncology with Radiological Associates of Sacramento (RAS) in Sacramento, Calif., a high-accrual RTOG® institution. He earned his medical degree from the Uniformed Services University of Health Sciences in Bethesda, Md., and trained at the University of California, San Francisco. Dr. Goldsmith is subspecialty certified with the ABR in hospice and palliative medicine. </p>
+                                <p>As a community radiation oncologist, Dr. Goldsmith cares for  a broad array of patients with his particular expertise in the central nervous  system and stereotactic body radiation therapy. He founded and led the Internet  Radiation Oncology Journal Club (1995&ndash;2000), Cogent Medicine (2000&ndash;2012), and  the ACR Journal Advisor (2013&ndash;present). Before joining RAS, Dr. Goldsmith  served as Radiation Oncology Chief at Walter Reed Army Medical Center in  Washington, D.C. At RAS, he chaired the Radiation Oncology Centers.</p>
+                                <p>
+                                    Dr. Goldsmith serves on the ACR Commission on Radiation Oncology  and several Practice Guideline and ACR Appropriateness Criteria&reg; Committees and  is his hospital's ACS Cancer Liaison Physician.
+                                </p>
+                            </div>
+                                        break;
+
+                                    case "Bauman":
+                            <div class="spcontentcntnr">
+                                <h3>Glenn S. Bauman, MD, FRCP(C)
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/2.jpg" />
+                                </div>
+
+                                <p><em>Editor, Central Nervous System</em></p>
+
+                                <p>Dr. Bauman serves as professor and chair/chief of the department of oncology at the Schulich School of Medicine & Dentistry of Western University in London, Ontario, Canada and is an associate scientist with the Lawson Health Research Institute in London, Ontario. Dr. Bauman received both his undergraduate and medical degrees from the University of Western Ontario, where he also completed his residency in radiation oncology. He completed a clinical fellowship in radiation oncology in the area of adult and pediatric brain tumor treatment at the University of California, San Francisco. As a radiation oncologist specializing in genitourinary and central nervous system malignancies, Dr. Bauman’s primary areas of research interest are in modeling of effects of uncertainty on radiation treatment delivery, multimodality image-guided radiotherapy and cancer imaging.</p>
+
+                            </div>
+                                        break;
+
+
+                                    case "Gaffney":
+                            <div class="spcontentcntnr">
+                                <h3>David K. Gaffney, MD, PhD, FACR
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/3.jpg" />
+                                </div>
+
+                                <p><em>Co-Editor, Gynecological</em></p>
+
+                                <p>
+                                    Dr. Gaffney is a professor in the Huntsman Cancer Hospital University of Utah Department of Radiation Oncology. He has served as chair of the Radiation Therapy Oncology Group® Gynecology Cancer Working Group since 2004. Dr. Gaffney has been involved in global cooperative research since 2005 through the Gynecological Cancer Intergroup (GCIG). He is a past chair of the cervix committee in the GCIG (2004–2008) and has been on the GCIG Executive Committee since 2005. Dr. Gaffney now chairs the Cervix Cancer Research Network, which was developed from activities at the GCIG. Dr. Gaffney has been a member of the NCI Gynecologic Cancer Steering Committee and has served on the Cervix Task Force since 2007.
+                                </p>
+
+                            </div>
+                                        break;
+
+                                    case "Hoppe":
+                            <div class="spcontentcntnr">
+                                <h3>Richard T. Hoppe, MD, FACR, FASTRO
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/4.jpg" />
+                                </div>
+
+                                <p><em>Editor, Lymphoma and Leukemia</em></p>
+
+                                <p>
+                                    Dr. Hoppe is the Henry S. Kaplan-Harry Lebeson Professor of Cancer Biology and professor in the Stanford Department of Radiation Oncology . His research interests include Hodgkin's disease, the lymphomas, radiation immunosuppression, and radiation late effects. He has co-authored nearly 300 research articles and 100 book chapters on these subjects. He is primary editor of Hodgkin Lymphoma published in 2007 and co-editor of Leibel and Phillips <i>Textbook of Radiation Oncology published in 2010. </i>
+                                </p>
+                                <p>Dr. Hoppe is a member of both the Hodgkin’s Disease (chair) and Non-Hodgkin’s Lymphoma Guidelines Committees for the National Cancer Center Network. He is a member of the International Lymphoma Radiation Oncology Group Steering Committee. He participated in the development of ACR Appropriateness Criteria® for Hodgkin’s Disease and chaired the Hodgkin’s Disease Committee for the American College of Radiology Patterns of Care Study. </p>
+                                <p>Dr. Hoppe was a chancellor in the ACR, president and chair of the ASTRO Board, a trustee of the ABR, and a member of the NIH/NCI Board of Scientific Counselors. He was awarded the ASTRO Gold Medal, was a Janeway Lecturer, and received an ACR Gold Medal in 2013.</p>
+
+                            </div>
+                                        break;
+
+                                    case "Lawton":
+                            <div class="spcontentcntnr">
+                                <h3>Colleen A. Lawton, MD, FACR, FASTRO
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/5.jpg" />
+                                </div>
+
+                                <p><em>Editor, Genitourinary</em></p>
+
+                                <p>
+                                    Dr. Lawton is a radiation oncologist and vice chair of the Medical College of Wisconsin Department of Radiation Oncology where she also serves as program director. Lawton completed her radiation oncology residency and went on to become faculty at the Medical College of Wisconsin where she is currently a tenured professor.
+                                </p>
+                                <p>
+                                    Dr. Lawton is an active member of the radiation oncology community and currently serves as ASTRO president. She is also active in other radiation oncology societies such as RSNA, ACR, and ABR. She has special interest in the area of prostate cancer, particularly locally advanced prostate cancer where she has published extensively. Dr. Lawton has co-authored approximately 100 peer-reviewed publications as well as dozens of book chapters and reviews. In addition she is a manuscript reviewer for the <i>Internal Journal of Radiation Oncology Biology & Physics</i> as well as co-editor of the <i>Yearbook of Oncology.</i>
+                                </p>
+                                <p>
+                                    As a respected member of the radiation oncology community Dr. Lawton will go on to become chair of the ASTRO board in 2014.
+                                </p>
+
+                            </div>
+                                        break;
+                                    case "Mendenhall":
+                            <div class="spcontentcntnr">
+                                <h3>William Mendenhall, MD, FACR
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/6.jpg" />
+                                </div>
+
+                                <p><em>Editor, Head and Neck/Skin</em></p>
+
+                                <p>
+                                    Dr. Mendenhall has been on the faculty at the University of Florida since 1985, treating patients both at the Gainesville Department of Radiation Oncology and Jacksonville UF Proton Therapy Institute. He has specialized primarily in the treatment of patients with head and neck cancer using radiotherapy either alone or combined with adjuvant chemotherapy and/or surgery He also specializes in melanoma and genitourinary cancer. Dr. Mendenhall has been a principal investigator on cooperative group trials and has performed or participated in multiple outcomes studies evaluating disease, control, survival, and toxicity associated with the treatment of various head and neck malignancies. He has published over 500 peer-reviewed journal articles, reviews, and book chapters.
+                                </p>
+
+                            </div>
+                                        break;
+
+                                    case "Recht":
+                            <div class="spcontentcntnr">
+                                <h3>Abram Recht, MD, FASTRO
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/7.jpg" />
+                                </div>
+
+                                <p><em>Editor, Breast</em></p>
+
+                                <p>
+                                    Dr. Recht graduated from Johns Hopkins Medical School in Baltimore. He trained in radiation oncology at the Joint Center for Radiation Therapy in Boston. He is currently professor of radiation oncology at Harvard Medical School and Deputy Chief of the Department of Radiation Oncology at Beth Israel Deaconess Medical Center in Boston. He has written, edited, or co-authored more than 200 publications on all aspects of the local-regional therapy of breast cancer. He is currently a member of the Dana-Farber/Harvard Cancer Center Breast Cancer Steering Committee. He has served on breast-cancer related panels and the American Joint Committee on Cancer and other committees with the ACR, ASCO (co-chairing its panel on the use of postmastectomy radiotherapy), the Eastern Cooperative Oncology Group, the European Organization for Research in Treatment of Cancer, and the Integration Panel of the Breast Cancer Research Program of the U.S. Department of Defense.
+                                </p>
+
+                            </div>
+                                        break;
+
+                                    case "Russell":
+                            <div class="spcontentcntnr">
+                                <h3>Anthony H. Russell, MD
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/8.jpg" />
+                                </div>
+
+                                <p><em>Co-Editor, Gynecological</em></p>
+
+                                <p>
+                                    Dr. Russell serves as head of the gynecologic section and associate professor of radiation oncology at Massachusetts General Hospital in Boston. He received his medical degree from Harvard Medical School and completed his residency and fellowship and Massachusetts General Hospital. His treatment and research interests include gynecologic cancers, chemoradiation, intraoperative radiation therapy, intracavity and interstitial brachytherapy, proton beam therapy, and intensity-modulated radiation therapy.
+                                </p>
+
+                            </div>
+                                        break;
+
+                                    case "Sher":
+                            <div class="spcontentcntnr">
+                                <h3>David J. Sher, MD, MPH
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/9.jpg" />
+                                </div>
+
+                                <p><em>Editor, Health Services Research</em></p>
+
+                                <p>
+                                    Dr. Sher is an assistant professor of radiation oncology at Rush University Medical Center in Chicago. His clinical practice is predominantly composed of head and neck and thoracic malignancies. His research interests primarily involve comparative and cost-effectiveness analyses with a particular focus on new technology. 
+                                </p>
+
+                            </div>
+                                        break;
+                                    case "Tepper":
+                            <div class="spcontentcntnr">
+                                <h3>Joel E. Tepper, MD, FASTRO
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/10.jpg" />
+                                </div>
+
+                                <p><em>Editor, Gastrointestinal and Soft-Tissue Sarcoma</em></p>
+
+                                <p>
+                                    Dr. Tepper is the Hector MacLean Distinguished Professor of Cancer Research at the University of North Carolina in Chapel Hill. He studied at MIT and Washington University, St. Louis and trained in radiation oncology at the Massachusetts General Hospital (MGH). He has been an NCI senior investigator and an attending physician at MGH and Harvard Medical School. He has been at the University of North Carolina in Chapel Hill since 1988 and served as chair from 1988 to 2008. 
+                                </p>
+                                <p>
+                                    He has been an active participant in clinical and translational research in gastrointestinal tumors for many years and served as vice chair of the Cancer and Leukemia Group B GI Committee for 14 years. Dr. Tepper co-chairs the NCI GI Steering Committee and has served as the UNC GI SPORE grant director. He has co-chaired The Cancer Genome Atlas Colon-Rectal Working Group. He is co-director of the NCI-funded Carolina Center for Cancer Nanotechnology Excellence. Dr. Tepper has served as president and chair of the ASTRO Board and received the ASTRO Gold Medal in 2008. Additionally, he has served as ASCO board member. For the NCI he was an initial member of the Clinical and Translational Research Advisory Committee, has worked on the Process to Accelerate Translational Science and the Operational Efficiency Working Group, and is on the working group for the National Clinical Trials Network. 
+                                </p>
+                                <p>
+                                    Dr. Tepper is editor of two textbooks, including <i>Clinical Radiation Oncology</i>, and is the founding editor of <i>Seminars in Radiation Oncology. </i>
+                                </p>
+                            </div>
+                                        break;
+
+                                    case "Turrisi":
+                            <div class="spcontentcntnr">
+                                <h3>Andrew T. Turrisi III, MD
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/11.jpg" />
+                                </div>
+
+                                <p><em>Editor, Lung and Mediastinum</em></p>
+
+                                <p>
+                                    Dr. Turrisi has an international reputation for the management of lung cancer. His reputation was set three decades ago by introducing combination chemoradiotherapy for the treatment of limited small-cell lung cancer. That treatment remains an accepted standard and is currently the standard arm in two major world trials. The Michigan treatment panning system and dose escalation trial of the early 1990s pushed investigations away from elective nodal irradiation, and though controversial to some, sets the standard for many. Integration of chemoradiotherapy and surgery for stage IIIa lung cancer started in SWOG trials, and moved to intergroup investigation with radiotherapy leadership from Dr. Turrisi. He has served in radiotherapy leadership posts at the SWOG, Cancer and Leukemia Group B, ASCO board, and ASTRO committees, and is considered a thought leader in the treatment of non–small-cell as well as small-cell lung cancer. He currently holds an editorial position at <i>The Oncologist</i> and continues active general practice of radiotherapy in Detroit. He has been active in ASCO and ASTRO for more than 25 years.
+                                </p>
+                            </div>
+                                        break;
+
+                                    case "Donaldson":
+                            <div class="spcontentcntnr">
+                                <h3>Sarah S. Donaldson, MD, FACR, FASTRO
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/12.jpg" />
+                                </div>
+
+                                <p><em>Editor, Pediatrics</em></p>
+
+                                <p>
+                                    Dr. Donaldson is the Avery Professor in the Stanford University School of Medicine Department of Radiation Oncology and chief of the radiation oncology service at Packard Children’s Hospital at Stanford. She is a recognized authority in pediatric radiation oncology, renowned for developing innovative treatments for pediatric Hodgkin’s lymphoma and rhabdomyosarcoma. She has long been interested in the late effects of cancer and its treatment. 
+                                </p>
+                                <p>
+                                    Dr. Donaldson received her undergraduate and nursing degrees from the University of Oregon and her medical degrees from Dartmouth and Harvard. Following her internship at the University of Washington hospitals, she commenced radiation oncology residency at Stanford and has remained on the Stanford faculty.
+                                </p>
+                                <p>
+                                    Dr. Donaldson has held numerous leadership roles, including former president of the ABR and the ASTRO. She currently serves as RSNA president. Her numerous honors and awards include the Marie Curie Award of the American Association for Women Radiologists and the Janeway Medal of the American Radium Society. At Stanford she is a recipient of the Dean’s Medal, The Hoppe Leadership Award, and the Kaplan Teaching Prize. She holds gold medals from the del Regato Foundation, the ACR, ASTRO, and is a member of The Institute of Medicine. 
+                                </p>
+                            </div>
+                                        break;
+
+                                    case "Salter":
+                            <div class="spcontentcntnr">
+                                <h3>Bill J. Salter, PhD
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/13.jpg" />
+                                </div>
+
+                                <p><em>Editor, Radiation Biophysics</em></p>
+
+                                <p>
+                                    Dr. Salter is a tenured professor and chief of the Division of Medical Physics, Department of Radiation Oncology, University of Utah School of Medicine. He is also director of radiation oncology at Huntsman Cancer Institute (HCI). He designs and directs radiation oncology resident training in medical physics of imaging, treatment planning, and treatment delivery.
+                                </p>
+                                <p>
+                                    Dr. Salter received a PhD in medical physics from the University of Texas Health Science Center, San Antonio. Before joining HCI, he held dual faculty appointments in both radiology and radiation oncology, and was director of medical physics at the University of Texas Health Science Center's Cancer Therapy and Research Center, San Antonio.
+                                </p>
+                                <p>
+                                    Dr. Salter is a member of several national task groups that define standards of practice for safe delivery of radiation treatment, including CT virtual simulation, ultrasound image guidance, stereotactic body radiation therapy (SBRT) and intensity modulated radiation therapy (IMRT), for which he is vice chair. He is a member of the American Society for Therapeutic Radiology and Oncology Emerging Technologies Committee and an associate editor for the Journal of Medical Physics and the Journal of Applied Clinical Medical Physics. He holds multiple patents on technology used for delivery of serial tomotherapy intensity modulated radiation treatment. Dr. Salter is also a member of the University of Utah's Radiation Safety Committee. At the University of Texas Health Science Center in San Antonio, Dr. Salter implemented one of the world's first intensity modulated radiation therapy programs in 1996 and supervised the delivery of some of the first ever intensity modulated radiosurgery treatments in 1998. Dr. Salter is a member of the University of Utah's Radiation Safety Committee and is also the Departmental Academic Committee (DAC) chair for Radiation Oncology.
+                                </p>
+                                <p>
+                                    With more than $1,000,000 in past and present research grant funds, Salter's research interests include stereotactic body radiation therapy, ultrasound image guidance, and 4-D imaging and motion management techniques in radiation therapy.
+                                </p>
+                            </div>
+                                        break;
+                                    case "Koong":
+                                
+                            <div class="spcontentcntnr">
+                                <h3>Albert C. Koong, MD, PhD
+                                </h3>
+
+                                <div class="edtrpiccntrn">
+                                    <img src="/content/images/14.jpg" />
+                                </div>
+
+                                <p><em>Editor, Radiobiology</em></p>
+
+                                <p>
+                                    Dr. Koong is an associate professor of radiation oncology at Stanford University School of Medicine. He received his medical degree from Northwestern University Medical School and completed his doctorate and residency at Stanford University School of Medicine. His clinical focus includes radiation oncology, GI oncology, and pancreatic, rectal, and liver cancers.
+                                </p>
+
+                            </div>
+                                        break;
+                                }
+                            }
+                            catch (Exception e) { }
+                        }
+                    </div>
+                </div>
+                <div class="floatright">
+                    <a href="http://www.acr.org/Education/e-Learning/HHT" target="_blank">
+                        <img src="/Content/images/160x600-ad.jpg" /></a>
+                </div>
+
+                <div class="clear"></div>
+
+            </div>
+        </td>
+
+    </tr>
+
+</table>

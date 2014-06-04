@@ -1,0 +1,36 @@
+﻿@model DAL.Models.ArticleselectionsModel
+
+@if (Model != null)
+{
+    using (Html.BeginForm("SaveArticleselections", "Admin", FormMethod.Post, new { @id = "form_Edit_Articles" }))
+    {
+    @Html.ValidationSummary(true)
+    <ol>
+        <li>@Html.HiddenFor(model => model.ThreadId, new { @id = "hdPMID" })</li>
+        <li>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PMID)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.PMID, new { @id = "txtPMID" })
+                @Html.ValidationMessageFor(model => model.PMID)
+            </div>
+        </li>
+    </ol> 
+    
+    <input type="submit" id="btnSave_Articles" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" /> 
+    
+    <button type="button" id="btncancel" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="Cancel();">
+        <span class="ui-button-text">Cancel</span></button>
+     
+    <script type="text/javascript"> 
+        var Cancel = function Cancel() {
+            $('#Editions_Article').dialog('close');
+        } 
+    </script>
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval") 
+}
